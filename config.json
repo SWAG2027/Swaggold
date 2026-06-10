@@ -66,17 +66,17 @@
   ],
   "ui": {
     "align": "center",
-    "fontSize": 17.5,
+    "fontSize": 22.5,
     "btnPad": 26,
-    "btnRadius": 22,
+    "btnRadius": 40,
     "iconSize": 28,
     "btnDark": 16,
     "avatar": 90,
-    "nameSize": 33,
+    "nameSize": 50,
     "socialSize": 30,
     "scrim": 0,
     "cols": 1,
-    "gap": 10
+    "gap": 34
   },
   "footer": "",
   "kiosk": {
@@ -92,5 +92,6 @@
     "show": false,
     "text": "",
     "link": ""
-  }
+  },
+  "_savedAt": 1781122506313
 }
