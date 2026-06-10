@@ -81,7 +81,7 @@
     display:flex;justify-content:center;align-items:flex-start;
     padding:0;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
     overflow-x:hidden;-webkit-overflow-scrolling:touch}
-  .backdrop{position:fixed;inset:0;z-index:-2;overflow:hidden;background:#1a140c}
+  .backdrop{display:none;position:fixed;inset:0;z-index:-2;overflow:hidden;background:#1a140c}
   .backdrop video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1.25);
     min-width:100%;min-height:100%;object-fit:cover;filter:blur(34px) brightness(.5) saturate(1.1)}
   .backdrop::after{content:"";position:absolute;inset:0;background:rgba(20,15,8,.35)}
@@ -89,7 +89,7 @@
   .card{width:100%;max-width:480px;min-height:100dvh;position:relative;
     display:flex;flex-direction:column;justify-content:center;animation:fade .6s ease both}
   @keyframes fade{from{opacity:0}to{opacity:1}}
-  .card .cardvid{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:100dvh;object-fit:cover;z-index:-1}
+  .card .cardvid{position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);width:100%;max-width:480px;height:100dvh;object-fit:cover;z-index:-1;backface-visibility:hidden}
   .card .scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg, rgba(0,0,0,.28) 0%, rgba(0,0,0,.02) 16%, rgba(0,0,0,0) 45%, rgba(0,0,0,.04) 72%, rgba(0,0,0,.30) 100%)}
   .content{position:relative;z-index:2;padding:24px 18px 44px;width:100%}
 
@@ -115,7 +115,7 @@
   .socials svg{width:30px;height:30px;display:block}
 
   .links{margin-top:14px;display:grid;grid-template-columns:repeat(var(--cols,1),minmax(0,1fr));gap:var(--gap,10px)}
-  .link{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:26px 20px;border:1.5px solid rgba(212,168,75,.60);border-radius:var(--radius);background:rgba(0,0,0,.16);color:#fff;text-decoration:none;font-size:17.5px;font-weight:500;transition:transform .18s,background .25s,border-color .25s,box-shadow .25s;opacity:0;animation:rise .55s ease forwards}.link::before{content:"";position:absolute;top:0;left:-75%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,236,180,.30),transparent);transform:skewX(-20deg);animation:sweep 6s ease-in-out infinite;pointer-events:none}.link:nth-child(2)::before{animation-delay:.8s}.link:nth-child(3)::before{animation-delay:1.6s}.link:nth-child(4)::before{animation-delay:2.4s}.link:nth-child(5)::before{animation-delay:3.2s}.link:nth-child(6)::before{animation-delay:4s}.link:nth-child(7)::before{animation-delay:4.8s}@keyframes sweep{0%{left:-75%}45%{left:130%}100%{left:130%}}
+  .link{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:26px 20px;border:1.5px solid rgba(212,168,75,.60);border-radius:var(--radius);background:rgba(0,0,0,.16);color:#fff;text-decoration:none;font-size:17.5px;font-weight:500;transition:transform .18s,background .25s,border-color .25s,box-shadow .25s;opacity:0;animation:rise .55s ease forwards}.link::before{content:"";position:absolute;top:0;left:0;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,236,180,.30),transparent);transform:translateX(-180%) skewX(-20deg);animation:sweep 6s ease-in-out infinite;pointer-events:none;will-change:transform}.link:nth-child(2)::before{animation-delay:.8s}.link:nth-child(3)::before{animation-delay:1.6s}.link:nth-child(4)::before{animation-delay:2.4s}.link:nth-child(5)::before{animation-delay:3.2s}.link:nth-child(6)::before{animation-delay:4s}.link:nth-child(7)::before{animation-delay:4.8s}@keyframes sweep{0%{transform:translateX(-180%) skewX(-20deg)}45%{transform:translateX(320%) skewX(-20deg)}100%{transform:translateX(320%) skewX(-20deg)}}
   .link:hover{transform:translateY(-2px);background:rgba(212,168,75,.18);border-color:#e7c873;box-shadow:0 0 0 1px rgba(212,168,75,.4),0 12px 30px rgba(180,140,40,.35)}
   .link .ico{flex:0 0 28px;display:grid;place-items:center;color:#fff;filter:drop-shadow(0 1px 3px rgba(0,0,0,.7))}
   .link .ico svg{width:28px;height:28px;display:block}
@@ -151,7 +151,7 @@
   .qrt{margin-top:16px;color:#1a140c;font-family:'Cairo',sans-serif;font-weight:700;font-size:18px;line-height:1.5}
   .qrt span{display:block;font-family:'Jost',sans-serif;font-weight:500;font-size:13px;color:#8a7636;letter-spacing:.04em}
   .qrclose{position:absolute;top:12px;right:14px;border:none;background:none;font-size:20px;color:#bbb;cursor:pointer;line-height:1}
-  @media(min-width:520px){.card{max-width:480px}}
+  @media(min-width:520px){.card{max-width:480px}.backdrop{display:block}}
 
   /* admin-controllable variables */
   .nm{background-image:linear-gradient(100deg,#f7ecc4 0%,var(--gold-c,#d4a84b) 22%,#fff6da 42%,#c9952b 58%,#f7ecc4 82%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-size:var(--name-size,33px)}
@@ -169,10 +169,12 @@
   .banner a{color:#fff;text-decoration:underline}
   .link.featured{box-shadow:0 0 0 1.5px var(--gold-c,#d4a84b),0 10px 34px rgba(212,168,75,.40);background:linear-gradient(180deg,rgba(212,168,75,.22),var(--btn-bg,rgba(0,0,0,.16)))}
 
+  @media(prefers-reduced-motion:reduce){.link::before{animation:none}}
+
   /* === SCROLL FIX: stop card-css body rule from locking the admin page === */
   html,body{height:auto!important;overflow:visible!important}
   body{min-height:100vh;display:block;background:var(--bg)}
-  .phone .backdrop{position:absolute}.phone .card{min-height:100%}.phone .cardvid,.phone .scrim{position:absolute!important;top:0;left:0;transform:none!important;max-width:none!important;width:100%;height:100%}.phone .kiosk,.phone .qrov{display:none!important}
+  .phone .backdrop{display:block!important;position:absolute}.phone .card{min-height:100%}.phone .cardvid,.phone .scrim{position:absolute!important;top:0;left:0;transform:none!important;max-width:none!important;width:100%;height:100%}.phone .kiosk,.phone .qrov{display:none!important}
 </style>
 </head>
 <body>
