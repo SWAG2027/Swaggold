@@ -75,22 +75,23 @@
 
   :root{ --line:rgba(255,255,255,.7); --radius:22px; }
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{font-family:'Jost',sans-serif;color:#fff;height:100dvh;overflow:hidden;background:#1a140c;
-    display:flex;justify-content:center;align-items:stretch;
-    padding:0;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  html,body{height:auto;min-height:100%}
+  html{scroll-behavior:smooth}
+  body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a140c;
+    display:flex;justify-content:center;align-items:flex-start;
+    padding:0;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    overflow-x:hidden;-webkit-overflow-scrolling:touch}
   .backdrop{position:fixed;inset:0;z-index:-2;overflow:hidden;background:#1a140c}
   .backdrop video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1.25);
     min-width:100%;min-height:100%;object-fit:cover;filter:blur(34px) brightness(.5) saturate(1.1)}
   .backdrop::after{content:"";position:absolute;inset:0;background:rgba(20,15,8,.35)}
 
-  .card{width:100%;max-width:480px;min-height:100dvh;position:relative;overflow:hidden;
-    display:flex;flex-direction:column;justify-content:center;
-    box-shadow:0 24px 70px rgba(0,0,0,.55);animation:fade .6s ease both;isolation:isolate}
+  .card{width:100%;max-width:480px;min-height:100dvh;position:relative;
+    display:flex;flex-direction:column;justify-content:center;animation:fade .6s ease both}
   @keyframes fade{from{opacity:0}to{opacity:1}}
-  .card .cardvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+  .card .cardvid{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:100dvh;object-fit:cover;z-index:-1}
   .card .scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg, rgba(0,0,0,.28) 0%, rgba(0,0,0,.02) 16%, rgba(0,0,0,0) 45%, rgba(0,0,0,.04) 72%, rgba(0,0,0,.30) 100%)}
-  .content{position:relative;z-index:2;padding:18px 18px 22px;transform-origin:center center;will-change:transform}
+  .content{position:relative;z-index:2;padding:24px 18px 44px;width:100%}
 
   .topbar{display:flex;justify-content:space-between;margin-bottom:8px}
   .chip{width:42px;height:42px;border-radius:50%;background:rgba(20,16,10,.42);color:#fff;
@@ -150,8 +151,7 @@
   .qrt{margin-top:16px;color:#1a140c;font-family:'Cairo',sans-serif;font-weight:700;font-size:18px;line-height:1.5}
   .qrt span{display:block;font-family:'Jost',sans-serif;font-weight:500;font-size:13px;color:#8a7636;letter-spacing:.04em}
   .qrclose{position:absolute;top:12px;right:14px;border:none;background:none;font-size:20px;color:#bbb;cursor:pointer;line-height:1}
-  @media(min-width:520px){.card{max-width:460px;min-height:auto;border-radius:30px;margin:auto;box-shadow:0 24px 70px rgba(0,0,0,.6)}
-    body{align-items:center;padding:18px}}
+  @media(min-width:520px){.card{max-width:480px}}
 
   /* admin-controllable variables */
   .nm{background-image:linear-gradient(100deg,#f7ecc4 0%,var(--gold-c,#d4a84b) 22%,#fff6da 42%,#c9952b 58%,#f7ecc4 82%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-size:var(--name-size,33px)}
@@ -172,7 +172,7 @@
   /* === SCROLL FIX: stop card-css body rule from locking the admin page === */
   html,body{height:auto!important;overflow:visible!important}
   body{min-height:100vh;display:block;background:var(--bg)}
-  .phone .backdrop{position:absolute}.phone .card{min-height:100%}.phone .kiosk,.phone .qrov{display:none!important}
+  .phone .backdrop{position:absolute}.phone .card{min-height:100%}.phone .cardvid,.phone .scrim{position:absolute!important;top:0;left:0;transform:none!important;max-width:none!important;width:100%;height:100%}.phone .kiosk,.phone .qrov{display:none!important}
 </style>
 </head>
 <body>
@@ -289,15 +289,23 @@
       <!-- PUBLISH -->
       <div class="section" id="sec-publish">
         <div class="stitle">Publish to Live Site</div><div class="ssub">Ek click me GitHub pe save → live site update (download/upload ki zarurat nahi)</div>
-        <div class="card2"><h3>GitHub settings (ek baar bharo)</h3>
-          <div class="grid2"><div><label>Owner / username</label><input type="text" id="ghOwner" placeholder="SWAG2027"></div><div><label>Repository</label><input type="text" id="ghRepo" placeholder="Swaggold"></div></div>
-          <div class="grid2"><div><label>Branch</label><input type="text" id="ghBranch" placeholder="main"></div><div><label>File path</label><input type="text" id="ghPath" placeholder="config.json"></div></div>
-          <label>GitHub token (fine-grained, repo Contents: Read & write)</label><input type="text" id="ghToken" placeholder="github_pat_..." autocomplete="off">
-          <label class="toggle"><input type="checkbox" id="ghRemember" checked> Token is device pe yaad rakho</label>
+        <div class="card2"><h3>Step 1 — GitHub token banao (sirf ek baar)</h3>
+          <p style="font-size:13px;color:var(--mut);margin-bottom:10px;line-height:1.6">Neeche button dabao → GitHub khulega (already sahi settings ke saath). Expiration choose karo (e.g. No expiration) → <b>Generate token</b> → token <b>copy</b> karo.</p>
+          <a class="btn primary" href="https://github.com/settings/tokens/new?scopes=repo&description=SWAG%20GOLD%20Admin" target="_blank" style="display:inline-flex">🔑 Open GitHub — Create token</a>
         </div>
-        <button class="btn primary" style="width:100%;justify-content:center;padding:13px" onclick="publish()">🚀 Publish to live site</button>
-        <div id="pubMsg" style="margin-top:10px;font-size:13px"></div>
-        <div class="hint" style="margin-top:14px"><b style="color:var(--gold)">Token kaise banaye:</b> GitHub → Settings → Developer settings → Fine-grained tokens → Generate. Sirf apni <b>Swaggold</b> repo select karo, Permissions me <b>Contents → Read and write</b>. Token sirf isi device pe save hoga.<br><br><b style="color:#e8a">Dhyan:</b> Token kisi ko mat dikhao. Public/shared computer pe "yaad rakho" off rakhna.</div>
+        <div class="card2"><h3>Step 2 — Token yahan paste karo</h3>
+          <input type="text" id="ghToken" placeholder="ghp_... yahan paste karo" autocomplete="off">
+          <label class="toggle"><input type="checkbox" id="ghRemember" checked> Is device pe yaad rakho (dobara na daalna pade)</label>
+          <details style="margin-top:8px"><summary style="cursor:pointer;color:var(--mut);font-size:12px">Advanced (repo/branch — normally chhune ki zarurat nahi)</summary>
+            <div class="grid2" style="margin-top:8px"><div><label>Owner (auto)</label><input type="text" id="ghOwner" placeholder="auto from token"></div><div><label>Repository</label><input type="text" id="ghRepo"></div></div>
+            <div class="grid2"><div><label>Branch</label><input type="text" id="ghBranch"></div><div><label>File path</label><input type="text" id="ghPath"></div></div>
+          </details>
+        </div>
+        <div class="card2"><h3>Step 3 — Publish</h3>
+          <button class="btn primary" style="width:100%;justify-content:center;padding:14px;font-size:15px" onclick="publish()">🚀 Publish to live site</button>
+          <div id="pubMsg" style="margin-top:12px;font-size:13.5px;line-height:1.5"></div>
+        </div>
+        <div class="hint" style="margin-top:6px"><b style="color:#e8a">Dhyan:</b> Token ek password jaisa hai — kisi ko mat dena. Shared/public computer pe "yaad rakho" off rakhna. Ek baar set karne ke baad bas 💾 Save & Publish dabate raho.</div>
       </div>
     </div>
 
@@ -558,28 +566,31 @@ function applyUiVars(cfg, root){
       else{try{localStorage.setItem('swag_cfg_draft',JSON.stringify(cfg));}catch(e){}showSec('publish');alert('Live save ke liye pehle GitHub set karo (Owner, Repo, Token) Publish tab me. Phir Save & Publish seedha live karega.');}
     }
     // ---- GitHub publish ----
-    function loadGH(){try{var g=JSON.parse(localStorage.getItem('swag_gh')||'{}');gv('ghOwner').value=g.owner||'';gv('ghRepo').value=g.repo||'';gv('ghBranch').value=g.branch||'main';gv('ghPath').value=g.path||'config.json';if(g.token){gv('ghToken').value=g.token;}}catch(e){}}
+    function loadGH(){var g={};try{g=JSON.parse(localStorage.getItem('swag_gh')||'{}');}catch(e){}gv('ghOwner').value=g.owner||'';gv('ghRepo').value=g.repo||'Swaggold';gv('ghBranch').value=g.branch||'main';gv('ghPath').value=g.path||'config.json';if(g.token){gv('ghToken').value=g.token;}}
     async function publish(){
       readForm();
-      var owner=gv('ghOwner').value.trim(),repo=gv('ghRepo').value.trim(),branch=gv('ghBranch').value.trim()||'main',path=gv('ghPath').value.trim()||'config.json',token=gv('ghToken').value.trim();
+      var owner=gv('ghOwner').value.trim(),repo=gv('ghRepo').value.trim()||'Swaggold',branch=gv('ghBranch').value.trim()||'main',path=gv('ghPath').value.trim()||'config.json',token=gv('ghToken').value.trim();
       var msg=gv('pubMsg');
-      if(!owner||!repo||!token){msg.style.color='#e8a';msg.textContent='Owner, repo aur token bharo.';return;}
-      var store={owner:owner,repo:repo,branch:branch,path:path};if(gv('ghRemember').checked)store.token=token;
-      try{localStorage.setItem('swag_gh',JSON.stringify(store));}catch(e){}
-      msg.style.color='var(--mut)';msg.textContent='Publishing… ⏳';
-      var content=JSON.stringify(cfg,null,2);
-      var b64=btoa(unescape(encodeURIComponent(content)));
-      var api='https://api.github.com/repos/'+owner+'/'+repo+'/contents/'+encodeURIComponent(path).replace(/%2F/g,'/');
+      if(!token){msg.style.color='#e8a';msg.innerHTML='Pehle Step 1 se token banao, phir Step 2 me paste karo.';showSec('publish');return;}
       var headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'};
+      msg.style.color='var(--mut)';msg.textContent='Connecting to GitHub… ⏳';
       try{
-        var sha=null;
-        var g=await fetch(api+'?ref='+encodeURIComponent(branch),{headers:headers});
+        if(!owner){var u=await fetch('https://api.github.com/user',{headers:headers});
+          if(u.ok){var uj=await u.json();owner=uj.login;gv('ghOwner').value=owner;}
+          else{msg.style.color='#e8a';msg.textContent='Token galat ya expire ('+u.status+'). Step 1 se naya token banao.';return;}}
+        var store={owner:owner,repo:repo,branch:branch,path:path};if(gv('ghRemember').checked)store.token=token;
+        try{localStorage.setItem('swag_gh',JSON.stringify(store));}catch(e){}
+        msg.textContent='Publishing… ⏳';
+        var content=JSON.stringify(cfg,null,2);var b64=btoa(unescape(encodeURIComponent(content)));
+        var api='https://api.github.com/repos/'+owner+'/'+repo+'/contents/'+path;
+        var sha=null;var g=await fetch(api+'?ref='+encodeURIComponent(branch),{headers:headers});
         if(g.status===200){var gj=await g.json();sha=gj.sha;}
-        var body={message:'Update config.json via admin',content:b64,branch:branch};if(sha)body.sha=sha;
+        var body={message:'Update config.json via SWAG GOLD admin',content:b64,branch:branch};if(sha)body.sha=sha;
         var r=await fetch(api,{method:'PUT',headers:headers,body:JSON.stringify(body)});
-        if(r.ok){msg.style.color='#7bd47b';msg.innerHTML='✅ Publish ho gaya! 1–2 min me live site pe dikhega. <a href="./" target="_blank" style="color:var(--gold)">View site ↗</a>';}
-        else{var t=await r.text();msg.style.color='#e8a';msg.textContent='Fail ('+r.status+'): '+t.slice(0,200);}
-      }catch(e){msg.style.color='#e8a';msg.textContent='Network/CORS error: '+e.message;}
+        if(r.ok){msg.style.color='#7bd47b';msg.innerHTML='✅ <b>LIVE ho gaya!</b> 1–2 min me site update ho jayegi. <a href="./" target="_blank" style="color:var(--gold)">Open site ↗</a>';}
+        else if(r.status===404){msg.style.color='#e8a';msg.innerHTML='Repo nahi mili. Step 2 → Advanced me <b>Repository</b> naam check karo (abhi: "'+repo+'", owner: "'+owner+'").';}
+        else{var t=await r.text();msg.style.color='#e8a';msg.textContent='Fail ('+r.status+'): '+t.slice(0,180);}
+      }catch(e){msg.style.color='#e8a';msg.textContent='Net/CORS error: '+e.message;}
     }
     buildSide();loadGH();
     cfg=loadDraft()||clone(DEFAULT_CONFIG);ensure();
