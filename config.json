@@ -8,16 +8,12 @@
   "blur": 34,
   "socials": [
     {
-      "icon": "tiktok",
-      "url": "https://www.tiktok.com/@swag.gold24"
+      "icon": "link",
+      "url": "https://"
     },
     {
-      "icon": "whatsapp",
-      "url": "https://wa.me/+9660530033445"
-    },
-    {
-      "icon": "snapchat",
-      "url": "https://www.snapchat.com/add/swag.gold24"
+      "icon": "youtube",
+      "url": "https://"
     }
   ],
   "links": [],
