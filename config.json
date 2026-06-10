@@ -8,15 +8,62 @@
   "blur": 34,
   "socials": [
     {
-      "icon": "link",
-      "url": "https://"
+      "icon": "tiktok",
+      "url": "https://www.tiktok.com/@swag.gold24"
     },
     {
-      "icon": "youtube",
-      "url": "https://"
+      "icon": "whatsapp",
+      "url": "https://wa.me/+9660530033445"
+    },
+    {
+      "icon": "snapchat",
+      "url": "https://www.snapchat.com/add/swag.gold24"
     }
   ],
-  "links": [],
+  "links": [
+    {
+      "icon": "google",
+      "en": "Rate us on Google",
+      "ar": "قيمنا على جوجل",
+      "url": "https://g.page/r/CWglyh1mAaPZEAE/review"
+    },
+    {
+      "icon": "chart",
+      "en": "Live Price",
+      "ar": "التسعير المباشر",
+      "url": "https://laroche.sa/swag/swag_monitors.html"
+    },
+    {
+      "icon": "snapchat",
+      "en": "SnapChat",
+      "ar": "سناب شات",
+      "url": "https://www.snapchat.com/add/swag.gold24"
+    },
+    {
+      "icon": "tiktok",
+      "en": "TikTok",
+      "ar": "تيك توك",
+      "url": "https://www.tiktok.com/@swag.gold24"
+    },
+    {
+      "icon": "instagram",
+      "en": "Instagram",
+      "ar": "انستقرام",
+      "url": "https://www.instagram.com/swag.gold24"
+    },
+    {
+      "icon": "whatsapp",
+      "en": "WhatsApp",
+      "ar": "واتس آب",
+      "url": "https://wa.me/+9660530033445"
+    },
+    {
+      "icon": "map",
+      "en": "Our Location",
+      "ar": "موقعنا",
+      "url": "https://g.co/kgs/b4cUF3k"
+    }
+  ],
   "ui": {
     "align": "center",
     "fontSize": 17.5,
@@ -28,7 +75,7 @@
     "nameSize": 33,
     "socialSize": 30,
     "scrim": 0,
-    "cols": 2,
+    "cols": 1,
     "gap": 10
   },
   "footer": "",
