@@ -1,47 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SWAG GOLD — Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Cairo:wght@500;600;700&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Jost',sans-serif;background:#15110b;color:#eee;min-height:100vh}
-  .top{position:sticky;top:0;z-index:10;background:#1d160d;border-bottom:1px solid #3a2e1a;
-    display:flex;align-items:center;justify-content:space-between;padding:14px 18px;flex-wrap:wrap;gap:10px}
+  .top{position:sticky;top:0;z-index:10;background:#1d160d;border-bottom:1px solid #3a2e1a;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;flex-wrap:wrap;gap:10px}
   .top h1{font-family:'Cormorant Garamond',serif;font-size:22px;color:#e7c873;letter-spacing:.08em}
   .top .actions{display:flex;gap:8px;flex-wrap:wrap}
-  .btn{border:1px solid #5a4a2a;background:#2a2012;color:#e7c873;padding:9px 14px;border-radius:10px;
-    font-weight:600;cursor:pointer;font-size:13px;font-family:inherit}
+  .btn{border:1px solid #5a4a2a;background:#2a2012;color:#e7c873;padding:9px 14px;border-radius:10px;font-weight:600;cursor:pointer;font-size:13px;font-family:inherit}
   .btn.primary{background:linear-gradient(180deg,#e7c873,#c9952b);color:#1a140c;border:none}
   .btn:hover{filter:brightness(1.1)}
-  .wrap{display:grid;grid-template-columns:1fr 420px;gap:20px;padding:20px;max-width:1200px;margin:0 auto}
+  .wrap{display:grid;grid-template-columns:1fr 400px;gap:20px;padding:20px;max-width:1200px;margin:0 auto}
   @media(max-width:900px){.wrap{grid-template-columns:1fr}}
   .panel{background:#1d160d;border:1px solid #3a2e1a;border-radius:14px;padding:18px}
   .sec{margin-bottom:22px}
-  .sec h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:#b89b5e;margin-bottom:12px;border-bottom:1px solid #3a2e1a;padding-bottom:6px}
+  .sec h2{font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:#b89b5e;margin-bottom:12px;border-bottom:1px solid #3a2e1a;padding-bottom:6px;display:flex;justify-content:space-between;align-items:center}
   label{display:block;font-size:12px;color:#bbb;margin:10px 0 4px}
-  input[type=text],input[type=url],textarea,select{width:100%;background:#0f0c07;border:1px solid #3a2e1a;color:#eee;
-    padding:9px 11px;border-radius:8px;font-family:inherit;font-size:14px}
-  input:focus,select:focus,textarea:focus{outline:none;border-color:#c9952b}
+  input[type=text],input[type=url],select{width:100%;background:#0f0c07;border:1px solid #3a2e1a;color:#eee;padding:9px 11px;border-radius:8px;font-family:inherit;font-size:14px}
+  input:focus,select:focus{outline:none;border-color:#c9952b}
+  input[type=range]{width:100%}
   .row{display:flex;gap:8px;align-items:center}
-  .row>*{flex:1}
-  .toggle{display:flex;align-items:center;gap:8px;cursor:pointer}
-  .toggle input{width:auto;flex:none}
+  .toggle{display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px}
+  .toggle input{width:auto}
   .item{background:#0f0c07;border:1px solid #3a2e1a;border-radius:10px;padding:12px;margin-bottom:10px}
+  .item.drag{opacity:.4;border-color:#e7c873}
+  .item.over{border-color:#e7c873;border-style:dashed}
   .item .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
   .item .hd .ti{font-weight:600;color:#e7c873;font-size:13px;display:flex;align-items:center;gap:8px}
+  .handle{cursor:grab;color:#8a7a55;font-size:16px;padding:0 4px}
   .miniic{width:22px;height:22px;color:#e7c873}
   .ctrls{display:flex;gap:6px}
   .ic{border:1px solid #4a3a20;background:#241a0e;color:#cba85a;width:30px;height:28px;border-radius:7px;cursor:pointer;font-size:13px}
+  .ic.on{background:#3a2e0e;color:#e7c873}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .sld{display:flex;align-items:center;gap:8px}.sld b{min-width:40px;text-align:right;color:#e7c873;font-size:13px}
   .hint{font-size:11px;color:#8a7a55;margin-top:6px;line-height:1.5}
-  /* phone preview */
   .preview{position:sticky;top:78px;height:fit-content}
-  .phone{width:100%;max-width:380px;margin:0 auto;aspect-ratio:9/19.5;border-radius:34px;border:8px solid #000;
-    overflow:hidden;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.6);background:#1a140c}
-  .phone iframe{display:none}
+  .phone{width:100%;max-width:360px;margin:0 auto;aspect-ratio:9/19.5;border-radius:34px;border:8px solid #000;overflow:hidden;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.6);background:#1a140c}
   .pv-note{text-align:center;font-size:11px;color:#8a7a55;margin-top:10px}
 
   :root{ --line:rgba(255,255,255,.7); --radius:22px; }
@@ -101,7 +99,7 @@
           text-transform:uppercase;text-shadow:0 1px 7px rgba(0,0,0,.85)}
 
   @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-  @media(max-width:480px){.name{font-size:29px}.link{font-size:15px;padding:28px 16px}}
+  @media(max-width:480px){.name{font-size:29px}}
 
   /* ---- shop display / kiosk controls ---- */
   .kiosk{position:fixed;bottom:16px;right:16px;display:flex;gap:10px;z-index:50}
@@ -124,83 +122,72 @@
   @media(min-width:520px){.card{max-width:460px;min-height:auto;border-radius:30px;margin:auto;box-shadow:0 24px 70px rgba(0,0,0,.6)}
     body{align-items:center;padding:18px}}
 
-  /* scope tweaks so card renders inside phone frame */
-  .phone .backdrop{position:absolute}
-  .phone .card{min-height:100%;}
-  .phone .kiosk,.phone .qrov{display:none!important}
-  .nm{background:linear-gradient(100deg,#f7ecc4 0%,var(--gold-c,#d4a84b) 22%,#fff6da 42%,#c9952b 58%,#f7ecc4 82%);}
+  /* admin-controllable variables */
+  .nm{background-image:linear-gradient(100deg,#f7ecc4 0%,var(--gold-c,#d4a84b) 22%,#fff6da 42%,#c9952b 58%,#f7ecc4 82%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-size:var(--name-size,33px)}
+  .avatar{width:var(--avatar-size,90px);height:var(--avatar-size,90px)}
+  .link{padding:var(--btn-pad,26px) 20px;font-size:var(--btn-font,17.5px);border-radius:var(--btn-radius,22px);background:var(--btn-bg,rgba(0,0,0,.16))}
+  .link .ico{flex:0 0 var(--icon-size,28px)}
+  .link .ico svg{width:var(--icon-size,28px);height:var(--icon-size,28px)}
+  .link .label{justify-content:var(--label-justify,center)}
+  .socials svg{width:var(--social-size,30px);height:var(--social-size,30px)}
+
+  .phone .backdrop{position:absolute}.phone .card{min-height:100%}.phone .kiosk,.phone .qrov{display:none!important}
 </style>
 </head>
 <body>
   <div class="top">
     <h1>SWAG GOLD · Admin Panel</h1>
     <div class="actions">
+      <label class="btn" style="cursor:pointer">⬆ Import config<input type="file" id="imp" accept=".json,application/json" style="display:none" onchange="importCfg(this)"></label>
       <button class="btn" onclick="resetCfg()">Reset</button>
       <button class="btn" onclick="saveDraft()">Save draft</button>
       <button class="btn primary" onclick="downloadCfg()">⬇ Download config.json</button>
     </div>
   </div>
-
   <div class="wrap">
     <div class="panel">
-      <div class="sec">
-        <h2>Profile</h2>
+      <div class="sec"><h2>Profile</h2>
         <label>Logo</label>
-        <div class="row">
-          <input type="text" id="logo" placeholder="logo URL or upload →" oninput="sync()">
-          <input type="file" id="logoFile" accept="image/*" style="flex:1.4" onchange="uploadLogo(this)">
-        </div>
-        <div class="grid2">
-          <div><label>Name</label><input type="text" id="name" oninput="sync()"></div>
-          <div><label>Bio / tagline</label><input type="text" id="bio" oninput="sync()"></div>
-        </div>
+        <div class="row"><input type="text" id="logo" placeholder="logo URL or upload →" oninput="sync()"><input type="file" id="logoFile" accept="image/*" style="flex:1.4" onchange="uploadLogo(this)"></div>
+        <div class="grid2"><div><label>Name</label><input type="text" id="name" oninput="sync()"></div><div><label>Bio / tagline</label><input type="text" id="bio" oninput="sync()"></div></div>
         <label class="toggle" style="margin-top:12px"><input type="checkbox" id="verified" onchange="sync()"> Verified gold badge dikhao</label>
       </div>
 
-      <div class="sec">
-        <h2>Background Video</h2>
-        <label>Video file name / URL</label>
-        <input type="text" id="video" oninput="sync()" placeholder="swag-bg.mp4">
-        <div class="hint">Video change karne ke liye: nayi video ko GitHub pe <b>swag-bg.mp4</b> naam se upload karo (Upload files se). Ya yahan poora URL daal do.</div>
-      </div>
-
-      <div class="sec">
-        <h2>Theme</h2>
-        <div class="grid2">
-          <div><label>Gold color</label><input type="color" id="gold" value="#d4a84b" oninput="sync()" style="height:40px;padding:3px"></div>
-          <div><label>Background blur (<span id="blurv">34</span>px)</label><input type="range" id="blur" min="0" max="60" value="34" oninput="document.getElementById('blurv').textContent=this.value;sync()" style="width:100%"></div>
+      <div class="sec"><h2>Layout &amp; Style</h2>
+        <label>Text alignment</label>
+        <select id="align" onchange="sync()"><option value="center">Center</option><option value="left">Left</option><option value="right">Right</option></select>
+        <div class="grid2" style="margin-top:8px">
+          <div><label>Button text size (<span id="fontSizeV"></span>)</label><div class="sld"><input type="range" id="fontSize" min="12" max="26" step="0.5" oninput="sync()"></div></div>
+          <div><label>Button height (<span id="btnPadV"></span>)</label><div class="sld"><input type="range" id="btnPad" min="8" max="44" oninput="sync()"></div></div>
+          <div><label>Corner radius (<span id="btnRadiusV"></span>)</label><div class="sld"><input type="range" id="btnRadius" min="0" max="40" oninput="sync()"></div></div>
+          <div><label>Icon size (<span id="iconSizeV"></span>)</label><div class="sld"><input type="range" id="iconSize" min="16" max="42" oninput="sync()"></div></div>
+          <div><label>Button darkness (<span id="btnDarkV"></span>)</label><div class="sld"><input type="range" id="btnDark" min="0" max="70" oninput="sync()"></div></div>
+          <div><label>Background blur (<span id="blurV"></span>)</label><div class="sld"><input type="range" id="blur" min="0" max="60" oninput="sync()"></div></div>
+          <div><label>Logo size (<span id="avatarV"></span>)</label><div class="sld"><input type="range" id="avatar" min="60" max="150" oninput="sync()"></div></div>
+          <div><label>Name size (<span id="nameSizeV"></span>)</label><div class="sld"><input type="range" id="nameSize" min="20" max="50" oninput="sync()"></div></div>
+          <div><label>Social icon size (<span id="socialSizeV"></span>)</label><div class="sld"><input type="range" id="socialSize" min="20" max="46" oninput="sync()"></div></div>
+          <div><label>Gold color</label><input type="color" id="gold" oninput="sync()" style="height:40px;padding:3px"></div>
         </div>
       </div>
 
-      <div class="sec">
-        <h2>Top Social Icons <button class="btn" style="float:right;padding:4px 10px" onclick="addSocial()">+ Add</button></h2>
-        <div id="socials"></div>
-      </div>
-
-      <div class="sec">
-        <h2>Link Buttons <button class="btn" style="float:right;padding:4px 10px" onclick="addLink()">+ Add</button></h2>
+      <div class="sec"><h2>Top Social Icons <button class="btn" style="padding:4px 10px" onclick="addSocial()">+ Add</button></h2><div id="socials"></div></div>
+      <div class="sec"><h2>Link Buttons <button class="btn" style="padding:4px 10px" onclick="addLink()">+ Add</button></h2>
+        <div class="hint" style="margin-top:0;margin-bottom:8px">↕ Buttons ko <b>drag</b> karke upar-neeche kar sakte ho (ya ↑↓ se). 👁 se hide/show.</div>
         <div id="links"></div>
       </div>
 
       <div class="hint" style="font-size:12px;background:#241a0e;padding:12px;border-radius:10px;border:1px solid #3a2e1a">
-        <b style="color:#e7c873">Changes save kaise karein (sabke liye live):</b><br>
-        1. Yahan edit karo → right side preview dekho<br>
-        2. <b>⬇ Download config.json</b> dabao<br>
-        3. GitHub pe apne folder mein <b>Upload files</b> se <b>config.json</b> daal do (commit)<br>
-        4. Page refresh → naye changes sabko dikhenge ✅
+        <b style="color:#e7c873">Save kaise (sabke liye live):</b> edit → preview dekho → <b>Download config.json</b> → GitHub pe <b>Upload files</b> se config.json daalo → refresh ✅<br>
+        <b style="color:#e7c873">Video change:</b> nayi video <b>swag-bg.mp4</b> naam se GitHub pe upload karo.
       </div>
     </div>
 
     <div class="preview">
       <div class="phone" id="phone">
-        <div class="backdrop"><video id="bgv" autoplay muted loop playsinline></video></div>
-        <div class="card">
-          <video class="cardvid" id="cardv" autoplay muted loop playsinline><source id="vsrc" src="swag-bg.mp4" type="video/mp4"></video>
-          <div class="scrim"></div>
-          <div class="content" id="content"></div>
-        </div>
+        <div class="backdrop"><video autoplay muted loop playsinline></video></div>
+        <div class="card"><video class="cardvid" autoplay muted loop playsinline><source id="pvsrc" src="swag-bg.mp4" type="video/mp4"></video><div class="scrim"></div><div class="content" id="content"></div></div>
       </div>
-      <p class="pv-note">↑ Live preview (video tabhi chalega jab GitHub pe ho)</p>
+      <p class="pv-note">Live preview · video sirf GitHub pe chalega</p>
     </div>
   </div>
 
@@ -214,19 +201,74 @@
   "gold": "#d4a84b",
   "blur": 34,
   "socials": [
-    {"icon":"tiktok","url":"https://www.tiktok.com/@swag.gold24"},
-    {"icon":"whatsapp","url":"https://wa.me/+9660530033445"},
-    {"icon":"snapchat","url":"https://www.snapchat.com/add/swag.gold24"}
+    {
+      "icon": "tiktok",
+      "url": "https://www.tiktok.com/@swag.gold24"
+    },
+    {
+      "icon": "whatsapp",
+      "url": "https://wa.me/+9660530033445"
+    },
+    {
+      "icon": "snapchat",
+      "url": "https://www.snapchat.com/add/swag.gold24"
+    }
   ],
   "links": [
-    {"icon":"google","en":"Rate us on Google","ar":"قيمنا على جوجل","url":"https://g.page/r/CWglyh1mAaPZEAE/review"},
-    {"icon":"chart","en":"Live Price","ar":"التسعير المباشر","url":"https://laroche.sa/swag/swag_monitors.html"},
-    {"icon":"snapchat","en":"SnapChat","ar":"سناب شات","url":"https://www.snapchat.com/add/swag.gold24"},
-    {"icon":"tiktok","en":"TikTok","ar":"تيك توك","url":"https://www.tiktok.com/@swag.gold24"},
-    {"icon":"instagram","en":"Instagram","ar":"انستقرام","url":"https://www.instagram.com/swag.gold24"},
-    {"icon":"whatsapp","en":"WhatsApp","ar":"واتس آب","url":"https://wa.me/+9660530033445"},
-    {"icon":"map","en":"Our Location","ar":"موقعنا","url":"https://g.co/kgs/b4cUF3k"}
-  ]
+    {
+      "icon": "google",
+      "en": "Rate us on Google",
+      "ar": "قيمنا على جوجل",
+      "url": "https://g.page/r/CWglyh1mAaPZEAE/review"
+    },
+    {
+      "icon": "chart",
+      "en": "Live Price",
+      "ar": "التسعير المباشر",
+      "url": "https://laroche.sa/swag/swag_monitors.html"
+    },
+    {
+      "icon": "snapchat",
+      "en": "SnapChat",
+      "ar": "سناب شات",
+      "url": "https://www.snapchat.com/add/swag.gold24"
+    },
+    {
+      "icon": "tiktok",
+      "en": "TikTok",
+      "ar": "تيك توك",
+      "url": "https://www.tiktok.com/@swag.gold24"
+    },
+    {
+      "icon": "instagram",
+      "en": "Instagram",
+      "ar": "انستقرام",
+      "url": "https://www.instagram.com/swag.gold24"
+    },
+    {
+      "icon": "whatsapp",
+      "en": "WhatsApp",
+      "ar": "واتس آب",
+      "url": "https://wa.me/+9660530033445"
+    },
+    {
+      "icon": "map",
+      "en": "Our Location",
+      "ar": "موقعنا",
+      "url": "https://g.co/kgs/b4cUF3k"
+    }
+  ],
+  "ui": {
+    "align": "center",
+    "fontSize": 17.5,
+    "btnPad": 26,
+    "btnRadius": 22,
+    "iconSize": 28,
+    "btnDark": 16,
+    "avatar": 90,
+    "nameSize": 33,
+    "socialSize": 30
+  }
 };
     
 var ICONS={
@@ -250,30 +292,40 @@ var ICONS={
 function svg(key,size){size=size||24;var p=ICONS[key]||ICONS.link;
  return '<svg viewBox="0 0 24 24" width="'+size+'" height="'+size+'" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';}
 var ICON_KEYS=Object.keys(ICONS);
+function applyUiVars(cfg, root){
+  var ui=cfg.ui||{}; var R=(root||document.documentElement).style;
+  R.setProperty('--gold-c', cfg.gold||'#d4a84b');
+  R.setProperty('--name-size', (ui.nameSize!=null?ui.nameSize:33)+'px');
+  R.setProperty('--avatar-size', (ui.avatar!=null?ui.avatar:90)+'px');
+  R.setProperty('--btn-font', (ui.fontSize!=null?ui.fontSize:17.5)+'px');
+  R.setProperty('--btn-pad', (ui.btnPad!=null?ui.btnPad:26)+'px');
+  R.setProperty('--btn-radius', (ui.btnRadius!=null?ui.btnRadius:22)+'px');
+  R.setProperty('--icon-size', (ui.iconSize!=null?ui.iconSize:28)+'px');
+  R.setProperty('--social-size', (ui.socialSize!=null?ui.socialSize:30)+'px');
+  R.setProperty('--btn-bg', 'rgba(0,0,0,'+((ui.btnDark!=null?ui.btnDark:16)/100)+')');
+  R.setProperty('--label-justify', ui.align==='left'?'flex-start':(ui.align==='right'?'flex-end':'center'));
+}
 
     function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
     var cfg;
-    function loadCfg(){ try{var s=localStorage.getItem('swag_cfg_draft'); if(s)return JSON.parse(s);}catch(e){} return JSON.parse(JSON.stringify(DEFAULT_CONFIG)); }
-
-    function iconOptions(sel){ return ICON_KEYS.map(function(k){return '<option value="'+k+'"'+(k===sel?' selected':'')+'>'+k+'</option>';}).join(''); }
+    function clone(o){return JSON.parse(JSON.stringify(o));}
+    function loadCfg(){try{var s=localStorage.getItem('swag_cfg_draft');if(s)return JSON.parse(s);}catch(e){} return clone(DEFAULT_CONFIG);}
+    function ensureUi(){cfg.ui=Object.assign({align:"center",fontSize:17.5,btnPad:26,btnRadius:22,iconSize:28,btnDark:16,avatar:90,nameSize:33,socialSize:30}, cfg.ui||{});}
+    function iconOptions(sel){return ICON_KEYS.map(function(k){return '<option value="'+k+'"'+(k===sel?' selected':'')+'>'+k+'</option>';}).join('');}
 
     function renderSocials(){
-      document.getElementById('socials').innerHTML = (cfg.socials||[]).map(function(s,i){
-        return '<div class="item"><div class="hd"><span class="ti"><span class="miniic">'+svg(s.icon,20)+'</span>Social '+(i+1)+'</span>'
-          +'<span class="ctrls"><button class="ic" onclick="moveS('+i+',-1)">↑</button><button class="ic" onclick="moveS('+i+',1)">↓</button><button class="ic" onclick="delS('+i+')">✕</button></span></div>'
-          +'<div class="grid2"><div><label>Icon</label><select onchange="setS('+i+',\'icon\',this.value)">'+iconOptions(s.icon)+'</select></div>'
-          +'<div><label>URL</label><input type="url" value="'+esc(s.url)+'" oninput="setS('+i+',\'url\',this.value)"></div></div></div>';
-      }).join('');
+      document.getElementById('socials').innerHTML=(cfg.socials||[]).map(function(s,i){
+        return '<div class="item"><div class="hd"><span class="ti"><span class="miniic">'+svg(s.icon,20)+'</span>Social '+(i+1)+'</span><span class="ctrls"><button class="ic" onclick="moveS('+i+',-1)">↑</button><button class="ic" onclick="moveS('+i+',1)">↓</button><button class="ic" onclick="delS('+i+')">✕</button></span></div>'
+        +'<div class="grid2"><div><label>Icon</label><select onchange="setS('+i+',\'icon\',this.value)">'+iconOptions(s.icon)+'</select></div><div><label>URL</label><input type="url" value="'+esc(s.url)+'" oninput="setS('+i+',\'url\',this.value)"></div></div></div>';}).join('');
     }
     function renderLinks(){
-      document.getElementById('links').innerHTML = (cfg.links||[]).map(function(l,i){
-        return '<div class="item"><div class="hd"><span class="ti"><span class="miniic">'+svg(l.icon,20)+'</span>'+esc(l.en||'Link '+(i+1))+'</span>'
-          +'<span class="ctrls"><button class="ic" onclick="moveL('+i+',-1)">↑</button><button class="ic" onclick="moveL('+i+',1)">↓</button><button class="ic" onclick="delL('+i+')">✕</button></span></div>'
-          +'<div class="grid2"><div><label>Icon</label><select onchange="setL('+i+',\'icon\',this.value)">'+iconOptions(l.icon)+'</select></div>'
-          +'<div><label>English text</label><input type="text" value="'+esc(l.en)+'" oninput="setL('+i+',\'en\',this.value)"></div></div>'
-          +'<div class="grid2"><div><label>Arabic text (عربي)</label><input type="text" dir="rtl" value="'+esc(l.ar)+'" oninput="setL('+i+',\'ar\',this.value)"></div>'
-          +'<div><label>URL</label><input type="url" value="'+esc(l.url)+'" oninput="setL('+i+',\'url\',this.value)"></div></div></div>';
-      }).join('');
+      document.getElementById('links').innerHTML=(cfg.links||[]).map(function(l,i){
+        var hidden=l.show===false;
+        return '<div class="item" draggable="true" ondragstart="dragS(event,'+i+')" ondragend="dragE(event)" ondragover="dragO(event,'+i+')" ondrop="dropL(event,'+i+')" data-i="'+i+'" style="'+(hidden?'opacity:.55':'')+'">'
+        +'<div class="hd"><span class="ti"><span class="handle">⠿</span><span class="miniic">'+svg(l.icon,20)+'</span>'+esc(l.en||'Link '+(i+1))+'</span>'
+        +'<span class="ctrls"><button class="ic '+(hidden?'':'on')+'" title="show/hide" onclick="toggleL('+i+')">'+(hidden?'🚫':'👁')+'</button><button class="ic" onclick="moveL('+i+',-1)">↑</button><button class="ic" onclick="moveL('+i+',1)">↓</button><button class="ic" onclick="delL('+i+')">✕</button></span></div>'
+        +'<div class="grid2"><div><label>Icon</label><select onchange="setL('+i+',\'icon\',this.value)">'+iconOptions(l.icon)+'</select></div><div><label>English text</label><input type="text" value="'+esc(l.en)+'" oninput="setL('+i+',\'en\',this.value)"></div></div>'
+        +'<div class="grid2"><div><label>Arabic text (عربي)</label><input type="text" dir="rtl" value="'+esc(l.ar)+'" oninput="setL('+i+',\'ar\',this.value)"></div><div><label>URL</label><input type="url" value="'+esc(l.url)+'" oninput="setL('+i+',\'url\',this.value)"></div></div></div>';}).join('');
     }
     function setS(i,k,v){cfg.socials[i][k]=v;sync(true);}
     function delS(i){cfg.socials.splice(i,1);sync(true);}
@@ -283,58 +335,64 @@ var ICON_KEYS=Object.keys(ICONS);
     function delL(i){cfg.links.splice(i,1);sync(true);}
     function moveL(i,d){var j=i+d;if(j<0||j>=cfg.links.length)return;var t=cfg.links[i];cfg.links[i]=cfg.links[j];cfg.links[j]=t;sync(true);}
     function addLink(){cfg.links.push({icon:'link',en:'New Link',ar:'',url:'https://'});sync(true);}
+    function toggleL(i){cfg.links[i].show=(cfg.links[i].show===false)?true:false;sync(true);}
+    // drag & drop
+    var dragIdx=null;
+    function dragS(e,i){dragIdx=i;e.currentTarget.classList.add('drag');e.dataTransfer.effectAllowed='move';}
+    function dragE(e){e.currentTarget.classList.remove('drag');document.querySelectorAll('.item.over').forEach(function(x){x.classList.remove('over');});}
+    function dragO(e,i){e.preventDefault();e.currentTarget.classList.add('over');}
+    function dropL(e,i){e.preventDefault();if(dragIdx==null||dragIdx===i){return;}var m=cfg.links.splice(dragIdx,1)[0];cfg.links.splice(i,0,m);dragIdx=null;sync(true);}
 
     function readForm(){
+      ensureUi();
       cfg.logo=document.getElementById('logo').value||cfg.logo;
-      cfg.name=document.getElementById('name').value;
-      cfg.bio=document.getElementById('bio').value;
-      cfg.verified=document.getElementById('verified').checked;
-      cfg.video=document.getElementById('video').value||'swag-bg.mp4';
-      cfg.gold=document.getElementById('gold').value;
+      cfg.name=document.getElementById('name').value;cfg.bio=document.getElementById('bio').value;
+      cfg.verified=document.getElementById('verified').checked;cfg.gold=document.getElementById('gold').value;
       cfg.blur=parseInt(document.getElementById('blur').value,10);
+      var u=cfg.ui;
+      u.align=document.getElementById('align').value;
+      u.fontSize=parseFloat(document.getElementById('fontSize').value);
+      u.btnPad=parseInt(document.getElementById('btnPad').value,10);
+      u.btnRadius=parseInt(document.getElementById('btnRadius').value,10);
+      u.iconSize=parseInt(document.getElementById('iconSize').value,10);
+      u.btnDark=parseInt(document.getElementById('btnDark').value,10);
+      u.avatar=parseInt(document.getElementById('avatar').value,10);
+      u.nameSize=parseInt(document.getElementById('nameSize').value,10);
+      u.socialSize=parseInt(document.getElementById('socialSize').value,10);
+      ['fontSize','btnPad','btnRadius','iconSize','btnDark','blur','avatar','nameSize','socialSize'].forEach(function(id){var el=document.getElementById(id+'V');if(el)el.textContent=document.getElementById(id).value;});
     }
     function fillForm(){
-      document.getElementById('logo').value = (cfg.logo&&cfg.logo.indexOf('data:')===0)?'':(cfg.logo||'');
-      document.getElementById('name').value=cfg.name||'';
-      document.getElementById('bio').value=cfg.bio||'';
-      document.getElementById('verified').checked=!!cfg.verified;
-      document.getElementById('video').value=cfg.video||'swag-bg.mp4';
-      document.getElementById('gold').value=cfg.gold||'#d4a84b';
+      ensureUi();var u=cfg.ui;
+      document.getElementById('logo').value=(cfg.logo&&cfg.logo.indexOf('data:')===0)?'':(cfg.logo||'');
+      document.getElementById('name').value=cfg.name||'';document.getElementById('bio').value=cfg.bio||'';
+      document.getElementById('verified').checked=!!cfg.verified;document.getElementById('gold').value=cfg.gold||'#d4a84b';
       document.getElementById('blur').value=cfg.blur!=null?cfg.blur:34;
-      document.getElementById('blurv').textContent=cfg.blur!=null?cfg.blur:34;
+      document.getElementById('align').value=u.align;
+      document.getElementById('fontSize').value=u.fontSize;document.getElementById('btnPad').value=u.btnPad;
+      document.getElementById('btnRadius').value=u.btnRadius;document.getElementById('iconSize').value=u.iconSize;
+      document.getElementById('btnDark').value=u.btnDark;document.getElementById('avatar').value=u.avatar;
+      document.getElementById('nameSize').value=u.nameSize;document.getElementById('socialSize').value=u.socialSize;
+      ['fontSize','btnPad','btnRadius','iconSize','btnDark','blur','avatar','nameSize','socialSize'].forEach(function(id){var el=document.getElementById(id+'V');if(el)el.textContent=document.getElementById(id).value;});
     }
-
     function previewRender(){
-      document.documentElement.style.setProperty('--gold-c', cfg.gold||'#d4a84b');
-      var bd=document.querySelector('.phone .backdrop video'); if(bd) bd.style.filter='blur('+(cfg.blur||0)+'px) brightness(.5) saturate(1.1)';
-      var s=document.getElementById('vsrc'); var src=cfg.video||'swag-bg.mp4';
-      if(s&&s.src.indexOf(src)<0){s.src=src;var cv=document.getElementById('cardv');cv.load&&cv.load();var bg=document.getElementById('bgv');bg.src=src;bg.load&&bg.load();}
-      var dots='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg>';
+      ensureUi(); applyUiVars(cfg);
+      var bd=document.querySelector('.phone .backdrop video'); if(bd)bd.style.filter='blur('+(cfg.blur!=null?cfg.blur:34)+'px) brightness(.5) saturate(1.1)';
+      var DOTS='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg>';
       var socials=(cfg.socials||[]).map(function(x){return '<a href="#">'+svg(x.icon,30)+'</a>';}).join('');
-      var links=(cfg.links||[]).map(function(l,i){var label='<span class="en">'+esc(l.en)+'</span>'+(l.ar?'<span class="dash">-</span><span class="ar">'+esc(l.ar)+'</span>':'');
-        return '<a class="link" href="#"><span class="ico">'+svg(l.icon,28)+'</span><span class="label">'+label+'</span><span class="dots">'+dots+'</span></a>';}).join('');
+      var links=(cfg.links||[]).filter(function(l){return l.show!==false;}).map(function(l){var label='<span class="en">'+esc(l.en)+'</span>'+(l.ar?'<span class="dash">-</span><span class="ar">'+esc(l.ar)+'</span>':'');return '<a class="link" href="#"><span class="ico">'+svg(l.icon,28)+'</span><span class="label">'+label+'</span><span class="dots">'+DOTS+'</span></a>';}).join('');
       var badge=cfg.verified?'<span class="verified"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="#d4a84b" d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34z"/><path d="M8.6 12.4l2.4 2.4 4.5-4.8" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>':'';
-      document.getElementById('content').innerHTML='<div class="topbar"><span class="chip"><span class="ast">&#10037;</span></span><span class="chip"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg></span></div>'
-        +'<section class="profile"><img class="avatar" src="'+esc(cfg.logo)+'"><h1 class="name"><span class="nm">'+esc(cfg.name)+'</span>'+badge+'</h1><p class="bio">'+esc(cfg.bio)+'</p><nav class="socials">'+socials+'</nav><nav class="links">'+links+'</nav><p class="footer">'+esc(cfg.name)+' &middot; سواج جولد</p></section>';
+      document.getElementById('content').innerHTML='<div class="topbar"><span class="chip"><span class="ast">&#10037;</span></span><span class="chip"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg></span></div><section class="profile"><img class="avatar" src="'+esc(cfg.logo)+'"><h1 class="name"><span class="nm">'+esc(cfg.name)+'</span>'+badge+'</h1><p class="bio">'+esc(cfg.bio)+'</p><nav class="socials">'+socials+'</nav><nav class="links">'+links+'</nav><p class="footer">'+esc(cfg.name)+' &middot; سواج جولد</p></section>';
     }
-
-    function sync(reRender){ readForm(); if(reRender){renderSocials();renderLinks();} previewRender(); }
-
+    function sync(re){readForm();if(re){renderSocials();renderLinks();}previewRender();}
     function uploadLogo(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){cfg.logo=r.result;document.getElementById('logo').value='';previewRender();};r.readAsDataURL(f);}
+    function downloadCfg(){readForm();var blob=new Blob([JSON.stringify(cfg,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='config.json';a.click();alert('config.json download ho gayi! Ab GitHub pe Upload files se daal do (jahan index.html hai). Refresh karne pe sabko dikhega.');}
+    function saveDraft(){readForm();try{localStorage.setItem('swag_cfg_draft',JSON.stringify(cfg));alert('Draft save (is device pe). Permanent ke liye Download config.json karo.');}catch(e){alert('fail');}}
+    function resetCfg(){if(confirm('Sab default pe reset?')){localStorage.removeItem('swag_cfg_draft');cfg=clone(DEFAULT_CONFIG);fillForm();renderSocials();renderLinks();previewRender();}}
+    function importCfg(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{cfg=JSON.parse(r.result);ensureUi();fillForm();renderSocials();renderLinks();previewRender();alert('Config import ho gayi!');}catch(e){alert('Invalid config.json');}};r.readAsText(f);}
 
-    function downloadCfg(){ readForm(); var blob=new Blob([JSON.stringify(cfg,null,2)],{type:'application/json'});
-      var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='config.json';a.click();
-      alert('config.json download ho gayi!\n\nAb ise GitHub pe apne folder mein (jahan index.html hai) Upload files se daal do. Page refresh karoge to changes sabko dikhenge.'); }
-    function saveDraft(){ readForm(); try{localStorage.setItem('swag_cfg_draft',JSON.stringify(cfg));alert('Draft save ho gaya (is device pe). Permanent ke liye Download config.json karo.');}catch(e){alert('Save fail');} }
-    function resetCfg(){ if(confirm('Sab default pe reset kar du?')){localStorage.removeItem('swag_cfg_draft');cfg=JSON.parse(JSON.stringify(DEFAULT_CONFIG));fillForm();renderSocials();renderLinks();previewRender();} }
-
-    // init: try live config.json, else draft, else default
     cfg=loadCfg();
-    fetch('config.json?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(c){
-      if(c && !localStorage.getItem('swag_cfg_draft')){cfg=c;}
-      fillForm();renderSocials();renderLinks();previewRender();
-    }).catch(function(){fillForm();renderSocials();renderLinks();previewRender();});
-    fillForm();renderSocials();renderLinks();previewRender();
+    fetch('config.json?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(c){if(c&&!localStorage.getItem('swag_cfg_draft')){cfg=c;}ensureUi();fillForm();renderSocials();renderLinks();previewRender();}).catch(function(){ensureUi();fillForm();renderSocials();renderLinks();previewRender();});
+    ensureUi();fillForm();renderSocials();renderLinks();previewRender();
   </script>
 </body>
 </html>
