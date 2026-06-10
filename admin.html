@@ -164,8 +164,7 @@
 
   .links[style] .link,.link{min-width:0}
 
-  /* announcement banner + featured + per-button accent */
-  .banner{margin:6px 14px 2px;padding:9px 14px;border-radius:12px;background:linear-gradient(90deg,rgba(212,168,75,.26),rgba(212,168,75,.10));border:1px solid rgba(212,168,75,.55);color:#fbeec2;font-size:13.5px;text-align:center;font-weight:600;letter-spacing:.01em}
+  .banner{margin:6px 14px 2px;padding:9px 14px 9px 14px;border-radius:12px;background:linear-gradient(90deg,rgba(212,168,75,.26),rgba(212,168,75,.10));border:1px solid rgba(212,168,75,.55);color:#fbeec2;font-size:13.5px;text-align:center;font-weight:600;letter-spacing:.01em;padding-right:34px}
   .banner a{color:#fff;text-decoration:underline}
   .link.featured{box-shadow:0 0 0 1.5px var(--gold-c,#d4a84b),0 10px 34px rgba(212,168,75,.40);background:linear-gradient(180deg,rgba(212,168,75,.22),var(--btn-bg,rgba(0,0,0,.16)))}
 
@@ -204,10 +203,11 @@
           <label>Footer text (khaali = auto)</label><input type="text" id="footer" oninput="sync()" placeholder="SWAG GOLD · سواج جولد">
           <label class="toggle"><input type="checkbox" id="verified" onchange="sync()"> Verified gold badge dikhao</label>
         </div>
-        <div class="card2"><h3>Announcement banner (top strip)</h3>
-          <label class="toggle"><input type="checkbox" id="bnShow" onchange="sync()"> Banner dikhao</label>
-          <label>Banner text</label><input type="text" id="bnText" oninput="sync()" placeholder="Eid Sale — 20% OFF 🎉">
-          <label>Banner link (optional)</label><input type="url" id="bnLink" oninput="sync()" placeholder="https://...">
+        <div class="card2" id="bannerProCard"><h3>Announcement Banner Pro ✨</h3>
+          <label class="toggle"><input type="checkbox" id="bnEnabled" onchange="syncBanners()"> Banners dikhao</label>
+          <div id="banners-list"></div>
+          <button class="addbtn" style="margin-top:8px" onclick="addBanner()">+ Banner add karo</button>
+          <div class="hint" style="margin-top:10px">Multiple banners automatically rotate karte hain. Countdown ke liye deadline set karo. Marquee = scrolling text.</div>
         </div>
       </div>
 
@@ -501,6 +501,9 @@ function applyUiVars(cfg, root){
       cfg.seo=Object.assign({title:"",desc:""},cfg.seo||{});
       if(cfg.footer==null)cfg.footer="";
       cfg.banner=Object.assign({show:false,text:'',link:''},cfg.banner||{});
+      if(!cfg.banners){cfg.banners={enabled:!!(cfg.banner&&cfg.banner.show),items:[{text:cfg.banner&&cfg.banner.text?cfg.banner.text:'',link:cfg.banner&&cfg.banner.link?cfg.banner.link:'',type:'text',bgColor:'',marquee:false,dismissible:false,deadline:''}]};}
+      cfg.banners=Object.assign({enabled:false,items:[]},cfg.banners);
+      if(!Array.isArray(cfg.banners.items))cfg.banners.items=[];
       cfg.gallery=Object.assign({show:true,cols:3,gap:4,round:true,caption:true,items:[]},cfg.gallery||{});
       if(!Array.isArray(cfg.gallery.items))cfg.gallery.items=[];
     }
@@ -589,7 +592,51 @@ function applyUiVars(cfg, root){
     }
     // --- END GALLERY ---
 
-    function toggleFeat(i){cfg.links[i].featured=!cfg.links[i].featured;sync(true);}
+    // --- BANNER PRO ---
+    function renderBanners(){
+      ensure();
+      var items=cfg.banners.items||[];
+      var html=items.map(function(bn,i){
+        var preview='';
+        if(bn.text){
+          var bstyle=bn.bgColor?'background:'+bn.bgColor+';border-color:'+bn.bgColor+';':'';
+          var countHtml='';
+          if(bn.deadline){var ms=new Date(bn.deadline)-new Date();if(ms>0){var d=Math.floor(ms/86400000);var h=Math.floor((ms%86400000)/3600000);var m=Math.floor((ms%3600000)/60000);countHtml=' ⏱ '+(d>0?d+'d ':'')+h+'h '+m+'m left';}}
+          preview='<div class="banner" style="'+bstyle+'font-size:11px;margin:8px 0 0;pointer-events:none">'+esc(bn.text)+countHtml+(bn.dismissible?' ✕':'')+' '+(bn.marquee?'↔️':'')+'</div>';
+        }
+        return '<div class="item" id="bn-'+i+'">'
+          +'<div class="hd"><span class="handle">⠿</span>'
+          +'<span style="font-size:11px;color:var(--mut)">Banner '+(i+1)+'</span>'
+          +'<span class="ctrls"><button class="ic" onclick="delBanner('+i+')" title="Delete">✕</button></span></div>'
+          +'<label>Text</label>'
+          +'<input type="text" value="'+esc(bn.text||'')+'" placeholder="Eid Sale — 50% OFF 🎉" oninput="setBN('+i+',\'text\',this.value)">'
+          +'<label>Link (optional)</label>'
+          +'<input type="url" value="'+esc(bn.link||'')+'" placeholder="https://..." oninput="setBN('+i+',\'link\',this.value)">'
+          +'<label>Background color (khaali = default gold)</label>'
+          +'<div class="row">'
+          +'<input type="color" value="'+(bn.bgColor||'#2a1f0e')+'" oninput="setBN('+i+',\'bgColor\',this.value)" style="width:48px;height:34px;padding:2px;flex:none">'
+          +'<button class="ic" style="font-size:11px;width:auto;padding:0 8px" onclick="setBN('+i+',\'bgColor\',\'\');sync(true)" title="Default color">Reset</button>'
+          +'<span style="font-size:12px;color:var(--mut);margin-left:4px">Presets:</span>'
+          +'<button class="ic" style="background:#8b0000;width:20px" onclick="setBN('+i+',\'bgColor\',\'#8b0000\');sync(true)"></button>'
+          +'<button class="ic" style="background:#0a4f0a;width:20px" onclick="setBN('+i+',\'bgColor\',\'#1a5c0a\');sync(true)"></button>'
+          +'<button class="ic" style="background:#1a3a6b;width:20px" onclick="setBN('+i+',\'bgColor\',\'#1a3a6b\');sync(true)"></button>'
+          +'</div>'
+          +'<label>Countdown deadline (optional)</label>'
+          +'<input type="datetime-local" value="'+(bn.deadline||'')+'" oninput="setBN('+i+',\'deadline\',this.value)">'
+          +'<div style="display:flex;gap:16px;margin-top:8px;flex-wrap:wrap">'
+          +'<label class="toggle" style="margin:0"><input type="checkbox"'+(bn.marquee?' checked':'')+' onchange="setBN('+i+',\'marquee\',this.checked)"> Scrolling (marquee)</label>'
+          +'<label class="toggle" style="margin:0"><input type="checkbox"'+(bn.dismissible?' checked':'')+' onchange="setBN('+i+',\'dismissible\',this.checked)"> Close button</label>'
+          +'</div>'
+          +preview
+          +'</div>';
+      }).join('');
+      document.getElementById('banners-list').innerHTML=html;
+    }
+    function setBN(i,k,v){ensure();cfg.banners.items[i][k]=v;renderBanners();sync(false);}
+    function delBanner(i){ensure();cfg.banners.items.splice(i,1);renderBanners();sync(false);}
+    function addBanner(){ensure();cfg.banners.items.push({text:'',link:'',bgColor:'',marquee:false,dismissible:false,deadline:''});renderBanners();sync(false);}
+    function syncBanners(){ensure();cfg.banners.enabled=gv('bnEnabled').checked;sync(false);}
+    // --- END BANNER PRO ---
     function setLC(i,v){cfg.links[i].color=v;sync(true);}
     function clearColor(i){delete cfg.links[i].color;sync(true);}
     function setGold(c){gv('gold').value=c;sync();}
@@ -616,7 +663,8 @@ function applyUiVars(cfg, root){
       u.avatar=parseInt(gv('avatar').value,10);u.nameSize=parseInt(gv('nameSize').value,10);u.socialSize=parseInt(gv('socialSize').value,10);u.scrim=parseInt(gv('scrim').value,10);u.gap=parseInt(gv('gap').value,10);u.cols=parseInt(gv('cols').value,10);
       cfg.kiosk.qr=gv('kqr').checked;cfg.kiosk.fs=gv('kfs').checked;
       cfg.seo.title=gv('seoTitle').value;cfg.seo.desc=gv('seoDesc').value;
-      cfg.banner.show=gv('bnShow').checked;cfg.banner.text=gv('bnText').value;cfg.banner.link=gv('bnLink').value;
+      cfg.banner.show=gv('bnEnabled')?gv('bnEnabled').checked:false;cfg.banner.text='';cfg.banner.link='';
+      cfg.banners.enabled=gv('bnEnabled')?gv('bnEnabled').checked:false;
       cfg.gallery.cols=parseInt(gv('galCols').value,10)||3;cfg.gallery.gap=parseInt(gv('galGap').value,10)||4;cfg.gallery.round=gv('galRound').checked;cfg.gallery.caption=gv('galCaption').checked;
       ['fontSize','btnPad','btnRadius','iconSize','btnDark','blur','scrim','avatar','nameSize','socialSize','gap'].forEach(function(id){var e=gv(id+'V');if(e)e.textContent=gv(id).value;});}
     function fillForm(){ensure();var u=cfg.ui;
@@ -628,7 +676,8 @@ function applyUiVars(cfg, root){
       gv('btnDark').value=u.btnDark;gv('avatar').value=u.avatar;gv('nameSize').value=u.nameSize;gv('socialSize').value=u.socialSize;gv('scrim').value=u.scrim;gv('gap').value=u.gap;gv('cols').value=u.cols;
       gv('kqr').checked=cfg.kiosk.qr!==false;gv('kfs').checked=cfg.kiosk.fs!==false;
       gv('seoTitle').value=cfg.seo.title||'';gv('seoDesc').value=cfg.seo.desc||'';
-      gv('bnShow').checked=!!cfg.banner.show;gv('bnText').value=cfg.banner.text||'';gv('bnLink').value=cfg.banner.link||'';
+      gv('bnEnabled').checked=!!(cfg.banners&&cfg.banners.enabled);
+      renderBanners();
       var gl=cfg.gallery||{};gv('galCols').value=gl.cols||3;gv('galGap').value=gl.gap!=null?gl.gap:4;gv('galRound').checked=gl.round!==false;gv('galCaption').checked=gl.caption!==false;
       renderGallery();
       ['fontSize','btnPad','btnRadius','iconSize','btnDark','blur','scrim','avatar','nameSize','socialSize','gap'].forEach(function(id){var e=gv(id+'V');if(e)e.textContent=gv(id).value;});}
@@ -643,7 +692,14 @@ function applyUiVars(cfg, root){
       var DOTS='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg>';
       var socials=(cfg.socials||[]).map(function(x){return '<a href="#">'+svg(x.icon,30)+'</a>';}).join('');
       var links=(cfg.links||[]).filter(function(l){return l.show!==false;}).map(function(l){var lb='<span class="en">'+esc(l.en)+'</span>'+(l.ar?'<span class="dash">-</span><span class="ar">'+esc(l.ar)+'</span>':'');var cls='link'+(l.featured?' featured':'');var st=l.color?(' style="border-color:'+esc(l.color)+'"'):'';var ic=l.color?(' style="color:'+esc(l.color)+'"'):'';return '<a class="'+cls+'"'+st+' href="#"><span class="ico"'+ic+'>'+svg(l.icon,28)+'</span><span class="label">'+lb+'</span><span class="dots">'+DOTS+'</span></a>';}).join('');
-      var bn=cfg.banner||{};var bnH=(bn.show&&bn.text&&String(bn.text).trim())?('<div class="banner">'+esc(bn.text)+'</div>'):'';
+      var bns=cfg.banners||{};var bnH='';
+      if(bns.enabled&&bns.items&&bns.items.length){var visItems=bns.items.filter(function(b){return b.text&&String(b.text).trim();});
+        if(visItems.length){var bi=visItems[0];var btext=esc(bi.text);var bstyle=bi.bgColor?('background:'+bi.bgColor+';border-color:'+bi.bgColor+';'):'';
+          var binner=bi.marquee?('<marquee behavior="scroll" direction="left" scrollamount="3">'+btext+'</marquee>'):btext;
+          var bwrap=bi.link?('<a href="'+esc(bi.link)+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">'+binner+'</a>'):binner;
+          var countHtml='';if(bi.deadline){var ms=new Date(bi.deadline)-new Date();if(ms>0){var d=Math.floor(ms/86400000);var h=Math.floor((ms%86400000)/3600000);var mm=Math.floor((ms%3600000)/60000);countHtml=' ⏱ '+(d>0?d+'d ':'')+h+'h '+mm+'m left';}}
+          bnH='<div class="banner" style="'+bstyle+'">'+bwrap+countHtml+(bi.dismissible?'<span style="float:right;cursor:pointer;opacity:.7" onclick="this.parentNode.remove()">✕</span>':'')+'</div>';
+          if(visItems.length>1)bnH+='<div style="text-align:center;font-size:10px;color:var(--mut);padding:2px 0 4px">+'+(visItems.length-1)+' more banners rotate karte hain</div>';}}
       var badge=cfg.verified?'<span class="verified"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="#d4a84b" d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34z"/><path d="M8.6 12.4l2.4 2.4 4.5-4.8" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>':'';
       var foot=cfg.footer&&cfg.footer.trim()?esc(cfg.footer):(esc(cfg.name)+' · سواج جولد');
       var gl=cfg.gallery||{};var galItems=(gl.items||[]).filter(function(it){return it.show!==false&&it.src;});
