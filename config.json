@@ -95,11 +95,24 @@
   },
   "gallery": {
     "show": true,
-    "cols": 2,
-    "gap": 2,
-    "round": false,
-    "caption": false,
+    "cols": 3,
+    "gap": 4,
+    "round": true,
+    "caption": true,
     "items": []
   },
-  "_savedAt": 1781124216594
+  "banners": {
+    "enabled": false,
+    "rotateInterval": 5,
+    "items": [
+      {
+        "text": "",
+        "link": "",
+        "bgColor": "",
+        "marquee": false,
+        "dismissible": false,
+        "deadline": ""
+      }
+    ]
+  }
 }
