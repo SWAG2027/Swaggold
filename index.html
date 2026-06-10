@@ -2582,7 +2582,13 @@ function applyUiVars(cfg, root){
       +'<section class="profile"><img class="avatar" src="'+esc(cfg.logo)+'" alt="logo">'
       +'<h1 class="name"><span class="nm">'+esc(cfg.name)+'</span>'+(cfg.verified?badgeSvg():'')+'</h1>'
       +'<p class="bio">'+esc(cfg.bio)+'</p><nav class="socials">'+socials+'</nav><nav class="links">'+links+'</nav>'
-      +'<p class="footer">'+foot+'</p></section>';
+      var gl=cfg.gallery||{};var galItems=(gl.items||[]).filter(function(it){return it.show!==false&&it.src;});
+      var galHTML='';
+      if(galItems.length){var gcols=gl.cols||3;var ggap=gl.gap!=null?gl.gap:4;var grad=gl.round!==false?'6px':'0';var gcap=gl.caption!==false;
+        var gstyle='display:grid;grid-template-columns:repeat('+gcols+',1fr);gap:'+ggap+'px;margin:14px 0';
+        var gitems=galItems.map(function(it,gi){var capHtml=gcap&&it.caption?('<div style="position:absolute;bottom:0;left:0;right:0;padding:5px 6px;font-size:10px;font-weight:600;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);color:#fff;border-radius:0 0 '+grad+' '+grad+';line-height:1.3">'+esc(it.caption)+'</div>'):'';var inner='<div style="position:relative;aspect-ratio:1;overflow:hidden;border-radius:'+grad+';animation:rise .55s ease '+(0.1+gi*0.05).toFixed(2)+'s both"><img src="'+esc(it.src)+'" style="width:100%;height:100%;object-fit:cover;display:block" loading="lazy">'+capHtml+'</div>';return it.link?('<a href="'+esc(it.link)+'" target="_blank" rel="noopener" style="display:block;text-decoration:none">'+inner+'</a>'):inner;}).join('');
+        galHTML='<div style="'+gstyle+'">'+gitems+'</div>';}
+      +galHTML+'<p class="footer">'+foot+'</p></section>';
   }
   function applyScrim(cfg){var s=document.querySelector('.scrim'); if(!s)return; var x=(cfg.ui&&cfg.ui.scrim?cfg.ui.scrim:0)/100;
     s.style.background='linear-gradient(180deg, rgba(0,0,0,'+(0.28+x)+') 0%, rgba(0,0,0,'+(0.02+x)+') 16%, rgba(0,0,0,'+(0+x)+') 45%, rgba(0,0,0,'+(0.04+x)+') 72%, rgba(0,0,0,'+(0.30+x)+') 100%)';}
