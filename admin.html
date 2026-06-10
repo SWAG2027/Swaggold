@@ -583,12 +583,15 @@ function applyUiVars(cfg, root){
         msg.textContent='Publishing… ⏳';
         var content=JSON.stringify(cfg,null,2);var b64=btoa(unescape(encodeURIComponent(content)));
         var api='https://api.github.com/repos/'+owner+'/'+repo+'/contents/'+path;
-        var sha=null;var g=await fetch(api+'?ref='+encodeURIComponent(branch),{headers:headers});
-        if(g.status===200){var gj=await g.json();sha=gj.sha;}
-        var body={message:'Update config.json via SWAG GOLD admin',content:b64,branch:branch};if(sha)body.sha=sha;
-        var r=await fetch(api,{method:'PUT',headers:headers,body:JSON.stringify(body)});
+        async function getSha(){try{var g=await fetch(api+'?ref='+encodeURIComponent(branch)+'&_='+Date.now(),{headers:headers,cache:'no-store'});if(g.status===200){var gj=await g.json();return gj.sha;}}catch(e){}return null;}
+        async function putWith(sha){var body={message:'Update config.json via SWAG GOLD admin',content:b64,branch:branch};if(sha)body.sha=sha;return fetch(api,{method:'PUT',headers:headers,body:JSON.stringify(body)});}
+        var sha=await getSha();
+        var r=await putWith(sha);
+        // 409 = SHA conflict (file changed) -> refetch latest sha and retry (up to 3x)
+        for(var attempt=0; r.status===409 && attempt<3; attempt++){ sha=await getSha(); r=await putWith(sha); }
         if(r.ok){msg.style.color='#7bd47b';msg.innerHTML='✅ <b>LIVE ho gaya!</b> 1–2 min me site update ho jayegi. <a href="./" target="_blank" style="color:var(--gold)">Open site ↗</a>';}
         else if(r.status===404){msg.style.color='#e8a';msg.innerHTML='Repo nahi mili. Step 2 → Advanced me <b>Repository</b> naam check karo (abhi: "'+repo+'", owner: "'+owner+'").';}
+        else if(r.status===409){msg.style.color='#e8a';msg.textContent='GitHub thoda busy hai (409). 5 second ruko aur dobara Publish dabao.';}
         else{var t=await r.text();msg.style.color='#e8a';msg.textContent='Fail ('+r.status+'): '+t.slice(0,180);}
       }catch(e){msg.style.color='#e8a';msg.textContent='Net/CORS error: '+e.message;}
     }
