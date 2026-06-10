@@ -71,7 +71,7 @@
     "btnRadius": 22,
     "iconSize": 28,
     "btnDark": 16,
-    "avatar": 93,
+    "avatar": 90,
     "nameSize": 33,
     "socialSize": 30,
     "scrim": 0,
@@ -80,8 +80,8 @@
   },
   "footer": "",
   "kiosk": {
-    "qr": false,
-    "fs": false
+    "qr": true,
+    "fs": true
   },
   "seo": {
     "title": "SWAG GOLD Official: TikTok, Instagram",
