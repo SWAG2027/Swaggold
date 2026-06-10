@@ -567,6 +567,18 @@ function applyUiVars(cfg, root){
     }
     // ---- GitHub publish ----
     function loadGH(){var g={};try{g=JSON.parse(localStorage.getItem('swag_gh')||'{}');}catch(e){}gv('ghOwner').value=g.owner||'';gv('ghRepo').value=g.repo||'Swaggold';gv('ghBranch').value=g.branch||'main';gv('ghPath').value=g.path||'config.json';if(g.token){gv('ghToken').value=g.token;}}
+    async function verifyLive(stamp){
+      var msg=gv('pubMsg');
+      msg.style.color='var(--mut)';msg.innerHTML='✅ GitHub pe save ho gaya. ⏳ Live site deploy ho rahi hai (~1 min)…';
+      for(var i=0;i<30;i++){
+        await new Promise(function(r){setTimeout(r,4000);});
+        try{var rr=await fetch('config.json?_='+Date.now(),{cache:'no-store'});
+          if(rr.ok){var jj=await rr.json(); if(jj&&jj._savedAt===stamp){
+            msg.style.color='#7bd47b';msg.innerHTML='✅ <b>LIVE ho gaya!</b> Site update ho chuki hai. Phone pe site kholo/refresh karo. <a href="./?v='+stamp+'" target="_blank" style="color:var(--gold)">Open live ↗</a>';return;}}
+        }catch(e){}
+      }
+      msg.style.color='#e7c873';msg.innerHTML='✅ GitHub pe save ho gaya. Live site 1–2 min me aayegi — site pe ja ke <b>refresh</b> karna. <a href="./?v='+stamp+'" target="_blank" style="color:var(--gold)">Open live ↗</a>';
+    }
     async function publish(){
       readForm();
       var owner=gv('ghOwner').value.trim(),repo=gv('ghRepo').value.trim()||'Swaggold',branch=gv('ghBranch').value.trim()||'main',path=gv('ghPath').value.trim()||'config.json',token=gv('ghToken').value.trim();
@@ -581,6 +593,7 @@ function applyUiVars(cfg, root){
         var store={owner:owner,repo:repo,branch:branch,path:path};if(gv('ghRemember').checked)store.token=token;
         try{localStorage.setItem('swag_gh',JSON.stringify(store));}catch(e){}
         msg.textContent='Publishing… ⏳';
+        cfg._savedAt=Date.now();
         var content=JSON.stringify(cfg,null,2);var b64=btoa(unescape(encodeURIComponent(content)));
         var api='https://api.github.com/repos/'+owner+'/'+repo+'/contents/'+path;
         async function getSha(){try{var g=await fetch(api+'?ref='+encodeURIComponent(branch)+'&_='+Date.now(),{headers:headers,cache:'no-store'});if(g.status===200){var gj=await g.json();return gj.sha;}}catch(e){}return null;}
@@ -589,7 +602,7 @@ function applyUiVars(cfg, root){
         var r=await putWith(sha);
         // 409 = SHA conflict (file changed) -> refetch latest sha and retry (up to 3x)
         for(var attempt=0; r.status===409 && attempt<3; attempt++){ sha=await getSha(); r=await putWith(sha); }
-        if(r.ok){msg.style.color='#7bd47b';msg.innerHTML='✅ <b>LIVE ho gaya!</b> 1–2 min me site update ho jayegi. <a href="./" target="_blank" style="color:var(--gold)">Open site ↗</a>';}
+        if(r.ok){verifyLive(cfg._savedAt);}
         else if(r.status===404){msg.style.color='#e8a';msg.innerHTML='Repo nahi mili. Step 2 → Advanced me <b>Repository</b> naam check karo (abhi: "'+repo+'", owner: "'+owner+'").';}
         else if(r.status===409){msg.style.color='#e8a';msg.textContent='GitHub thoda busy hai (409). 5 second ruko aur dobara Publish dabao.';}
         else{var t=await r.text();msg.style.color='#e8a';msg.textContent='Fail ('+r.status+'): '+t.slice(0,180);}
