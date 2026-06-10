@@ -73,6 +73,24 @@
     "btnDark": 16,
     "avatar": 90,
     "nameSize": 33,
-    "socialSize": 30
+    "socialSize": 30,
+    "scrim": 0,
+    "cols": 1,
+    "gap": 10
+  },
+  "footer": "",
+  "kiosk": {
+    "qr": true,
+    "fs": true
+  },
+  "seo": {
+    "title": "SWAG GOLD Official: TikTok, Instagram",
+    "desc": "Jewellery Store"
+  },
+  "bgImage": "",
+  "banner": {
+    "show": false,
+    "text": "",
+    "link": ""
   }
 }
