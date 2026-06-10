@@ -6,7 +6,12 @@
   "video": "swag-bg.mp4",
   "gold": "#d4a84b",
   "blur": 34,
-  "socials": [],
+  "socials": [
+    {
+      "icon": "phone",
+      "url": "https://"
+    }
+  ],
   "links": [],
   "ui": {
     "align": "center",
