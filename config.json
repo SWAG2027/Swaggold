@@ -71,7 +71,7 @@
     "btnRadius": 22,
     "iconSize": 28,
     "btnDark": 16,
-    "avatar": 90,
+    "avatar": 132,
     "nameSize": 33,
     "socialSize": 30,
     "scrim": 0,
@@ -115,5 +115,5 @@
     ],
     "rotateInterval": 5
   },
-  "_savedAt": 1781161983587
+  "_savedAt": 1781162062429
 }
