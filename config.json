@@ -93,7 +93,7 @@
   },
   "bgImage": "",
   "banner": {
-    "show": false,
+    "show": true,
     "text": "",
     "link": ""
   },
@@ -106,20 +106,20 @@
     "items": []
   },
   "banners": {
-    "enabled": false,
+    "enabled": true,
     "items": [
       {
         "text": "Eid SALE",
         "link": "",
         "bgColor": "",
-        "marquee": false,
+        "marquee": true,
         "dismissible": false,
         "deadline": "2026-06-25T09:27"
       }
     ],
     "rotateInterval": 5
   },
-  "_savedAt": 1781211375246,
+  "_savedAt": 1781211678574,
   "layout": {
     "order": [
       "logo",
