@@ -103,7 +103,6 @@
   },
   "banners": {
     "enabled": false,
-    "rotateInterval": 5,
     "items": [
       {
         "text": "",
@@ -113,6 +112,8 @@
         "dismissible": false,
         "deadline": ""
       }
-    ]
-  }
+    ],
+    "rotateInterval": 5
+  },
+  "_savedAt": 1781158724067
 }
