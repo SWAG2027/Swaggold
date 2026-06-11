@@ -81,7 +81,11 @@
   "footer": "",
   "kiosk": {
     "qr": true,
-    "fs": true
+    "fs": true,
+    "goldTicker": true,
+    "autoRefresh": true,
+    "nightDim": false,
+    "goldManual": 0
   },
   "seo": {
     "title": "SWAG GOLD Official: TikTok, Instagram",
@@ -115,5 +119,16 @@
     ],
     "rotateInterval": 5
   },
-  "_savedAt": 1781162406693
+  "_savedAt": 1781211375246,
+  "layout": {
+    "order": [
+      "logo",
+      "name",
+      "bio",
+      "socials",
+      "links",
+      "gallery",
+      "footer"
+    ]
+  }
 }
