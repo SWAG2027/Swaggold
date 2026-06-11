@@ -340,6 +340,8 @@
           <label class="toggle"><input type="checkbox" id="kqr" onchange="sync()"> Show QR button</label>
           <label class="toggle"><input type="checkbox" id="kfs" onchange="sync()"> Show fullscreen button</label>
           <label class="toggle"><input type="checkbox" id="kgold" onchange="sync()"> Show live gold price ticker (top bar)</label>
+          <div style="margin:8px 0 4px"><label style="font-size:13px;color:var(--mut)">Manual 24K price (SAR/gram) — shown instantly, leave 0 for auto-only</label>
+          <input type="number" id="kgmanual" step="0.01" min="0" placeholder="e.g. 501.50" onchange="sync()" style="width:100%;margin-top:4px;padding:8px 10px;border:1px solid #3a2e1a;border-radius:8px;background:#241a0e;color:#f7e8b0;font-size:14px"></div>
           <label class="toggle"><input type="checkbox" id="kauto" onchange="sync()"> Auto-refresh every 30 sec (all screens update silently)</label>
           <label class="toggle"><input type="checkbox" id="knightdim" onchange="sync()"> 🌙 Auto night dim (9pm–7am screen darkens for eyes)</label>
         </div>
@@ -591,7 +593,7 @@ function applyUiVars(cfg, root){
     function loadDraft(){try{var s=localStorage.getItem('swag_cfg_draft');if(s)return JSON.parse(s);}catch(e){}return null;}
     function ensure(){
       cfg.ui=Object.assign({align:"center",fontSize:17.5,btnPad:26,btnRadius:22,iconSize:28,btnDark:16,avatar:90,nameSize:33,socialSize:30,scrim:0,cols:1,gap:10},cfg.ui||{});
-      cfg.kiosk=Object.assign({qr:true,fs:true,goldTicker:true,autoRefresh:true,nightDim:false},cfg.kiosk||{});
+      cfg.kiosk=Object.assign({qr:true,fs:true,goldTicker:true,autoRefresh:true,nightDim:false,goldManual:0},cfg.kiosk||{});
       cfg.seo=Object.assign({title:"",desc:""},cfg.seo||{});
       if(cfg.footer==null)cfg.footer="";
       if(!cfg.layout||!cfg.layout.order){cfg.layout={order:['logo','name','bio','socials','links','gallery','footer']};}
@@ -763,7 +765,7 @@ function applyUiVars(cfg, root){
       u.align=gv('align').value;u.fontSize=parseFloat(gv('fontSize').value);u.btnPad=parseInt(gv('btnPad').value,10);
       u.btnRadius=parseInt(gv('btnRadius').value,10);u.iconSize=parseInt(gv('iconSize').value,10);u.btnDark=parseInt(gv('btnDark').value,10);
       u.avatar=parseInt(gv('avatar').value,10);u.nameSize=parseInt(gv('nameSize').value,10);u.socialSize=parseInt(gv('socialSize').value,10);u.scrim=parseInt(gv('scrim').value,10);u.gap=parseInt(gv('gap').value,10);u.cols=parseInt(gv('cols').value,10);
-      cfg.kiosk.qr=gv('kqr').checked;cfg.kiosk.fs=gv('kfs').checked;cfg.kiosk.goldTicker=gv('kgold').checked;cfg.kiosk.autoRefresh=gv('kauto').checked;cfg.kiosk.nightDim=gv('knightdim').checked;
+      cfg.kiosk.qr=gv('kqr').checked;cfg.kiosk.fs=gv('kfs').checked;cfg.kiosk.goldTicker=gv('kgold').checked;cfg.kiosk.autoRefresh=gv('kauto').checked;cfg.kiosk.nightDim=gv('knightdim').checked;cfg.kiosk.goldManual=parseFloat(gv('kgmanual').value)||0;
       cfg.seo.title=gv('seoTitle').value;cfg.seo.desc=gv('seoDesc').value;if(!cfg.layout)cfg.layout={};
       cfg.banner.show=gv('bnEnabled')?gv('bnEnabled').checked:false;cfg.banner.text='';cfg.banner.link='';
       cfg.banners.enabled=gv('bnEnabled')?gv('bnEnabled').checked:false;
@@ -776,7 +778,7 @@ function applyUiVars(cfg, root){
       gv('blur').value=cfg.blur!=null?cfg.blur:34;gv('align').value=u.align;
       gv('fontSize').value=u.fontSize;gv('btnPad').value=u.btnPad;gv('btnRadius').value=u.btnRadius;gv('iconSize').value=u.iconSize;
       gv('btnDark').value=u.btnDark;gv('avatar').value=u.avatar;gv('nameSize').value=u.nameSize;gv('socialSize').value=u.socialSize;gv('scrim').value=u.scrim;gv('gap').value=u.gap;gv('cols').value=u.cols;
-      gv('kqr').checked=cfg.kiosk.qr!==false;gv('kfs').checked=cfg.kiosk.fs!==false;gv('kgold').checked=cfg.kiosk.goldTicker!==false;gv('kauto').checked=cfg.kiosk.autoRefresh!==false;gv('knightdim').checked=!!cfg.kiosk.nightDim;
+      gv('kqr').checked=cfg.kiosk.qr!==false;gv('kfs').checked=cfg.kiosk.fs!==false;gv('kgold').checked=cfg.kiosk.goldTicker!==false;gv('kauto').checked=cfg.kiosk.autoRefresh!==false;gv('knightdim').checked=!!cfg.kiosk.nightDim;gv('kgmanual').value=cfg.kiosk.goldManual||'';
       gv('seoTitle').value=cfg.seo.title||'';gv('seoDesc').value=cfg.seo.desc||'';
       gv('bnEnabled').checked=!!(cfg.banners&&cfg.banners.enabled);
       renderBanners();
@@ -810,7 +812,8 @@ function applyUiVars(cfg, root){
         var from=PV.from,to=PV.to;
         if(from!=null&&to!=null&&from!==to){var arr=cfg.links;var m=arr.splice(from,1)[0];arr.splice(to,0,m);}
         PV={};sync(true);
-      } else {if(pcv)pcv.style.display='';if(pbv)pbv.style.display='';pcard.style.backgroundImage='';pback.style.backgroundImage='';pback.style.filter='';}
+      }
+    function previewRender(){ensure();applyUiVars(cfg);var ce=(typeof MOVE!=='undefined'&&MOVE)?'false':'true';var pcard=document.querySelector('.phone .card'),pback=document.querySelector('.phone .backdrop'),pcv=document.querySelector('.phone .cardvid'),pbv=document.querySelector('.phone .backdrop video');if(cfg.bgImage){if(pcv)pcv.style.display='none';if(pbv)pbv.style.display='none';if(pcard){pcard.style.backgroundImage='url('+cfg.bgImage+')';pcard.style.backgroundSize='cover';pcard.style.backgroundPosition='center';}if(pback){pback.style.backgroundImage='url('+cfg.bgImage+')';pback.style.backgroundSize='cover';pback.style.filter='blur('+(cfg.blur!=null?cfg.blur:34)+'px) brightness(.5)';}} else {if(pcv)pcv.style.display='';if(pbv)pbv.style.display='';if(pcard){pcard.style.backgroundImage='';}if(pback){pback.style.backgroundImage='';pback.style.filter='';}}
       var bd=document.querySelector('.phone .backdrop video');if(bd)bd.style.filter='blur('+(cfg.blur!=null?cfg.blur:34)+'px) brightness(.5) saturate(1.1)';
       var sc=document.querySelector('.phone .scrim');if(sc){var x=(cfg.ui.scrim||0)/100;sc.style.background='linear-gradient(180deg,rgba(0,0,0,'+(0.28+x)+') 0%,rgba(0,0,0,'+(0.02+x)+') 16%,rgba(0,0,0,'+(0+x)+') 45%,rgba(0,0,0,'+(0.04+x)+') 72%,rgba(0,0,0,'+(0.30+x)+') 100%)';}
       var DOTS='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg>';
@@ -832,10 +835,7 @@ function applyUiVars(cfg, root){
         var gstyle='display:grid;grid-template-columns:repeat('+gcols+',1fr);gap:'+ggap+'px;margin-top:14px';
         var gitems=galItems.map(function(it){var capHtml=gcap&&it.caption?('<div style="position:absolute;bottom:0;left:0;right:0;padding:5px 6px;font-size:10px;font-weight:600;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);color:#fff;border-radius:0 0 '+grad+' '+grad+';line-height:1.3">'+esc(it.caption)+'</div>'):'';var inner='<div style="position:relative;aspect-ratio:1;overflow:hidden;border-radius:'+grad+'"><img src="'+esc(it.src)+'" style="width:100%;height:100%;object-fit:cover;display:block">'+capHtml+'</div>';return it.link?('<a href="'+esc(it.link)+'" style="display:block;text-decoration:none">'+inner+'</a>'):inner;}).join('');
         galHTML='<div style="'+gstyle+'">'+gitems+'</div>';}
-      var _contentEl=document.getElementById('content');_contentEl.innerHTML='<div class="topbar"><span class="chip"><span class="ast">&#10037;</span></span><span class="chip"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg></span></div>'+bnH+'<section class="profile">'+(function(){var posW=function(k,h){var mh=MOVE?' onpointerdown="posDown(event,\''+k+'\')"':'';return '<div data-pos="'+k+'"'+mh+'>'+h+'</div>';};var PVB={'logo':posW('logo','<img class="avatar" src="'+esc(cfg.logo)+'">'), 'name':posW('name','<h1 class="name"><span class="nm" contenteditable="'+ce+'" data-edit="name" oninput="pvEdit(this)" onblur="pvCommit()" spellcheck="false">'+esc(cfg.name)+'</span>'+badge+'</h1>'), 'bio':posW('bio','<p class="bio" contenteditable="'+ce+'" data-edit="bio" oninput="pvEdit(this)" onblur="pvCommit()" spellcheck="false">'+esc(cfg.bio)+'</p>'), 'socials':posW('socials','<nav class="socials">'+socials+'</nav>'), 'links':posW('links','<nav class="links">'+links+'</nav>'), 'gallery':posW('gallery',galHTML), 'footer':posW('footer','<p class="footer" contenteditable="'+ce+'" data-edit="footer" oninput="pvEdit(this)" onblur="pvCommit()" spellcheck="false">'+foot+'</p>')};var PVO=(cfg.layout&&cfg.layout.order&&cfg.layout.order.length)?cfg.layout.order:['logo','name','bio','socials','links','gallery','footer'];return PVO.map(function(k){return PVB[k]||'';}).join('');})()+'</section>
-  <!-- CLICK STATS PANEL -->
-  
-  ';applyPositions(cfg,_contentEl);}
+      var _contentEl=document.getElementById('content');_contentEl.innerHTML='<div class="topbar"><span class="chip"><span class="ast">&#10037;</span></span><span class="chip"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 6m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M8.7 10.7l6.6 -3.4"/><path d="M8.7 13.3l6.6 3.4"/></svg></span></div>'+bnH+'<section class="profile">'+(function(){var posW=function(k,h){var mh=MOVE?' onpointerdown="posDown(event,\''+k+'\')"':'';return '<div data-pos="'+k+'"'+mh+'>'+h+'</div>';};var PVB={'logo':posW('logo','<img class="avatar" src="'+esc(cfg.logo)+'">'), 'name':posW('name','<h1 class="name"><span class="nm" contenteditable="'+ce+'" data-edit="name" oninput="pvEdit(this)" onblur="pvCommit()" spellcheck="false">'+esc(cfg.name)+'</span>'+badge+'</h1>'), 'bio':posW('bio','<p class="bio" contenteditable="'+ce+'" data-edit="bio" oninput="pvEdit(this)" onblur="pvCommit()" spellcheck="false">'+esc(cfg.bio)+'</p>'), 'socials':posW('socials','<nav class="socials">'+socials+'</nav>'), 'links':posW('links','<nav class="links">'+links+'</nav>'), 'gallery':posW('gallery',galHTML), 'footer':posW('footer','<p class="footer" contenteditable="'+ce+'" data-edit="footer" oninput="pvEdit(this)" onblur="pvCommit()" spellcheck="false">'+foot+'</p>')};var PVO=(cfg.layout&&cfg.layout.order&&cfg.layout.order.length)?cfg.layout.order:['logo','name','bio','socials','links','gallery','footer'];return PVO.map(function(k){return PVB[k]||'';}).join('');})()+'</section>';applyPositions(cfg,_contentEl);}
     function sync(re){readForm();if(re){renderSocials();renderLinks();renderLayoutBlocks();}previewRender();}
     function uploadLogo(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){cfg.logo=r.result;gv('logo').value='';previewRender();};r.readAsDataURL(f);}
     function uploadBg(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){cfg.bgImage=r.result;gv('bgImage').value='';previewRender();};r.readAsDataURL(f);}
