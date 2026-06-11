@@ -24,7 +24,8 @@
     display:flex;justify-content:center;align-items:flex-start;
     padding:0;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
     overflow-x:hidden;-webkit-overflow-scrolling:touch}
-  .backdrop{display:none;position:fixed;inset:0;z-index:-2;overflow:hidden;background:#1a140c}
+  .backdrop{display:block;position:fixed;inset:0;z-index:-2;overflow:hidden;background:#1a140c}
+  .backdrop video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .backdrop video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1.25);
     min-width:100%;min-height:100%;object-fit:cover;filter:blur(34px) brightness(.5) saturate(1.1)}
   .backdrop::after{content:"";position:absolute;inset:0;background:rgba(20,15,8,.35)}
@@ -32,7 +33,7 @@
   .card{width:100%;max-width:480px;min-height:100dvh;position:relative;
     display:flex;flex-direction:column;justify-content:center;animation:fade .6s ease both}
   @keyframes fade{from{opacity:0}to{opacity:1}}
-  .card .cardvid{position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);width:100%;max-width:480px;height:100dvh;object-fit:cover;z-index:-1;backface-visibility:hidden}
+  .card .cardvid{position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);width:100%;max-width:480px;height:100vh;height:100dvh;object-fit:cover;z-index:-1;backface-visibility:hidden}
   .card .scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg, rgba(0,0,0,.28) 0%, rgba(0,0,0,.02) 16%, rgba(0,0,0,0) 45%, rgba(0,0,0,.04) 72%, rgba(0,0,0,.30) 100%)}
   .content{position:relative;z-index:2;padding:24px 18px 44px;width:100%}
 
@@ -2651,7 +2652,7 @@ function applyUiVars(cfg, root){
       var src=cfg.video||'swag-bg.mp4'; var s=document.getElementById('vsrc'); if(s)s.src=src;
       var cv=document.getElementById('cardv'); if(cv){cv.load&&cv.load(); var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){});}
       var bg=document.getElementById('bgv'); var narrow=!(window.matchMedia&&window.matchMedia('(min-width:520px)').matches);
-      if(bg){ if(narrow){ try{bg.pause();}catch(e){} if(bg.getAttribute('src')){bg.removeAttribute('src'); try{bg.load();}catch(e){}} } else { if(bg.getAttribute('src')!==src){bg.src=src;} var pb=bg.play&&bg.play(); if(pb&&pb.catch)pb.catch(function(){});} }
+      if(bg){ if(bg.getAttribute('src')!==src){bg.src=src;} var pb=bg.play&&bg.play(); if(pb&&pb.catch)pb.catch(function(){}); }
       document.getElementById('content').innerHTML=buildContent(cfg);
       setTimeout(fitCard,60); setTimeout(fitCard,400);
       startBannerPro(cfg);
