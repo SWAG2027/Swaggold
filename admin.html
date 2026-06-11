@@ -195,19 +195,19 @@
     <div class="main">
       <!-- PROFILE -->
       <div class="section active" id="sec-profile">
-        <div class="stitle">Profile</div><div class="ssub">Logo, naam, tagline aur badge</div>
+        <div class="stitle">Profile</div><div class="ssub">Logo, name, tagline and badge</div>
         <div class="card2"><h3>Identity</h3>
           <label>Logo (URL ya upload)</label>
           <div class="row"><input type="text" id="logo" placeholder="https://... ya upload →" oninput="sync()"><label class="btn ghost" style="cursor:pointer;white-space:nowrap">📁 Upload<input type="file" id="logoFile" accept="image/*" style="display:none" onchange="uploadLogo(this)"></label></div>
           <div class="grid2"><div><label>Name</label><input type="text" id="name" oninput="sync()"></div><div><label>Bio / tagline</label><input type="text" id="bio" oninput="sync()"></div></div>
-          <label>Footer text (khaali = auto)</label><input type="text" id="footer" oninput="sync()" placeholder="SWAG GOLD · سواج جولد">
-          <label class="toggle"><input type="checkbox" id="verified" onchange="sync()"> Verified gold badge dikhao</label>
+          <label>Footer text (empty = auto)</label><input type="text" id="footer" oninput="sync()" placeholder="SWAG GOLD · سواج جولد">
+          <label class="toggle"><input type="checkbox" id="verified" onchange="sync()"> Show verified gold badge</label>
         </div>
         <div class="card2" id="bannerProCard"><h3>Announcement Banner Pro ✨</h3>
-          <label class="toggle"><input type="checkbox" id="bnEnabled" onchange="syncBanners()"> Banners dikhao</label>
+          <label class="toggle"><input type="checkbox" id="bnEnabled" onchange="syncBanners()"> Show banners</label>
           <div id="banners-list"></div>
-          <button class="addbtn" style="margin-top:8px" onclick="addBanner()">+ Banner add karo</button>
-          <div class="hint" style="margin-top:10px">Multiple banners automatically rotate karte hain. Countdown ke liye deadline set karo. Marquee = scrolling text.</div>
+          <button class="addbtn" style="margin-top:8px" onclick="addBanner()">+ Add banner</button>
+          <div class="hint" style="margin-top:10px">Multiple banners rotate automatically. Set a deadline for a countdown. Marquee = scrolling text.</div>
         </div>
       </div>
 
@@ -235,20 +235,20 @@
         <div class="card2"><h3>Button layout</h3>
           <label>Columns (buttons side-by-side)</label>
           <select id="cols" onchange="sync()"><option value="1">1 — full width (ek line me ek)</option><option value="2">2 — side by side (do-do)</option></select>
-          <div class="hint">2 columns rakho to buttons side-side aa jayenge aur khaali space kam hoga. Gap + button height se phone me fit karo.</div>
+          <div class="hint">Use 2 columns to place buttons side by side and reduce empty space. Use Gap + button height to fit your phone.</div>
         </div>
       </div>
 
       <!-- SOCIALS -->
       <div class="section" id="sec-socials">
-        <div class="stitle">Social Icons</div><div class="ssub">Top ke chhote icons</div>
+        <div class="stitle">Social Icons</div><div class="ssub">Small icons at the top</div>
         <div id="socials"></div>
         <button class="addbtn" onclick="addSocial()">+ Add social icon</button>
       </div>
 
       <!-- LINKS -->
       <div class="section" id="sec-links">
-        <div class="stitle">Link Buttons</div><div class="ssub">Drag karke order badlo · 👁 se hide/show</div>
+        <div class="stitle">Link Buttons</div><div class="ssub">Drag to reorder · 👁 to hide/show</div>
         <div id="links"></div>
         <button class="addbtn" onclick="addLink()">+ Add link button</button>
       </div>
@@ -258,13 +258,13 @@
         <div class="stitle">Background & Display</div><div class="ssub">Video, blur, screen settings</div>
         <div class="card2"><h3>Video</h3>
           <label>Video file name / URL</label><input type="text" id="video" oninput="sync()" placeholder="swag-bg.mp4">
-          <div class="hint">Video badalne ke liye nayi video <b>swag-bg.mp4</b> naam se GitHub pe Upload files se daalo. Ya yahan poora URL.</div>
+          <div class="hint">To change the video, upload a new video named <b>swag-bg.mp4</b> via GitHub Upload files. Or paste a full URL here.</div>
         </div>
         <div class="card2"><h3>Background image (video ke jagah, optional)</h3>
           <label>Image URL ya upload</label>
-          <div class="row"><input type="text" id="bgImage" placeholder="https://... (khaali = video chalega)" oninput="sync()"><label class="btn ghost" style="cursor:pointer;white-space:nowrap">📁 Upload<input type="file" id="bgFile" accept="image/*" style="display:none" onchange="uploadBg(this)"></label></div>
-          <button class="btn ghost" style="margin-top:8px" onclick="clearBg()">✕ Image hatao (video pe wapas)</button>
-          <div class="hint">Image set karoge to video band ho jayega aur ye image background banegi. Khaali karoge to video wapas.</div>
+          <div class="row"><input type="text" id="bgImage" placeholder="https://... (empty = video plays)" oninput="sync()"><label class="btn ghost" style="cursor:pointer;white-space:nowrap">📁 Upload<input type="file" id="bgFile" accept="image/*" style="display:none" onchange="uploadBg(this)"></label></div>
+          <button class="btn ghost" style="margin-top:8px" onclick="clearBg()">✕ Remove image (back to video)</button>
+          <div class="hint">Setting an image disables the video and uses this image as background. Clear it to bring the video back.</div>
         </div>
         <div class="card2"><h3>Background look</h3>
           <div class="grid2">
@@ -273,14 +273,14 @@
           </div>
         </div>
         <div class="card2"><h3>Display buttons</h3>
-          <label class="toggle"><input type="checkbox" id="kqr" onchange="sync()"> QR button dikhao</label>
-          <label class="toggle"><input type="checkbox" id="kfs" onchange="sync()"> Fullscreen button dikhao</label>
+          <label class="toggle"><input type="checkbox" id="kqr" onchange="sync()"> Show QR button</label>
+          <label class="toggle"><input type="checkbox" id="kfs" onchange="sync()"> Show fullscreen button</label>
         </div>
       </div>
 
       <!-- GALLERY -->
       <div class="section" id="sec-gallery">
-        <div class="stitle">Media Gallery</div><div class="ssub">Photo grid — drag karke order badlo · 👁 se hide/show · har photo ka link optional</div>
+        <div class="stitle">Media Gallery</div><div class="ssub">Photo grid — drag to reorder · 👁 to hide/show · each photo's link is optional</div>
         <div class="card2" style="margin-bottom:14px">
           <h3>Gallery Layout</h3>
           <div class="grid2">
@@ -304,30 +304,30 @@
         <label class="addbtn" style="cursor:pointer;display:block;text-align:center;padding:11px;border:1px dashed #5a4a2a;border-radius:10px;color:var(--gold);font-weight:600;font-size:13px;margin-top:4px">
           + Add photo &nbsp;<input type="file" accept="image/*" multiple style="display:none" onchange="addGalleryPhotos(this)">
         </label>
-        <div class="hint" style="margin-top:10px">Ek saath multiple photos select karo. Har photo ka URL ya link set karo. Drag handle se order badlo.</div>
+        <div class="hint" style="margin-top:10px">Select multiple photos at once. Set each photo's URL or link. Reorder with the drag handle.</div>
       </div>
 
       <!-- SEO -->
       <div class="section" id="sec-seo">
-        <div class="stitle">SEO & Sharing</div><div class="ssub">Page title aur description (Google/WhatsApp pe dikhta hai)</div>
+        <div class="stitle">SEO & Sharing</div><div class="ssub">Page title and description (shown on Google/WhatsApp)</div>
         <div class="card2"><h3>Meta</h3>
           <label>Page title</label><input type="text" id="seoTitle" oninput="sync()">
           <label>Description</label><textarea id="seoDesc" oninput="sync()"></textarea>
         </div>
-        <div class="hint">Manual tarika: edit → <b>Download config.json</b> → GitHub pe Upload files se replace. Ya neeche <b>Publish</b> tab se seedha live karo.</div>
+        <div class="hint">Manual way: edit → <b>Download config.json</b> → replace it on GitHub via Upload files. Or use the <b>Publish</b> tab below to go live directly.</div>
       </div>
 
       <!-- PUBLISH -->
       <div class="section" id="sec-publish">
-        <div class="stitle">Publish to Live Site</div><div class="ssub">Ek click me GitHub pe save → live site update (download/upload ki zarurat nahi)</div>
-        <div class="card2"><h3>Step 1 — GitHub token banao (sirf ek baar)</h3>
-          <p style="font-size:13px;color:var(--mut);margin-bottom:10px;line-height:1.6">Neeche button dabao → GitHub khulega (already sahi settings ke saath). Expiration choose karo (e.g. No expiration) → <b>Generate token</b> → token <b>copy</b> karo.</p>
+        <div class="stitle">Publish to Live Site</div><div class="ssub">Save to GitHub in one click → live site updates (no download/upload needed)</div>
+        <div class="card2"><h3>Step 1 — Create a GitHub token (one time only)</h3>
+          <p style="font-size:13px;color:var(--mut);margin-bottom:10px;line-height:1.6">Click the button below → GitHub opens (already with the right settings). Choose an expiration (e.g. No expiration) → <b>Generate token</b> → <b>copy</b> the token.</p>
           <a class="btn primary" href="https://github.com/settings/tokens/new?scopes=repo&description=SWAG%20GOLD%20Admin" target="_blank" style="display:inline-flex">🔑 Open GitHub — Create token</a>
         </div>
-        <div class="card2"><h3>Step 2 — Token yahan paste karo</h3>
-          <input type="text" id="ghToken" placeholder="ghp_... yahan paste karo" autocomplete="off">
-          <label class="toggle"><input type="checkbox" id="ghRemember" checked> Is device pe yaad rakho (dobara na daalna pade)</label>
-          <details style="margin-top:8px"><summary style="cursor:pointer;color:var(--mut);font-size:12px">Advanced (repo/branch — normally chhune ki zarurat nahi)</summary>
+        <div class="card2"><h3>Step 2 — Paste the token here</h3>
+          <input type="text" id="ghToken" placeholder="ghp_... paste here" autocomplete="off">
+          <label class="toggle"><input type="checkbox" id="ghRemember" checked> Remember on this device (so you don't re-enter it)</label>
+          <details style="margin-top:8px"><summary style="cursor:pointer;color:var(--mut);font-size:12px">Advanced (repo/branch — usually no need to touch)</summary>
             <div class="grid2" style="margin-top:8px"><div><label>Owner (auto)</label><input type="text" id="ghOwner" placeholder="auto from token"></div><div><label>Repository</label><input type="text" id="ghRepo"></div></div>
             <div class="grid2"><div><label>Branch</label><input type="text" id="ghBranch"></div><div><label>File path</label><input type="text" id="ghPath"></div></div>
           </details>
@@ -336,7 +336,7 @@
           <button class="btn primary" style="width:100%;justify-content:center;padding:14px;font-size:15px" onclick="publish()">🚀 Publish to live site</button>
           <div id="pubMsg" style="margin-top:12px;font-size:13.5px;line-height:1.5"></div>
         </div>
-        <div class="hint" style="margin-top:6px"><b style="color:#e8a">Dhyan:</b> Token ek password jaisa hai — kisi ko mat dena. Shared/public computer pe "yaad rakho" off rakhna. Ek baar set karne ke baad bas 💾 Save & Publish dabate raho.</div>
+        <div class="hint" style="margin-top:6px"><b style="color:#e8a">Dhyan:</b> The token is like a password — never share it. On a shared/public computer, turn off "remember". Once set, just keep pressing 💾 Save & Publish.</div>
       </div>
     </div>
 
@@ -346,7 +346,7 @@
         <div class="backdrop"><video autoplay muted loop playsinline></video></div>
         <div class="card"><video class="cardvid" autoplay muted loop playsinline><source id="pvsrc" src="swag-bg.mp4" type="video/mp4"></video><div class="scrim"></div><div class="content" id="content"></div></div>
       </div>
-      <div class="pvn">Video sirf live site (GitHub) pe chalega · yahan layout dikhega</div>
+      <div class="pvn">Video only plays on the live site (GitHub) · here you see the layout</div>
     </div>
   </div>
 
@@ -551,12 +551,12 @@ function applyUiVars(cfg, root){
           +(it.src?'<img src="'+esc(it.src)+'" style="width:100%;height:100%;object-fit:cover">':'<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:22px">🖼</div>')
           +'</div>'
           +'<div style="flex:1;min-width:0">'
-          +'<label>URL ya upload karo</label>'
+          +'<label>URL or upload</label>'
           +'<div class="row"><input type="text" value="'+esc(it.src||'')+'" placeholder="https://..." oninput="setGI('+i+',\'src\',this.value)">'
           +'<label class="ic" title="Upload" style="cursor:pointer;width:34px;height:28px;display:flex;align-items:center;justify-content:center">📁<input type="file" accept="image/*" style="display:none" onchange="uploadGI('+i+',this)"></label></div>'
           +'<label>Caption (optional)</label>'
           +'<input type="text" value="'+esc(it.caption||'')+'" placeholder="Jewellery description..." oninput="setGI('+i+',\'caption\',this.value)">'
-          +'<label>Link (optional — click pe kahan jayega)</label>'
+          +'<label>Link (optional — where it goes on click)</label>'
           +'<input type="text" value="'+esc(it.link||'')+'" placeholder="https://wa.me/..." oninput="setGI('+i+',\'link\',this.value)">'
           +'</div></div>'
           +'</div>';
@@ -612,7 +612,7 @@ function applyUiVars(cfg, root){
           +'<input type="text" value="'+esc(bn.text||'')+'" placeholder="Eid Sale — 50% OFF 🎉" oninput="setBN('+i+',\'text\',this.value)">'
           +'<label>Link (optional)</label>'
           +'<input type="url" value="'+esc(bn.link||'')+'" placeholder="https://..." oninput="setBN('+i+',\'link\',this.value)">'
-          +'<label>Background color (khaali = default gold)</label>'
+          +'<label>Background color (empty = default gold)</label>'
           +'<div class="row">'
           +'<input type="color" value="'+(bn.bgColor||'#2a1f0e')+'" oninput="setBN('+i+',\'bgColor\',this.value)" style="width:48px;height:34px;padding:2px;flex:none">'
           +'<button class="ic" style="font-size:11px;width:auto;padding:0 8px" onclick="setBN('+i+',\'bgColor\',\'\');sync(true)" title="Default color">Reset</button>'
@@ -713,42 +713,42 @@ function applyUiVars(cfg, root){
     function uploadLogo(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){cfg.logo=r.result;gv('logo').value='';previewRender();};r.readAsDataURL(f);}
     function uploadBg(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){cfg.bgImage=r.result;gv('bgImage').value='';previewRender();};r.readAsDataURL(f);}
     function clearBg(){cfg.bgImage='';gv('bgImage').value='';previewRender();}
-    function downloadCfg(){readForm();var b=new Blob([JSON.stringify(cfg,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='config.json';a.click();alert('config.json download ho gayi! GitHub pe Upload files se replace karo (jahan index.html hai). Site refresh = sabko dikhega.');}
-    function saveDraft(){readForm();try{localStorage.setItem('swag_cfg_draft',JSON.stringify(cfg));alert('Draft save (is device pe).');}catch(e){alert('fail');}}
-    function resetCfg(){if(confirm('Default pe reset?')){localStorage.removeItem('swag_cfg_draft');cfg=clone(DEFAULT_CONFIG);ensure();fillForm();renderSocials();renderLinks();previewRender();}}
-    function importCfg(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{cfg=JSON.parse(r.result);ensure();fillForm();renderSocials();renderLinks();previewRender();alert('Import ho gayi!');}catch(e){alert('Invalid config.json');}};r.readAsText(f);}
+    function downloadCfg(){readForm();var b=new Blob([JSON.stringify(cfg,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='config.json';a.click();alert('config.json downloaded! Replace it on GitHub via Upload files (where index.html is). Refresh the site and everyone sees it.');}
+    function saveDraft(){readForm();try{localStorage.setItem('swag_cfg_draft',JSON.stringify(cfg));alert('Draft saved (on this device).');}catch(e){alert('Failed');}}
+    function resetCfg(){if(confirm('Reset to default?')){localStorage.removeItem('swag_cfg_draft');cfg=clone(DEFAULT_CONFIG);ensure();fillForm();renderSocials();renderLinks();previewRender();}}
+    function importCfg(inp){var f=inp.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{cfg=JSON.parse(r.result);ensure();fillForm();renderSocials();renderLinks();previewRender();alert('Imported!');}catch(e){alert('Invalid config.json');}};r.readAsText(f);}
 
     function savePublish(){readForm();var g={};try{g=JSON.parse(localStorage.getItem('swag_gh')||'{}');}catch(e){}
       var tok=(document.getElementById('ghToken')&&gv('ghToken').value.trim())||g.token;
       var rep=((document.getElementById('ghOwner')&&gv('ghOwner').value.trim())||g.owner)&&((document.getElementById('ghRepo')&&gv('ghRepo').value.trim())||g.repo);
       if(tok&&rep){showSec('publish');publish();}
-      else{try{localStorage.setItem('swag_cfg_draft',JSON.stringify(cfg));}catch(e){}showSec('publish');alert('Live save ke liye pehle GitHub set karo (Owner, Repo, Token) Publish tab me. Phir Save & Publish seedha live karega.');}
+      else{try{localStorage.setItem('swag_cfg_draft',JSON.stringify(cfg));}catch(e){}showSec('publish');alert('To save live, first set up GitHub (Owner, Repo, Token) in the Publish tab. Then Save & Publish goes live directly.');}
     }
     // ---- GitHub publish ----
     function loadGH(){var g={};try{g=JSON.parse(localStorage.getItem('swag_gh')||'{}');}catch(e){}gv('ghOwner').value=g.owner||'';gv('ghRepo').value=g.repo||'Swaggold';gv('ghBranch').value=g.branch||'main';gv('ghPath').value=g.path||'config.json';if(g.token){gv('ghToken').value=g.token;}}
     async function verifyLive(stamp){
       var msg=gv('pubMsg');
-      msg.style.color='var(--mut)';msg.innerHTML='✅ GitHub pe save ho gaya. ⏳ Live site deploy ho rahi hai (~1 min)…';
+      msg.style.color='var(--mut)';msg.innerHTML='✅ Saved to GitHub. ⏳ The live site is deploying (~1 min)…';
       for(var i=0;i<30;i++){
         await new Promise(function(r){setTimeout(r,4000);});
         try{var rr=await fetch('config.json?_='+Date.now(),{cache:'no-store'});
           if(rr.ok){var jj=await rr.json(); if(jj&&jj._savedAt===stamp){
-            msg.style.color='#7bd47b';msg.innerHTML='✅ <b>LIVE ho gaya!</b> Site update ho chuki hai. Phone pe site kholo/refresh karo. <a href="./?v='+stamp+'" target="_blank" style="color:var(--gold)">Open live ↗</a>';return;}}
+            msg.style.color='#7bd47b';msg.innerHTML='✅ <b>LIVE now!</b> The site has updated. Open/refresh the site on your phone. <a href="./?v='+stamp+'" target="_blank" style="color:var(--gold)">Open live ↗</a>';return;}}
         }catch(e){}
       }
-      msg.style.color='#e7c873';msg.innerHTML='✅ GitHub pe save ho gaya. Live site 1–2 min me aayegi — site pe ja ke <b>refresh</b> karna. <a href="./?v='+stamp+'" target="_blank" style="color:var(--gold)">Open live ↗</a>';
+      msg.style.color='#e7c873';msg.innerHTML='✅ Saved to GitHub. The live site will appear in 1–2 min — go to the site and <b>refresh</b>. <a href="./?v='+stamp+'" target="_blank" style="color:var(--gold)">Open live ↗</a>';
     }
     async function publish(){
       readForm();
       var owner=gv('ghOwner').value.trim(),repo=gv('ghRepo').value.trim()||'Swaggold',branch=gv('ghBranch').value.trim()||'main',path=gv('ghPath').value.trim()||'config.json',token=gv('ghToken').value.trim();
       var msg=gv('pubMsg');
-      if(!token){msg.style.color='#e8a';msg.innerHTML='Pehle Step 1 se token banao, phir Step 2 me paste karo.';showSec('publish');return;}
+      if(!token){msg.style.color='#e8a';msg.innerHTML='First create a token in Step 1, then paste it in Step 2.';showSec('publish');return;}
       var headers={'Authorization':'Bearer '+token,'Accept':'application/vnd.github+json'};
       msg.style.color='var(--mut)';msg.textContent='Connecting to GitHub… ⏳';
       try{
         if(!owner){var u=await fetch('https://api.github.com/user',{headers:headers});
           if(u.ok){var uj=await u.json();owner=uj.login;gv('ghOwner').value=owner;}
-          else{msg.style.color='#e8a';msg.textContent='Token galat ya expire ('+u.status+'). Step 1 se naya token banao.';return;}}
+          else{msg.style.color='#e8a';msg.textContent='Invalid or expired token ('+u.status+'). Create a new token in Step 1.';return;}}
         var store={owner:owner,repo:repo,branch:branch,path:path};if(gv('ghRemember').checked)store.token=token;
         try{localStorage.setItem('swag_gh',JSON.stringify(store));}catch(e){}
         msg.textContent='Publishing… ⏳';
@@ -762,8 +762,8 @@ function applyUiVars(cfg, root){
         // 409 = SHA conflict (file changed) -> refetch latest sha and retry (up to 3x)
         for(var attempt=0; r.status===409 && attempt<3; attempt++){ sha=await getSha(); r=await putWith(sha); }
         if(r.ok){verifyLive(cfg._savedAt);}
-        else if(r.status===404){msg.style.color='#e8a';msg.innerHTML='Repo nahi mili. Step 2 → Advanced me <b>Repository</b> naam check karo (abhi: "'+repo+'", owner: "'+owner+'").';}
-        else if(r.status===409){msg.style.color='#e8a';msg.textContent='GitHub thoda busy hai (409). 5 second ruko aur dobara Publish dabao.';}
+        else if(r.status===404){msg.style.color='#e8a';msg.innerHTML='Repository not found. Check the <b>Repository</b> name in Step 2 → Advanced (currently: "'+repo+'", owner: "'+owner+'").';}
+        else if(r.status===409){msg.style.color='#e8a';msg.textContent='GitHub is busy (409). Wait 5 seconds and press Publish again.';}
         else{var t=await r.text();msg.style.color='#e8a';msg.textContent='Fail ('+r.status+'): '+t.slice(0,180);}
       }catch(e){msg.style.color='#e8a';msg.textContent='Net/CORS error: '+e.message;}
     }

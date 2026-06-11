@@ -112,6 +112,18 @@
 
   @media(prefers-reduced-motion:reduce){.link::before{animation:none}}
 </style>
+<style>
+/* === performance overrides: smoother scroll on mobile === */
+.chip,.kbtn,.qrov{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.chip{background:rgba(20,16,10,.60)!important}
+.kbtn{background:rgba(20,16,10,.72)!important}
+@media(max-width:600px){
+  .link::before{display:none!important}
+  .link .ico{filter:none!important}
+  .name .nm{text-shadow:none!important}
+}
+.card,.cardvid{will-change:transform}
+</style>
 </head>
 <body>
   <div class="backdrop"><video id="bgv" autoplay muted loop playsinline></video></div>
