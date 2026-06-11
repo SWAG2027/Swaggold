@@ -2587,7 +2587,7 @@ function applyUiVars(cfg, root){
         var _binner=_bi.marquee?('<marquee behavior="scroll" direction="left" scrollamount="3">'+_btxt+'</marquee>'):_btxt;
         var _bwrap=_bi.link?('<a href="'+esc(_bi.link)+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;text-decoration:underline">'+_binner+'</a>'):_binner;
         bnH='<div class="banner bnpro" id="bnpro0" data-idx="0" style="'+_bst+'position:relative">'+_bwrap
-            +(_bi.dismissible?'<button onclick="this.parentNode.style.display='none'" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:inherit;font-size:16px;cursor:pointer;opacity:.8;line-height:1">×</button>':'')
+            +(_bi.dismissible?'<button onclick="this.parentNode.remove()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:inherit;font-size:16px;cursor:pointer;opacity:.8;line-height:1">×</button>':'')
             +'</div>';
       }
     }
