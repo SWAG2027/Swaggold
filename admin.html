@@ -188,7 +188,7 @@
   <div id="pinLock" style="display:flex;position:fixed;inset:0;z-index:9999;background:linear-gradient(160deg,#1a1200 0%,#2a1e00 60%,#1a1200 100%);flex-direction:column;align-items:center;justify-content:center;gap:20px">
     <div style="font-size:38px">🔐</div>
     <div style="color:#d4a84b;font-size:22px;font-weight:700;letter-spacing:.05em;text-shadow:0 2px 8px rgba(212,168,75,.4)">SWAG GOLD</div>
-    <div style="color:rgba(255,255,255,.6);font-size:13px">Admin Panel — PIN darj karein</div>
+    <div style="color:rgba(255,255,255,.6);font-size:13px">Admin Panel — Enter PIN</div>
     <div style="display:flex;gap:10px;margin:4px 0" id="pinDots">
       <span style="width:14px;height:14px;border-radius:50%;border:2px solid rgba(212,168,75,.5);background:transparent;transition:.2s" id="pd0"></span>
       <span style="width:14px;height:14px;border-radius:50%;border:2px solid rgba(212,168,75,.5);background:transparent;transition:.2s" id="pd1"></span>
@@ -199,14 +199,15 @@
       <button onclick="pinKey('1')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'">1</button><button onclick="pinKey('2')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'">2</button><button onclick="pinKey('3')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'">3</button><button onclick="pinKey('4')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'">4</button><button onclick="pinKey('5')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'">5</button><button onclick="pinKey('6')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'">6</button><button onclick="pinKey('7')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'">7</button><button onclick="pinKey('8')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'">8</button><button onclick="pinKey('9')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'">9</button><button onclick="pinKey('')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'"></button><button onclick="pinKey('0')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'">0</button><button onclick="pinKey('⌫')" style="padding:16px 0;font-size:20px;font-weight:600;background:rgba(255,255,255,.07);border:1px solid rgba(212,168,75,.2);border-radius:12px;color:#fff;cursor:pointer;transition:.15s" onmousedown="this.style.background='rgba(212,168,75,.25)'" onmouseup="this.style.background='rgba(255,255,255,.07)'">⌫</button>
     </div>
     <div id="pinErr" style="color:#e74c3c;font-size:12px;min-height:16px;transition:.3s"></div>
-    <div style="color:rgba(255,255,255,.3);font-size:10px;margin-top:8px">Default PIN: 1234 &nbsp;|&nbsp; <span style="cursor:pointer;text-decoration:underline" onclick="pinChangePwd()">PIN badlein</span></div>
+    <div style="color:rgba(255,255,255,.3);font-size:10px;margin-top:8px">Default PIN: 1234 &nbsp;|&nbsp; <span style="cursor:pointer;text-decoration:underline" onclick="pinChangePwd()">Change PIN</span></div>
   </div>
   <script>
   (function(){
     var PKEY='swag_pin', DEF='1234';
     var _buf='';
+    try{if(localStorage.getItem('swag_pin_ok')==='1'){var _pl=document.getElementById('pinLock');if(_pl)_pl.style.display='none';}}catch(e){}
     function getPin(){return localStorage.getItem(PKEY)||DEF;}
-    function unlock(){document.getElementById('pinLock').style.display='none';}
+    function unlock(){document.getElementById('pinLock').style.display='none';try{localStorage.setItem('swag_pin_ok','1');}catch(e){}}
     function updateDots(){
       for(var i=0;i<4;i++){
         var d=document.getElementById('pd'+i);
@@ -221,15 +222,15 @@
         if(_buf===getPin()){unlock();}
         else{
           var e=document.getElementById('pinErr');
-          if(e)e.textContent='❌ Galat PIN! Dobara try karein';
+          if(e)e.textContent='❌ Wrong PIN! Try again';
           setTimeout(function(){_buf='';updateDots();if(e)e.textContent='';},900);
         }
       }
     };
     window.pinChangePwd=function(){
-      var np=prompt('Naya PIN (4 digits):');
-      if(np&&/^\d{4}$/.test(np)){localStorage.setItem(PKEY,np);alert('✅ PIN badal gaya!');}
-      else if(np){alert('Sirf 4 digits ka PIN hona chahiye');}
+      var np=prompt('New PIN (4 digits):');
+      if(np&&/^\d{4}$/.test(np)){localStorage.setItem(PKEY,np);alert('✅ PIN changed!');}
+      else if(np){alert('PIN must be exactly 4 digits');}
     };
     // Keyboard support
     document.addEventListener('keydown',function(e){
@@ -431,7 +432,7 @@
           <button class="btn primary" style="width:100%;justify-content:center;padding:14px;font-size:15px" onclick="publish()">🚀 Publish to live site</button>
           <div id="pubMsg" style="margin-top:12px;font-size:13.5px;line-height:1.5"></div>
         </div>
-        <div class="hint" style="margin-top:6px"><b style="color:#e8a">Dhyan:</b> The token is like a password — never share it. On a shared/public computer, turn off "remember". Once set, just keep pressing 💾 Save & Publish.</div>
+        <div class="hint" style="margin-top:6px"><b style="color:#e8a">Note:</b> The token is like a password — never share it. On a shared/public computer, turn off "remember". Once set, just keep pressing 💾 Save & Publish.</div>
       </div>
     </div>
 
@@ -924,7 +925,7 @@ function applyUiVars(cfg, root){
       var raw='{}';try{raw=localStorage.getItem('swag_clicks')||'{}';}catch(e){}
       var data=JSON.parse(raw);
       var keys=Object.keys(data).sort(function(a,b){return data[b]-data[a];});
-      if(!keys.length){body.innerHTML='<div style="color:rgba(255,255,255,.4);font-size:13px;padding:8px">Abhi koi click record nahi hai. Index page se links click karein.</div>';return;}
+      if(!keys.length){body.innerHTML='<div style="color:rgba(255,255,255,.4);font-size:13px;padding:8px">No clicks recorded yet. Click links on the index page to track them.</div>';return;}
       var max=Math.max.apply(null,keys.map(function(k){return data[k];}));
       body.innerHTML=keys.map(function(url){
         var n=data[url];var pct=Math.round(n/max*100);
