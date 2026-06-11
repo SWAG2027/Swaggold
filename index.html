@@ -104,6 +104,10 @@
 
   .links[style] .link,.link{min-width:0}
 
+
+  /* featured button pulse (shop attention grabber) */
+  @keyframes goldPulse{0%,100%{box-shadow:0 0 0 0 rgba(212,168,75,.5)}50%{box-shadow:0 0 0 10px rgba(212,168,75,0)}}
+  .link.featured{animation:goldPulse 2.5s ease-in-out infinite,rise .55s ease both}
   /* announcement banner + featured + per-button accent */
   .banner{margin:6px 14px 2px;padding:9px 14px 9px 14px;border-radius:12px;background:linear-gradient(90deg,rgba(212,168,75,.26),rgba(212,168,75,.10));border:1px solid rgba(212,168,75,.55);color:#fbeec2;font-size:13.5px;text-align:center;font-weight:600;letter-spacing:.01em;transition:opacity .3s;padding-right:34px}
   .banner a{color:#fff;text-decoration:underline}
@@ -2718,70 +2722,57 @@ window.addEventListener('scroll',onScroll,{passive:true});window.addEventListene
   setTimeout(function(){checkUpdate();setInterval(checkUpdate,30000);},5000);
 }());
 
-/* ══ FEATURE 2: LIVE GOLD PRICE TICKER ══
-   Fetches live gold prices from metals-api (free tier).
-   Shows 24k / 21k / 18k in SAR.
-   Falls back gracefully if offline. */
+
+/* ══ FEATURE 2: LIVE GOLD PRICE TICKER ══ */
 (function(){
-  var BAR=null;
+  var BAR=null,RETRY=0;
   function mkBar(){
     if(BAR)return BAR;
-    BAR=document.createElement('div');
-    BAR.id='goldTicker';
-    BAR.style.cssText='position:fixed;top:0;left:50%;transform:translateX(-50%);'
-      +'width:100%;max-width:480px;z-index:60;background:linear-gradient(90deg,#1a140c,#2a1f0e,#1a140c);'
-      +'border-bottom:1px solid rgba(212,168,75,.5);color:#f7e8b0;font-size:12px;font-weight:700;'
-      +'padding:6px 14px;display:flex;justify-content:space-between;align-items:center;'
-      +'font-family:"Jost",sans-serif;letter-spacing:.04em;gap:8px';
-    document.body.appendChild(BAR);
-    // push content down so ticker doesn't overlap
-    var card=document.querySelector('.card');
-    if(card)card.style.paddingTop='30px';
-    return BAR;
+    BAR=document.createElement('div');BAR.id='goldTicker';
+    BAR.style.cssText='position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:60;background:linear-gradient(90deg,#1a140c,#2e2010,#1a140c);border-bottom:1.5px solid rgba(212,168,75,.6);color:#f7e8b0;font-size:11.5px;font-weight:700;padding:5px 12px;display:flex;justify-content:space-between;align-items:center;font-family:"Jost",sans-serif;gap:6px;box-shadow:0 2px 12px rgba(0,0,0,.5)';
+    var card=document.querySelector('.card');if(card)card.style.paddingTop='28px';
+    document.body.appendChild(BAR);return BAR;
   }
-  function fmtPrice(sar,karat){
-    // sar = SAR per troy oz of pure gold
-    // karat ratio: 24k=1, 21k=0.875, 18k=0.75
-    var ratios={24:1,21:0.875,18:0.75};
-    var gramsPerOz=31.1035;
-    var perGram=(sar*ratios[karat])/gramsPerOz;
-    return 'SAR '+perGram.toFixed(2)+'/g';
-  }
-  function showPrices(sar24){
-    var b=mkBar();
+  function showBar(sarOz){
+    var gpg=sarOz/31.1035;
     var ts=new Date().toLocaleTimeString('en-SA',{hour:'2-digit',minute:'2-digit'});
-    b.innerHTML=
-      '<span style="color:#e7c873">🥇 Live Gold</span>'
-      +'<span>24K '+fmtPrice(sar24,24)+'</span>'
-      +'<span>21K '+fmtPrice(sar24,21)+'</span>'
-      +'<span>18K '+fmtPrice(sar24,18)+'</span>'
-      +'<span style="color:rgba(212,168,75,.5);font-size:10px">'+ts+'</span>';
+    mkBar().innerHTML='<span style="color:#e7c873;white-space:nowrap">&#x1F947; Gold</span>'
+      +'<span style="white-space:nowrap">24K <b>'+(gpg).toFixed(1)+'</b></span>'
+      +'<span style="white-space:nowrap">21K <b>'+(gpg*0.875).toFixed(1)+'</b></span>'
+      +'<span style="white-space:nowrap">18K <b>'+(gpg*0.75).toFixed(1)+'</b></span>'
+      +'<span style="color:rgba(212,168,75,.5);font-size:9px;white-space:nowrap">SAR/g '+ts+'</span>';
   }
-  function fetchGold(){
-    // Use free open-source gold price endpoint (no key needed, SAR)
-    fetch('https://api.metals.dev/v1/metal/spot?metal=gold&currency=SAR',{cache:'no-store'})
+  function showMsg(m){mkBar().innerHTML='<span style="color:#e7c873">&#x1F947; Gold</span><span style="flex:1;text-align:center;font-size:10px;opacity:.7">'+m+'</span>';}
+  function load(){
+    // Source 1: open.er-api.com  (XAU in SAR, no key, CORS open)
+    fetch('https://open.er-api.com/v6/latest/XAU',{cache:'no-store'})
       .then(function(r){return r.ok?r.json():null;})
       .then(function(d){
-        var price=d&&(d.price||d.rate||(d.metals&&d.metals.gold));
-        if(price){showPrices(price);}
-        else{fetchGoldFallback();}
-      }).catch(fetchGoldFallback);
+        var sar=d&&d.rates&&d.rates.SAR;
+        if(sar){showBar(sar);RETRY=0;}else throw 'no sar';
+      })
+      .catch(function(){
+        // Source 2: fawazahmed0 currency CDN (jsdelivr) — very reliable, no CORS issues
+        fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/xau.json',{cache:'no-store'})
+          .then(function(r){return r.ok?r.json():null;})
+          .then(function(d){
+            var sar=d&&d.xau&&d.xau.sar;
+            if(sar){showBar(sar/1); RETRY=0;}else throw 'no sar2';
+          })
+          .catch(function(){
+            // Source 3: latest tag fallback
+            fetch('https://latest.currency-api.pages.dev/v1/currencies/xau.json',{cache:'no-store'})
+              .then(function(r){return r.ok?r.json():null;})
+              .then(function(d){var sar=d&&d.xau&&d.xau.sar;if(sar){showBar(sar);RETRY=0;}else throw '';})
+              .catch(function(){RETRY++;if(RETRY<4)setTimeout(load,60000);else showMsg('Market closed / offline');});
+          });
+      });
   }
-  function fetchGoldFallback(){
-    // Fallback: frankfurter XAU→SAR proxy
-    fetch('https://api.frankfurter.app/latest?from=XAU&to=SAR',{cache:'no-store'})
-      .then(function(r){return r.ok?r.json():null;})
-      .then(function(d){
-        var price=d&&d.rates&&d.rates.SAR;
-        if(price){showPrices(price);}
-      }).catch(function(){});
-  }
-  // only show if kiosk mode enabled in config
-  document.addEventListener('DOMContentLoaded',function(){
+  setTimeout(function(){
     var k=window.CFG&&window.CFG.kiosk;
-    if(!k||k.goldTicker!==false){fetchGold();setInterval(fetchGold,300000);}// every 5 min
-  });
-  window.refreshGoldTicker=fetchGold;
+    if(!k||k.goldTicker!==false){load();setInterval(load,300000);}
+  },1200);
+  window.refreshGoldTicker=load;
 }());
 
 /* ══ FEATURE 3: ROTATING ANNOUNCEMENTS ══
@@ -2820,6 +2811,38 @@ window.addEventListener('scroll',onScroll,{passive:true});window.addEventListene
     if(orig){window.render=function(cfg){orig(cfg);setTimeout(function(){startRotation(cfg);},200);};}
   });
 }());
+
+/* ══ EXTRA: AUTO NIGHT DIM MODE ══
+   Between 9pm–7am dims the screen automatically (dark overlay).
+   Good for shop display screens at night. */
+(function(){
+  var DIM=null;
+  function chkNight(){
+    var h=new Date().getHours();
+    var isNight=(h>=21||h<7);
+    if(!DIM){DIM=document.createElement('div');DIM.id='nightDim';
+      DIM.style.cssText='position:fixed;inset:0;z-index:55;pointer-events:none;transition:opacity 1.5s;background:#000;opacity:0';}
+    if(!document.body.contains(DIM))document.body.appendChild(DIM);
+    DIM.style.opacity=isNight?'0.45':'0';
+  }
+  // only if enabled
+  setTimeout(function(){
+    var k=window.CFG&&window.CFG.kiosk;
+    if(k&&k.nightDim){chkNight();setInterval(chkNight,60000);}
+  },1500);
+}());
+
+/* ══ EXTRA: NIGHT DIM (9pm–7am) ══ */
+(function(){
+  var DIM=null;
+  function chk(){
+    var h=new Date().getHours(),on=(h>=21||h<7);
+    if(!DIM){DIM=document.createElement('div');DIM.id='nightDim';DIM.style.cssText='position:fixed;inset:0;z-index:55;pointer-events:none;transition:opacity 1.5s;background:#000;opacity:0';document.body.appendChild(DIM);}
+    DIM.style.opacity=on?'0.42':'0';
+  }
+  setTimeout(function(){var k=window.CFG&&window.CFG.kiosk;if(k&&k.nightDim){chk();setInterval(chk,60000);}},1600);
+}());
+
 </script>
 </body>
 </html>
