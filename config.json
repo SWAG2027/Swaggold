@@ -93,7 +93,7 @@
   },
   "bgImage": "",
   "banner": {
-    "show": true,
+    "show": false,
     "text": "",
     "link": ""
   },
@@ -106,7 +106,7 @@
     "items": []
   },
   "banners": {
-    "enabled": true,
+    "enabled": false,
     "items": [
       {
         "text": "Eid SALE",
@@ -119,7 +119,7 @@
     ],
     "rotateInterval": 5
   },
-  "_savedAt": 1781211678574,
+  "_savedAt": 1781211831872,
   "layout": {
     "order": [
       "logo",
@@ -130,5 +130,27 @@
       "gallery",
       "footer"
     ]
+  },
+  "pos": {
+    "logo": {
+      "x": -4,
+      "y": -58
+    },
+    "name": {
+      "x": 1,
+      "y": -49
+    },
+    "bio": {
+      "x": -7,
+      "y": -34
+    },
+    "socials": {
+      "x": -2,
+      "y": -26
+    },
+    "links": {
+      "x": 3,
+      "y": -18
+    }
   }
 }
