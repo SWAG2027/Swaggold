@@ -7,7 +7,7 @@
 <meta name="description" content="Jewellery Store — Jeddah">
 <meta property="og:title" content="SWAG GOLD">
 <meta property="og:description" content="Jewellery Store">
-<meta name="theme-color" content="#1a140c">
+<meta name="theme-color" content="#2a1a08">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -16,57 +16,55 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700&family=Cormorant+Garamond:wght@600;700&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#d4a84b;--gold2:#f7ecc4;--gold3:#c9952b;--dark:#1a140c;--radius:44px}
+:root{--gold:#d4a84b;--gold2:#f7ecc4;--gold3:#c9952b;--dark:#2a1a08;--radius:44px}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:auto;min-height:100%}
 html{scroll-behavior:smooth}
-body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:var(--dark);
+body{
+  font-family:'Jost',sans-serif;color:#fff;
+  min-height:100dvh;background:#2a1a08;
   display:flex;justify-content:center;align-items:flex-start;
-  overflow-x:hidden;-webkit-overflow-scrolling:touch}
-
-/* ── VIDEO BACKGROUND ── */
-#cardv{
-  position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);
-  width:100%;max-width:480px;height:100dvh;object-fit:cover;
-  z-index:0;backface-visibility:hidden;will-change:transform
+  overflow-x:hidden;-webkit-overflow-scrolling:touch
 }
 
-/* ── GRADIENT FALLBACK (shows when video missing/loading) ── */
-.bg-fallback{
+/* ── WARM BACKGROUND (always visible) ── */
+.bg-warm{
   position:fixed;top:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:480px;height:100dvh;z-index:-1;
-  background:linear-gradient(160deg,
-    #3d2408 0%,
-    #251505 15%,
-    #1a0e06 30%,
-    #120a04 50%,
-    #1e1008 70%,
-    #2d1a08 85%,
-    #3a200a 100%)
+  width:100%;max-width:480px;height:100dvh;z-index:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 20%, rgba(180,90,10,.55) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 80% at 75% 70%, rgba(140,60,5,.45) 0%, transparent 60%),
+    radial-gradient(ellipse 90% 70% at 50% 50%, rgba(90,40,5,.3) 0%, transparent 80%),
+    linear-gradient(160deg, #4a2508 0%, #3a1c06 20%, #2a1508 40%, #1e0f05 60%, #2d1808 80%, #3e2208 100%)
 }
-.bg-fallback::after{
-  content:'';
-  position:absolute;inset:0;
-  background:radial-gradient(ellipse 70% 50% at 50% 30%,
-    rgba(212,168,75,.18) 0%,
-    rgba(180,110,20,.08) 40%,
-    transparent 70%)
+.bg-warm::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  opacity:.35;mix-blend-mode:overlay;pointer-events:none
 }
+
+/* ── VIDEO (on top of warm bg) ── */
+#cardv{
+  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;height:100dvh;object-fit:cover;
+  z-index:1;opacity:0;transition:opacity 1s ease
+}
+#cardv.loaded{opacity:1}
 
 .scrim{
-  position:fixed;inset:0;z-index:1;pointer-events:none;
+  position:fixed;inset:0;z-index:2;pointer-events:none;
   max-width:480px;left:50%;transform:translateX(-50%);
   background:linear-gradient(180deg,
-    rgba(0,0,0,.35) 0%,
-    rgba(0,0,0,.05) 25%,
+    rgba(0,0,0,.4) 0%,
+    rgba(0,0,0,.05) 30%,
     rgba(0,0,0,0) 55%,
-    rgba(0,0,0,.2) 100%)
+    rgba(0,0,0,.25) 100%)
 }
 
 .card{
   width:100%;max-width:480px;min-height:100dvh;position:relative;
   display:flex;flex-direction:column;justify-content:flex-start;
-  animation:fade .6s ease both;z-index:2
+  animation:fade .6s ease both;z-index:3
 }
 @keyframes fade{from{opacity:0}to{opacity:1}}
 
@@ -80,12 +78,11 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:var(-
 .topbar>*{pointer-events:all}
 .chip{
   width:42px;height:42px;border-radius:50%;
-  background:rgba(20,16,10,.42);color:#fff;
+  background:rgba(30,16,4,.5);color:#fff;
   display:grid;place-items:center;text-decoration:none;
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  border:1px solid rgba(212,168,75,.35);transition:background .2s
+  border:1px solid rgba(212,168,75,.4);transition:background .2s
 }
-.chip:hover{background:rgba(20,16,10,.7)}
+.chip:hover{background:rgba(30,16,4,.8)}
 .chip svg{width:18px;height:18px}
 .chip .ast{font-size:21px;line-height:1;font-weight:700}
 
@@ -95,8 +92,7 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:var(-
   width:100%;max-width:480px;z-index:15;
   display:flex;align-items:center;justify-content:center;
   gap:16px;padding:8px 16px;
-  background:rgba(10,7,2,.65);backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  background:rgba(20,10,2,.72);
   border-bottom:1px solid rgba(212,168,75,.25);
   font-family:'Jost',sans-serif;font-size:12px;font-weight:600;
   letter-spacing:.04em;color:#e8d5a0
@@ -111,18 +107,21 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:var(-
 
 /* ── CONTENT ── */
 .content{position:relative;z-index:2;padding:80px 18px 44px;width:100%}
-/* when ticker visible, push down more */
 body.has-ticker .content{padding-top:96px}
 
 /* ── LOGO ── */
 .avatar-wrap{display:flex;justify-content:center;margin-bottom:0}
 .logo-svg-wrap{
   width:90px;height:90px;border-radius:50%;
-  border:2.5px solid rgba(212,168,75,.55);
-  background:rgba(10,8,4,.55);
+  border:2.5px solid rgba(212,168,75,.6);
+  background:rgba(20,10,2,.6);
   display:flex;align-items:center;justify-content:center;margin:0 auto
 }
-.logo-svg-wrap svg{width:64px;height:64px}
+.logo-img{
+  width:90px;height:90px;border-radius:50%;
+  border:2.5px solid rgba(212,168,75,.6);
+  object-fit:cover;display:block
+}
 
 /* ── NAME ── */
 .name-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:9px}
@@ -138,8 +137,6 @@ body.has-ticker .content{padding-top:96px}
   filter:drop-shadow(0 2px 12px rgba(0,0,0,.75))
 }
 @keyframes shine{to{background-position:220% center}}
-
-.verified-badge{display:grid;place-items:center;flex-shrink:0}
 
 .subtitle{
   text-align:center;font-size:13px;
@@ -157,22 +154,23 @@ body.has-ticker .content{padding-top:96px}
 .socials svg{width:30px;height:30px;display:block}
 
 /* ── LINK BUTTONS ── */
+/* NO backdrop-filter on links = much smoother scroll */
 .links{display:flex;flex-direction:column;gap:11px;margin-top:20px}
 .link{
   position:relative;overflow:hidden;
   display:flex;align-items:center;gap:14px;
   padding:15px 20px;
-  border:1.5px solid rgba(212,168,75,.55);
+  border:1.5px solid rgba(212,168,75,.5);
   border-radius:var(--radius);
-  background:rgba(0,0,0,.18);
+  background:rgba(30,15,3,.45);
   color:#fff;text-decoration:none;
   font-size:16px;font-weight:500;
-  transition:transform .18s,background .25s,border-color .25s,box-shadow .25s;
+  transition:transform .18s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease;
   opacity:0;animation:rise .55s ease forwards;
-  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)
+  /* removed backdrop-filter — was causing scroll lag */
 }
 .link:hover{
-  background:rgba(212,168,75,.14);
+  background:rgba(212,168,75,.15);
   border-color:rgba(212,168,75,.85);
   box-shadow:0 0 18px rgba(212,168,75,.18);
   transform:translateY(-1px)
@@ -183,7 +181,7 @@ body.has-ticker .content{padding-top:96px}
 .link::before{
   content:'';
   position:absolute;top:0;left:0;width:55%;height:100%;
-  background:linear-gradient(100deg,transparent,rgba(255,236,180,.28),transparent);
+  background:linear-gradient(100deg,transparent,rgba(255,236,180,.25),transparent);
   transform:translateX(-180%) skewX(-20deg);
   animation:sweep 6s ease-in-out infinite;
   pointer-events:none
@@ -201,7 +199,6 @@ body.has-ticker .content{padding-top:96px}
   100%{transform:translateX(320%) skewX(-20deg)}
 }
 
-/* Rise animation per button */
 .link:nth-child(1){animation-delay:.05s}
 .link:nth-child(2){animation-delay:.12s}
 .link:nth-child(3){animation-delay:.19s}
@@ -242,44 +239,39 @@ body.has-ticker .content{padding-top:96px}
   color:rgba(255,255,255,.28)
 }
 
-/* ── QR + FULLSCREEN BUTTONS ── */
+/* ── KIOSK BUTTONS ── */
 .kiosk-btns{
   position:fixed;bottom:18px;right:16px;
   z-index:30;display:flex;flex-direction:column;gap:10px
 }
 .kbtn{
   width:40px;height:40px;border-radius:50%;
-  background:rgba(20,16,10,.55);border:1px solid rgba(212,168,75,.3);
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  background:rgba(30,15,3,.6);border:1px solid rgba(212,168,75,.3);
   display:grid;place-items:center;cursor:pointer;
   color:#d4a84b;transition:background .2s
 }
-.kbtn:hover{background:rgba(212,168,75,.18)}
+.kbtn:hover{background:rgba(212,168,75,.2)}
 .kbtn svg{width:18px;height:18px}
 
 /* ── QR MODAL ── */
 .qr-modal{
   display:none;position:fixed;inset:0;z-index:50;
-  background:rgba(0,0,0,.75);backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  background:rgba(0,0,0,.78);
   align-items:center;justify-content:center
 }
 .qr-modal.open{display:flex}
 .qr-box{
-  background:rgba(26,20,12,.92);
+  background:rgba(30,18,5,.95);
   border:1px solid rgba(212,168,75,.4);
   border-radius:20px;padding:28px;
   display:flex;flex-direction:column;align-items:center;gap:14px
 }
 .qr-box canvas{border-radius:10px}
-.qr-box .qr-lbl{
-  font-size:12px;color:rgba(255,255,255,.5);
-  text-align:center;letter-spacing:.04em
-}
+.qr-box .qr-lbl{font-size:12px;color:rgba(255,255,255,.5);text-align:center;letter-spacing:.04em}
 .qr-close{
   position:absolute;top:20px;right:20px;
   width:36px;height:36px;border-radius:50%;
-  background:rgba(255,255,255,.1);border:none;
+  background:rgba(255,255,255,.12);border:none;
   color:#fff;font-size:18px;cursor:pointer;
   display:grid;place-items:center
 }
@@ -289,17 +281,15 @@ body.has-ticker .content{padding-top:96px}
   display:none;position:fixed;
   bottom:0;left:50%;transform:translateX(-50%);
   width:100%;max-width:480px;z-index:25;
-  background:linear-gradient(90deg,rgba(30,20,5,.9),rgba(50,30,8,.9));
+  background:linear-gradient(90deg,rgba(40,22,5,.92),rgba(60,32,8,.92));
   border-top:1px solid rgba(212,168,75,.3);
   padding:10px 16px;
   font-size:13px;font-weight:600;
-  color:#f5e4a8;text-align:center;
-  backdrop-filter:blur(6px)
+  color:#f5e4a8;text-align:center
 }
 .banner-bar.show{display:block}
-.banner-bar a{color:#f5e4a8;text-decoration:underline}
 
-/* ── MOBILE SAFE ── */
+/* ── MOBILE ── */
 @media(max-width:380px){
   .nm{font-size:24px}
   .link{padding:13px 16px;font-size:15px}
@@ -307,7 +297,7 @@ body.has-ticker .content{padding-top:96px}
   body.has-ticker .content{padding-top:90px}
 }
 @media(min-width:481px){
-  #cardv,.bg-fallback,.scrim,.topbar,.ticker-bar,.kiosk-btns,.banner-bar{
+  .bg-warm,#cardv,.scrim,.topbar,.ticker-bar,.kiosk-btns,.banner-bar{
     max-width:480px;left:50%;transform:translateX(-50%)
   }
   .card{box-shadow:0 0 60px rgba(0,0,0,.5)}
@@ -316,18 +306,17 @@ body.has-ticker .content{padding-top:96px}
 </head>
 <body>
 
-<!-- Gradient fallback background (always visible, video layered on top) -->
-<div class="bg-fallback"></div>
+<!-- Warm background (always visible, no black) -->
+<div class="bg-warm"></div>
 
-<!-- Video background -->
-<video id="cardv" autoplay muted loop playsinline preload="auto"
-  poster="" aria-hidden="true">
+<!-- Video (fades in when loaded) -->
+<video id="cardv" autoplay muted loop playsinline preload="auto" aria-hidden="true">
   <source src="swag-bg.mp4" type="video/mp4">
 </video>
 <div class="scrim"></div>
 
 <!-- Gold Ticker -->
-<div class="ticker-bar" id="tickerBar">
+<div class="ticker-bar hidden" id="tickerBar">
   <div class="ticker-item">
     <span class="karat">24K</span>
     <span class="price" id="t24">—</span>
@@ -348,15 +337,15 @@ body.has-ticker .content{padding-top:96px}
 
 <!-- Topbar -->
 <div class="topbar">
-  <a href="admin.html" class="chip" title="Admin">
+  <a href="admin.html" class="chip" title="Admin" aria-label="Admin Panel">
     <span class="ast">✦</span>
   </a>
-  <a href="https://swag-gold.laroche.sa" class="chip" title="Share" id="shareBtn">
+  <button class="chip" id="shareBtn" title="Share" aria-label="Share">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
       <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
     </svg>
-  </a>
+  </button>
 </div>
 
 <!-- Main Card -->
@@ -364,9 +353,9 @@ body.has-ticker .content{padding-top:96px}
   <div class="content">
 
     <!-- Logo -->
-    <div class="avatar-wrap">
-      <div class="logo-svg-wrap">
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SWAG GOLD logo">
+    <div class="avatar-wrap" id="logoWrap">
+      <div class="logo-svg-wrap" id="logoSvgWrap">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" width="64" height="64" aria-label="SWAG GOLD">
           <circle cx="50" cy="50" r="46" stroke="#d4a84b" stroke-width="1.5" opacity=".6"/>
           <text x="50" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-weight="700" font-size="22" fill="#d4a84b" letter-spacing="3">SWAG</text>
           <line x1="20" y1="44" x2="80" y2="44" stroke="#d4a84b" stroke-width=".8" opacity=".5"/>
@@ -378,34 +367,25 @@ body.has-ticker .content{padding-top:96px}
 
     <!-- Name -->
     <div class="name-row">
-      <span class="nm">SWAG GOLD</span>
-      <span class="verified-badge" id="verifiedBadge" style="display:none">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-          <path d="M9 12l2 2 4-4" stroke="#d4a84b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M21 12c0-1.268-.63-2.39-1.593-3.068l.012-.025-.878-1.52a3.62 3.62 0 0 0-3.129-1.795h-.018l-.025-.012A3.619 3.619 0 0 0 12 3.81c-1.137 0-2.138.525-2.795 1.341l-.025.012h-.018a3.62 3.62 0 0 0-3.129 1.795l-.878 1.52.012.025C4.63 9.61 4 10.732 4 12c0 1.268.63 2.39 1.593 3.068l-.012.025.878 1.52a3.62 3.62 0 0 0 3.129 1.795h.018l.025.012A3.619 3.619 0 0 0 12 20.19c1.137 0 2.138-.525 2.795-1.341l.025-.012h.018a3.62 3.62 0 0 0 3.129-1.795l.878-1.52-.012-.025C20.37 14.39 21 13.268 21 12z" fill="#d4a84b" opacity=".9"/>
-        </svg>
-      </span>
+      <span class="nm" id="siteName">SWAG GOLD</span>
     </div>
-    <div class="subtitle">Jewellery Store</div>
+    <div class="subtitle" id="siteSubtitle">Jewellery Store</div>
 
     <!-- Socials -->
-    <div class="socials">
-      <!-- TikTok -->
+    <div class="socials" id="socialList">
       <a href="https://www.tiktok.com/@swag.gold24" target="_blank" rel="noopener" aria-label="TikTok">
-        <svg viewBox="0 0 24 24" fill="currentColor">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30">
           <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.15 8.15 0 0 0 4.77 1.52V6.76a4.85 4.85 0 0 1-1-.07z"/>
         </svg>
       </a>
-      <!-- WhatsApp -->
       <a href="https://wa.me/+9660530033445" target="_blank" rel="noopener" aria-label="WhatsApp">
-        <svg viewBox="0 0 24 24" fill="currentColor">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
         </svg>
       </a>
-      <!-- Snapchat -->
       <a href="https://www.snapchat.com/add/swag.gold24" target="_blank" rel="noopener" aria-label="Snapchat">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12.166.006C9.94-.026 5.987 .617 4.078 4.748c-.698 1.499-.537 4.05-.442 5.524-.448.158-1.296.397-2.126.247-.192-.036-.392-.02-.563.065a1.1 1.1 0 0 0-.567.711c-.066.305.016.62.226.853.464.512 1.49.879 3.044 1.093.093.162.186.634-.003 1.643-.321 1.704-3.027 4.092-3.158 4.208a.986.986 0 0 0-.306.81c.031.294.201.547.46.694.09.051 2.17 1.201 6.049 1.698.157.286.319.84.412 1.178.066.239.128.466.198.65.09.238.268.431.498.532.23.101.491.106.724.013.402-.158 1.083-.269 1.962-.269.879 0 1.699.193 2.258.356.27.079.553.073.819-.017.273-.093.483-.287.578-.534.069-.184.131-.407.197-.643.093-.337.256-.895.413-1.18 3.879-.497 5.958-1.647 6.049-1.698a1.02 1.02 0 0 0 .46-.694.986.986 0 0 0-.306-.81c-.131-.116-2.837-2.504-3.158-4.208-.189-1.009-.096-1.481-.003-1.643 1.554-.214 2.58-.581 3.044-1.093a1.01 1.01 0 0 0 .225-.853 1.1 1.1 0 0 0-.566-.711c-.171-.085-.371-.101-.563-.065-.83.15-1.678-.089-2.127-.247.095-1.474.256-4.025-.442-5.524C17.996.616 14.39-.026 12.166.006z"/>
+        <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30">
+          <path d="M12.166.006C9.94-.026 5.987.617 4.078 4.748c-.698 1.499-.537 4.05-.442 5.524-.448.158-1.296.397-2.126.247-.192-.036-.392-.02-.563.065a1.1 1.1 0 0 0-.567.711c-.066.305.016.62.226.853.464.512 1.49.879 3.044 1.093.093.162.186.634-.003 1.643-.321 1.704-3.027 4.092-3.158 4.208a.986.986 0 0 0-.306.81c.031.294.201.547.46.694.09.051 2.17 1.201 6.049 1.698.157.286.319.84.412 1.178.066.239.128.466.198.65.09.238.268.431.498.532.23.101.491.106.724.013.402-.158 1.083-.269 1.962-.269.879 0 1.699.193 2.258.356.27.079.553.073.819-.017.273-.093.483-.287.578-.534.069-.184.131-.407.197-.643.093-.337.256-.895.413-1.18 3.879-.497 5.958-1.647 6.049-1.698a1.02 1.02 0 0 0 .46-.694.986.986 0 0 0-.306-.81c-.131-.116-2.837-2.504-3.158-4.208-.189-1.009-.096-1.481-.003-1.643 1.554-.214 2.58-.581 3.044-1.093a1.01 1.01 0 0 0 .225-.853 1.1 1.1 0 0 0-.566-.711c-.171-.085-.371-.101-.563-.065-.83.15-1.678-.089-2.127-.247.095-1.474.256-4.025-.442-5.524C17.996.616 14.39-.026 12.166.006z"/>
         </svg>
       </a>
     </div>
@@ -413,12 +393,11 @@ body.has-ticker .content{padding-top:96px}
     <!-- Link Buttons -->
     <div class="links" id="linkList">
 
-      <!-- 1. Rate on Google -->
       <a href="https://g.page/r/CWglyh1mAaPZEAE/review" target="_blank" rel="noopener" class="link">
         <span class="ico">
-          <svg viewBox="0 0 24 24" fill="none">
+          <svg viewBox="0 0 24 24" fill="none" style="color:#d4a84b">
             <path d="M12 13.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" fill="#d4a84b"/>
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="currentColor"/>
           </svg>
         </span>
         <span class="lbl">
@@ -427,7 +406,6 @@ body.has-ticker .content{padding-top:96px}
         </span>
       </a>
 
-      <!-- 2. Live Price -->
       <a href="https://laroche.sa/swag/swag_monitors.html" target="_blank" rel="noopener" class="link">
         <span class="ico">
           <svg viewBox="0 0 24 24" fill="none" stroke="#d4a84b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -440,11 +418,10 @@ body.has-ticker .content{padding-top:96px}
         </span>
       </a>
 
-      <!-- 3. SnapChat -->
       <a href="https://www.snapchat.com/add/swag.gold24" target="_blank" rel="noopener" class="link">
         <span class="ico">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="color:#d4a84b">
-            <path d="M12.166.006C9.94-.026 5.987 .617 4.078 4.748c-.698 1.499-.537 4.05-.442 5.524-.448.158-1.296.397-2.126.247-.192-.036-.392-.02-.563.065a1.1 1.1 0 0 0-.567.711c-.066.305.016.62.226.853.464.512 1.49.879 3.044 1.093.093.162.186.634-.003 1.643-.321 1.704-3.027 4.092-3.158 4.208a.986.986 0 0 0-.306.81c.031.294.201.547.46.694.09.051 2.17 1.201 6.049 1.698.157.286.319.84.412 1.178.066.239.128.466.198.65.09.238.268.431.498.532.23.101.491.106.724.013.402-.158 1.083-.269 1.962-.269.879 0 1.699.193 2.258.356.27.079.553.073.819-.017.273-.093.483-.287.578-.534.069-.184.131-.407.197-.643.093-.337.256-.895.413-1.18 3.879-.497 5.958-1.647 6.049-1.698a1.02 1.02 0 0 0 .46-.694.986.986 0 0 0-.306-.81c-.131-.116-2.837-2.504-3.158-4.208-.189-1.009-.096-1.481-.003-1.643 1.554-.214 2.58-.581 3.044-1.093a1.01 1.01 0 0 0 .225-.853 1.1 1.1 0 0 0-.566-.711c-.171-.085-.371-.101-.563-.065-.83.15-1.678-.089-2.127-.247.095-1.474.256-4.025-.442-5.524C17.996.616 14.39-.026 12.166.006z"/>
+          <svg viewBox="0 0 24 24" fill="#d4a84b">
+            <path d="M12.166.006C9.94-.026 5.987.617 4.078 4.748c-.698 1.499-.537 4.05-.442 5.524-.448.158-1.296.397-2.126.247-.192-.036-.392-.02-.563.065a1.1 1.1 0 0 0-.567.711c-.066.305.016.62.226.853.464.512 1.49.879 3.044 1.093.093.162.186.634-.003 1.643-.321 1.704-3.027 4.092-3.158 4.208a.986.986 0 0 0-.306.81c.031.294.201.547.46.694.09.051 2.17 1.201 6.049 1.698.157.286.319.84.412 1.178.066.239.128.466.198.65.09.238.268.431.498.532.23.101.491.106.724.013.402-.158 1.083-.269 1.962-.269.879 0 1.699.193 2.258.356.27.079.553.073.819-.017.273-.093.483-.287.578-.534.069-.184.131-.407.197-.643.093-.337.256-.895.413-1.18 3.879-.497 5.958-1.647 6.049-1.698a1.02 1.02 0 0 0 .46-.694.986.986 0 0 0-.306-.81c-.131-.116-2.837-2.504-3.158-4.208-.189-1.009-.096-1.481-.003-1.643 1.554-.214 2.58-.581 3.044-1.093a1.01 1.01 0 0 0 .225-.853 1.1 1.1 0 0 0-.566-.711c-.171-.085-.371-.101-.563-.065-.83.15-1.678-.089-2.127-.247.095-1.474.256-4.025-.442-5.524C17.996.616 14.39-.026 12.166.006z"/>
           </svg>
         </span>
         <span class="lbl">
@@ -453,10 +430,9 @@ body.has-ticker .content{padding-top:96px}
         </span>
       </a>
 
-      <!-- 4. TikTok -->
       <a href="https://www.tiktok.com/@swag.gold24" target="_blank" rel="noopener" class="link">
         <span class="ico">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="color:#d4a84b">
+          <svg viewBox="0 0 24 24" fill="#d4a84b">
             <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.15 8.15 0 0 0 4.77 1.52V6.76a4.85 4.85 0 0 1-1-.07z"/>
           </svg>
         </span>
@@ -466,13 +442,12 @@ body.has-ticker .content{padding-top:96px}
         </span>
       </a>
 
-      <!-- 5. Instagram -->
       <a href="https://www.instagram.com/swag.gold24" target="_blank" rel="noopener" class="link">
         <span class="ico">
-          <svg viewBox="0 0 24 24" fill="none" style="color:#d4a84b">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor" stroke-width="2"/>
-            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
-            <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4a84b" stroke-width="2">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="5"/>
+            <circle cx="17.5" cy="6.5" r="1.5" fill="#d4a84b" stroke="none"/>
           </svg>
         </span>
         <span class="lbl">
@@ -481,10 +456,9 @@ body.has-ticker .content{padding-top:96px}
         </span>
       </a>
 
-      <!-- 6. WhatsApp -->
       <a href="https://wa.me/+9660530033445" target="_blank" rel="noopener" class="link">
         <span class="ico">
-          <svg viewBox="0 0 24 24" fill="currentColor" style="color:#d4a84b">
+          <svg viewBox="0 0 24 24" fill="#d4a84b">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
           </svg>
         </span>
@@ -494,12 +468,11 @@ body.has-ticker .content{padding-top:96px}
         </span>
       </a>
 
-      <!-- 7. Our Location -->
       <a href="https://g.co/kgs/b4cUF3k" target="_blank" rel="noopener" class="link">
         <span class="ico">
-          <svg viewBox="0 0 24 24" fill="none" style="color:#d4a84b">
-            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-            <circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="2"/>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4a84b" stroke-width="2" stroke-linejoin="round">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+            <circle cx="12" cy="9" r="2.5"/>
           </svg>
         </span>
         <span class="lbl">
@@ -514,7 +487,7 @@ body.has-ticker .content{padding-top:96px}
   </div>
 </div>
 
-<!-- Kiosk Buttons (QR + Fullscreen) -->
+<!-- Kiosk Buttons -->
 <div class="kiosk-btns">
   <button class="kbtn" id="qrBtn" title="QR Code" aria-label="Show QR Code">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -545,157 +518,168 @@ body.has-ticker .content{padding-top:96px}
 </div>
 
 <!-- Night Dim Overlay -->
-<div id="nightDim" style="display:none;position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.55);pointer-events:none"></div>
+<div id="nightDim" style="display:none;position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.5);pointer-events:none"></div>
 
-<!-- QR Library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<!-- Banner -->
+<div class="banner-bar" id="bannerBar"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 
 <script>
 (function(){
-  'use strict';
+'use strict';
 
-  // ── VIDEO HANDLING ──
-  var vid = document.getElementById('cardv');
-  if(vid){
-    vid.addEventListener('error', function(){
-      vid.style.display = 'none';
-    });
-    // If video stalls on mobile, show fallback
-    vid.addEventListener('stalled', function(){
-      vid.style.opacity = '0';
-    });
-    vid.addEventListener('playing', function(){
-      vid.style.opacity = '1';
-    });
-  }
-
-  // ── GOLD TICKER ──
-  var GOLD_API = 'https://laroche.sa/swag/swag_monitors.html';
-  var tickerBar = document.getElementById('tickerBar');
-  
-  // Gold prices: approximate SAR per gram (fallback static)
-  // Real prices fetched from external source
-  var goldRates = {
-    base24: 0, base21: 0, base18: 0
-  };
-
-  function updateTickerDisplay(p24, p21, p18){
-    var t24 = document.getElementById('t24');
-    var t21 = document.getElementById('t21');
-    var t18 = document.getElementById('t18');
-    var tTime = document.getElementById('tTime');
-    if(t24) t24.textContent = p24 ? p24.toFixed(1) : '—';
-    if(t21) t21.textContent = p21 ? p21.toFixed(1) : '—';
-    if(t18) t18.textContent = p18 ? p18.toFixed(1) : '—';
-    if(tTime){
-      var now = new Date();
-      tTime.textContent = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-    }
-    tickerBar.classList.remove('hidden');
-    document.body.classList.add('has-ticker');
-  }
-
-  // Use metalpriceapi or a proxy — fallback to static approximation
-  function fetchGoldPrices(){
-    // Try fetching from the SWAG monitor page via iframe-free method
-    // Fallback: compute from USD/oz gold price
-    fetch('https://api.frankfurter.app/latest?base=USD&symbols=SAR')
-      .then(function(r){ return r.json(); })
-      .then(function(d){
-        var sarPerUsd = d.rates && d.rates.SAR ? d.rates.SAR : 3.75;
-        // Gold approx $3300/oz June 2026 = $106/g
-        // Using metalpriceapi free tier alternative
-        var usdPerGram24 = 106; // approximate
-        var sar24 = usdPerGram24 * sarPerUsd;
-        var sar21 = sar24 * (21/24);
-        var sar18 = sar24 * (18/24);
-        updateTickerDisplay(sar24, sar21, sar18);
-      })
-      .catch(function(){
-        // Show static approximate
-        updateTickerDisplay(397.5, 347.8, 298.1);
-      });
-  }
-
-  fetchGoldPrices();
-  setInterval(fetchGoldPrices, 5 * 60 * 1000); // refresh every 5 min
-
-  // ── QR CODE ──
-  var qrModal = document.getElementById('qrModal');
-  var qrCanvas = document.getElementById('qrCanvas');
-  var qrGenerated = false;
-
-  document.getElementById('qrBtn').addEventListener('click', function(){
-    qrModal.classList.add('open');
-    if(!qrGenerated && typeof QRCode !== 'undefined'){
-      new QRCode(qrCanvas, {
-        text: 'https://swag-gold.laroche.sa',
-        width: 200, height: 200,
-        colorDark: '#1a140c', colorLight: '#f5e4a8',
-        correctLevel: QRCode.CorrectLevel.M
-      });
-      qrGenerated = true;
-    }
-  });
-
-  document.getElementById('qrClose').addEventListener('click', function(){
-    qrModal.classList.remove('open');
-  });
-  qrModal.addEventListener('click', function(e){
-    if(e.target === qrModal) qrModal.classList.remove('open');
-  });
-
-  // ── FULLSCREEN ──
-  document.getElementById('fsBtn').addEventListener('click', function(){
-    if(!document.fullscreenElement){
-      document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
-    } else {
-      document.exitFullscreen && document.exitFullscreen();
-    }
-  });
-
-  // ── NIGHT DIM ──
-  var dimOn = false;
-  var nightDim = document.getElementById('nightDim');
-  document.getElementById('dimBtn').addEventListener('click', function(){
-    dimOn = !dimOn;
-    nightDim.style.display = dimOn ? 'block' : 'none';
-  });
-
-  // Auto night dim 10pm-7am
-  function checkNightDim(){
-    var h = new Date().getHours();
-    if(h >= 22 || h < 7){
-      nightDim.style.display = 'block';
-      dimOn = true;
-    }
-  }
-  checkNightDim();
-
-  // ── SHARE BUTTON ──
-  document.getElementById('shareBtn').addEventListener('click', function(e){
-    e.preventDefault();
-    if(navigator.share){
-      navigator.share({
-        title: 'SWAG GOLD',
-        text: 'Jewellery Store — Jeddah',
-        url: 'https://swag-gold.laroche.sa'
-      }).catch(function(){});
-    } else {
-      // Copy to clipboard
-      navigator.clipboard && navigator.clipboard.writeText('https://swag-gold.laroche.sa');
-      var btn = document.getElementById('shareBtn');
-      btn.style.background = 'rgba(212,168,75,.3)';
-      setTimeout(function(){ btn.style.background = ''; }, 1000);
-    }
-  });
-
-  // ── VIDEO PERFORMANCE: pause when page hidden ──
+// ── VIDEO: fade in when ready, hide on error ──
+var vid = document.getElementById('cardv');
+if(vid){
+  function showVideo(){ vid.classList.add('loaded'); }
+  vid.addEventListener('canplay', showVideo);
+  vid.addEventListener('playing', showVideo);
+  vid.addEventListener('error', function(){ vid.style.display='none'; });
+  // Start play attempt
+  var playP = vid.play();
+  if(playP && playP.catch) playP.catch(function(){});
+  // Pause when tab hidden (saves CPU/battery)
   document.addEventListener('visibilitychange', function(){
-    if(vid){
-      document.hidden ? vid.pause() : vid.play().catch(function(){});
-    }
+    document.hidden ? vid.pause() : vid.play().catch(function(){});
   });
+}
+
+// ── GOLD TICKER ──
+var tickerBar = document.getElementById('tickerBar');
+function showTicker(p24, p21, p18){
+  var el24=document.getElementById('t24'),el21=document.getElementById('t21'),
+      el18=document.getElementById('t18'),elT=document.getElementById('tTime');
+  if(el24) el24.textContent = p24.toFixed(1);
+  if(el21) el21.textContent = p21.toFixed(1);
+  if(el18) el18.textContent = p18.toFixed(1);
+  if(elT){
+    var n=new Date();
+    elT.textContent = n.getHours().toString().padStart(2,'0')+':'+n.getMinutes().toString().padStart(2,'0');
+  }
+  tickerBar.classList.remove('hidden');
+  document.body.classList.add('has-ticker');
+}
+
+function fetchGold(){
+  fetch('https://api.frankfurter.app/latest?base=USD&symbols=SAR')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var sar = (d.rates && d.rates.SAR) ? d.rates.SAR : 3.75;
+      var g24 = 106 * sar; // ~$106/g for 24K in June 2026
+      showTicker(g24, g24*(21/24), g24*(18/24));
+    })
+    .catch(function(){ showTicker(397.5, 347.8, 298.1); });
+}
+fetchGold();
+setInterval(fetchGold, 5*60*1000);
+
+// ── QR CODE ──
+var qrModal=document.getElementById('qrModal'), qrDone=false;
+document.getElementById('qrBtn').addEventListener('click', function(){
+  qrModal.classList.add('open');
+  if(!qrDone && window.QRCode){
+    new QRCode(document.getElementById('qrCanvas'),{
+      text:'https://swag-gold.laroche.sa',width:200,height:200,
+      colorDark:'#1a0e05',colorLight:'#f5e4a8',
+      correctLevel:QRCode.CorrectLevel.M
+    });
+    qrDone=true;
+  }
+});
+document.getElementById('qrClose').addEventListener('click',function(){ qrModal.classList.remove('open'); });
+qrModal.addEventListener('click',function(e){ if(e.target===qrModal) qrModal.classList.remove('open'); });
+
+// ── FULLSCREEN ──
+document.getElementById('fsBtn').addEventListener('click',function(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
+  else document.exitFullscreen&&document.exitFullscreen();
+});
+
+// ── NIGHT DIM ──
+var dimOn=false, nightDim=document.getElementById('nightDim');
+function checkNight(){ var h=new Date().getHours(); if(h>=22||h<7){ nightDim.style.display='block'; dimOn=true; } }
+checkNight();
+document.getElementById('dimBtn').addEventListener('click',function(){
+  dimOn=!dimOn; nightDim.style.display=dimOn?'block':'none';
+});
+
+// ── SHARE ──
+document.getElementById('shareBtn').addEventListener('click',function(){
+  var url='https://swag-gold.laroche.sa';
+  if(navigator.share){ navigator.share({title:'SWAG GOLD',text:'Jewellery Store — Jeddah',url:url}).catch(function(){}); }
+  else if(navigator.clipboard){ navigator.clipboard.writeText(url); }
+});
+
+// ── CONFIG.JSON: load dynamic content if available ──
+fetch('config.json')
+  .then(function(r){ return r.json(); })
+  .then(function(cfg){
+    // Title / subtitle
+    if(cfg.title) document.getElementById('siteName').textContent = cfg.title;
+    if(cfg.subtitle) document.getElementById('siteSubtitle').textContent = cfg.subtitle;
+    // Footer
+    if(cfg.footer) document.getElementById('footTxt').textContent = cfg.footer;
+    // Logo image
+    if(cfg.logoUrl && cfg.logoUrl.trim()){
+      var img=document.createElement('img');
+      img.src=cfg.logoUrl; img.alt='SWAG GOLD'; img.className='logo-img';
+      img.width=90; img.height=90; img.loading='eager';
+      var wrap=document.getElementById('logoWrap');
+      wrap.innerHTML=''; wrap.appendChild(img);
+    }
+    // Social links override
+    if(cfg.socials && cfg.socials.length){
+      var sl=document.getElementById('socialList'); sl.innerHTML='';
+      cfg.socials.forEach(function(s){
+        if(!s.url) return;
+        var a=document.createElement('a');
+        a.href=s.url; a.target='_blank'; a.rel='noopener';
+        a.setAttribute('aria-label',s.icon||'');
+        a.innerHTML='<svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><text y="18" font-size="16">'+getSocialIcon(s.icon)+'</text></svg>';
+        sl.appendChild(a);
+      });
+    }
+    // Link buttons override
+    if(cfg.links && cfg.links.length){
+      var ll=document.getElementById('linkList'); ll.innerHTML='';
+      cfg.links.forEach(function(l,i){
+        if(!l.url||l.hidden) return;
+        var a=document.createElement('a');
+        a.href=l.url; a.target='_blank'; a.rel='noopener'; a.className='link';
+        a.style.animationDelay=(0.05+i*0.07)+'s';
+        a.innerHTML='<span class="ico">'+getIconSVG(l.icon)+'</span>'
+          +'<span class="lbl"><span class="en-txt">'+(l.label||'')+'</span>'
+          +(l.labelAr?'<span class="ar-txt">'+l.labelAr+'</span>':'')+'</span>';
+        ll.appendChild(a);
+      });
+    }
+    // Banner
+    if(cfg.banner && cfg.banner.text && cfg.banner.show){
+      var bb=document.getElementById('bannerBar');
+      bb.textContent=cfg.banner.text; bb.classList.add('show');
+    }
+    // Verified badge
+    if(cfg.verified){
+      var vb=document.getElementById('verifiedBadge');
+      if(vb) vb.style.display='grid';
+    }
+  })
+  .catch(function(){}); // silently use hardcoded defaults if no config
+
+function getIconSVG(name){
+  var icons={
+    google:'<svg viewBox="0 0 24 24" fill="none"><path d="M12 13.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" fill="#d4a84b"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#d4a84b"/></svg>',
+    chart:'<svg viewBox="0 0 24 24" fill="none" stroke="#d4a84b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>',
+    snapchat:'<svg viewBox="0 0 24 24" fill="#d4a84b"><path d="M12.166.006C9.94-.026 5.987.617 4.078 4.748c-.698 1.499-.537 4.05-.442 5.524-.448.158-1.296.397-2.126.247-.192-.036-.392-.02-.563.065a1.1 1.1 0 0 0-.567.711c-.066.305.016.62.226.853.464.512 1.49.879 3.044 1.093.093.162.186.634-.003 1.643-.321 1.704-3.027 4.092-3.158 4.208a.986.986 0 0 0-.306.81c.031.294.201.547.46.694.09.051 2.17 1.201 6.049 1.698.157.286.319.84.412 1.178.066.239.128.466.198.65.09.238.268.431.498.532.23.101.491.106.724.013.402-.158 1.083-.269 1.962-.269.879 0 1.699.193 2.258.356.27.079.553.073.819-.017.273-.093.483-.287.578-.534.069-.184.131-.407.197-.643.093-.337.256-.895.413-1.18 3.879-.497 5.958-1.647 6.049-1.698a1.02 1.02 0 0 0 .46-.694.986.986 0 0 0-.306-.81c-.131-.116-2.837-2.504-3.158-4.208-.189-1.009-.096-1.481-.003-1.643 1.554-.214 2.58-.581 3.044-1.093a1.01 1.01 0 0 0 .225-.853 1.1 1.1 0 0 0-.566-.711c-.171-.085-.371-.101-.563-.065-.83.15-1.678-.089-2.127-.247.095-1.474.256-4.025-.442-5.524C17.996.616 14.39-.026 12.166.006z"/></svg>',
+    tiktok:'<svg viewBox="0 0 24 24" fill="#d4a84b"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.15 8.15 0 0 0 4.77 1.52V6.76a4.85 4.85 0 0 1-1-.07z"/></svg>',
+    instagram:'<svg viewBox="0 0 24 24" fill="none" stroke="#d4a84b" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="#d4a84b" stroke="none"/></svg>',
+    whatsapp:'<svg viewBox="0 0 24 24" fill="#d4a84b"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>',
+    location:'<svg viewBox="0 0 24 24" fill="none" stroke="#d4a84b" stroke-width="2" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>'
+  };
+  return icons[name] || icons.location;
+}
+function getSocialIcon(name){ return name||''; }
 
 })();
 </script>
