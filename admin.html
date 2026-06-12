@@ -65,8 +65,8 @@
   .phone{width:300px;max-width:100%;aspect-ratio:9/19.5;border-radius:32px;border:7px solid #000;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative;box-shadow:0 18px 44px rgba(0,0,0,.6);background:#1a140c;scrollbar-width:thin}
   .phone::-webkit-scrollbar{width:5px}.phone::-webkit-scrollbar-thumb{background:rgba(212,168,75,.5);border-radius:3px}
   .phone .link{cursor:grab;touch-action:none}.phone .link.pvdrag{opacity:.45}.phone .link.pvover{outline:2px dashed var(--gold);outline-offset:2px}
-  .phone.movemode [data-pos]{cursor:move;outline:1px dashed rgba(212,168,75,.45);outline-offset:3px;border-radius:4px}
-  .phone.movemode [data-pos]:hover{outline:1.5px solid var(--gold)}
+  .phone.movemode .movemode [data-pos]{cursor:move;outline:1px dashed rgba(212,168,75,.45);outline-offset:3px;border-radius:4px}
+  .phone.movemode .movemode [data-pos]:hover{outline:1.5px solid var(--gold)}
   .phone:not(.movemode) [contenteditable]{cursor:text}
   .phone [contenteditable]:hover{outline:1px dashed rgba(212,168,75,.55);outline-offset:2px;border-radius:3px}
   .phone [contenteditable]:focus{outline:1.5px solid var(--gold);outline-offset:2px;border-radius:3px;background:rgba(212,168,75,.10)}
@@ -109,6 +109,7 @@
   .chip .ast{font-size:21px;line-height:1;font-weight:700}
 
   .profile{display:flex;flex-direction:column;align-items:center;text-align:center}
+  .profile [data-pos]{width:100%}
   .avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;background:#000;
           box-shadow:0 10px 30px rgba(0,0,0,.6)}
   .name{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:9px}.nm{font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.1em;font-size:33px;text-transform:uppercase;background:linear-gradient(100deg,#f7ecc4 0%,#d4a84b 22%,#fff6da 42%,#c9952b 58%,#f7ecc4 82%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:shine 4.5s linear infinite;filter:drop-shadow(0 2px 12px rgba(0,0,0,.75))}.verified{display:grid;place-items:center;filter:drop-shadow(0 2px 6px rgba(0,0,0,.55))}.verified svg{width:24px;height:24px;display:block}@keyframes shine{to{background-position:220% center}}
