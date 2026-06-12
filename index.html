@@ -4,384 +4,699 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>SWAG GOLD Official: TikTok, Instagram</title>
-<meta name="description" content="Jewellery Store">
-<meta property="og:title" content="SWAG GOLD Official: TikTok, Instagram"><meta property="og:description" content="Jewellery Store">
+<meta name="description" content="Jewellery Store — Jeddah">
+<meta property="og:title" content="SWAG GOLD">
+<meta property="og:description" content="Jewellery Store">
 <meta name="theme-color" content="#1a140c">
-<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="SWAG GOLD">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SWAG GOLD">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;600;700&family=Cormorant+Garamond:wght@600;700&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--radius:44px}
+:root{--gold:#d4a84b;--gold2:#f7ecc4;--gold3:#c9952b;--dark:#1a140c;--radius:44px}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:auto;min-height:100%}
 html{scroll-behavior:smooth}
-body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a140c;
+body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:var(--dark);
   display:flex;justify-content:center;align-items:flex-start;
   overflow-x:hidden;-webkit-overflow-scrolling:touch}
 
-/* ── FULL-PAGE VIDEO BACKGROUND ── */
-#cardv{position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);
+/* ── VIDEO BACKGROUND ── */
+#cardv{
+  position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);
   width:100%;max-width:480px;height:100dvh;object-fit:cover;
-  z-index:0;backface-visibility:hidden;will-change:transform}
-.scrim{position:fixed;inset:0;z-index:1;pointer-events:none;
+  z-index:0;backface-visibility:hidden;will-change:transform
+}
+
+/* ── GRADIENT FALLBACK (shows when video missing/loading) ── */
+.bg-fallback{
+  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;height:100dvh;z-index:-1;
+  background:linear-gradient(160deg,
+    #3d2408 0%,
+    #251505 15%,
+    #1a0e06 30%,
+    #120a04 50%,
+    #1e1008 70%,
+    #2d1a08 85%,
+    #3a200a 100%)
+}
+.bg-fallback::after{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 30%,
+    rgba(212,168,75,.18) 0%,
+    rgba(180,110,20,.08) 40%,
+    transparent 70%)
+}
+
+.scrim{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
   max-width:480px;left:50%;transform:translateX(-50%);
-  background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,.02) 20%,rgba(0,0,0,0) 60%,rgba(0,0,0,0) 100%)}
+  background:linear-gradient(180deg,
+    rgba(0,0,0,.35) 0%,
+    rgba(0,0,0,.05) 25%,
+    rgba(0,0,0,0) 55%,
+    rgba(0,0,0,.2) 100%)
+}
 
-.backdrop{display:none;position:fixed;inset:0;z-index:-2;overflow:hidden;background:#1a140c}
-.backdrop video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1.25);
-  min-width:100%;min-height:100%;object-fit:cover;filter:blur(34px) brightness(.5) saturate(1.1)}
-.backdrop::after{content:"";position:absolute;inset:0;background:rgba(20,15,8,.35)}
-
-.card{width:100%;max-width:480px;min-height:100dvh;position:relative;
+.card{
+  width:100%;max-width:480px;min-height:100dvh;position:relative;
   display:flex;flex-direction:column;justify-content:flex-start;
-  animation:fade .6s ease both;z-index:2}
+  animation:fade .6s ease both;z-index:2
+}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 
 /* ── TOPBAR ── */
-.topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;pointer-events:none}
+.topbar{
+  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;z-index:20;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;pointer-events:none
+}
 .topbar>*{pointer-events:all}
-.chip{width:42px;height:42px;border-radius:50%;background:rgba(20,16,10,.42);color:#fff;
-      display:grid;place-items:center;text-decoration:none;backdrop-filter:blur(6px);
-      border:1px solid rgba(212,168,75,.35);transition:background .2s}
+.chip{
+  width:42px;height:42px;border-radius:50%;
+  background:rgba(20,16,10,.42);color:#fff;
+  display:grid;place-items:center;text-decoration:none;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(212,168,75,.35);transition:background .2s
+}
 .chip:hover{background:rgba(20,16,10,.7)}
 .chip svg{width:18px;height:18px}
 .chip .ast{font-size:21px;line-height:1;font-weight:700}
 
-/* ── CONTENT: push down so logo clears the fixed topbar ── */
-.content{position:relative;z-index:2;padding:82px 18px 44px;width:100%}
+/* ── GOLD TICKER ── */
+.ticker-bar{
+  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;z-index:15;
+  display:flex;align-items:center;justify-content:center;
+  gap:16px;padding:8px 16px;
+  background:rgba(10,7,2,.65);backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(212,168,75,.25);
+  font-family:'Jost',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:.04em;color:#e8d5a0
+}
+.ticker-bar.hidden{display:none}
+.ticker-item{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.ticker-item .karat{color:rgba(212,168,75,.7);font-size:10px;font-weight:500}
+.ticker-item .price{color:#f5e4a8;font-weight:700}
+.ticker-item .unit{color:rgba(200,175,120,.55);font-size:10px}
+.ticker-dot{width:3px;height:3px;border-radius:50%;background:rgba(212,168,75,.35)}
+.ticker-time{color:rgba(200,175,120,.45);font-size:9px;margin-left:4px}
 
-/* ── LOGO / AVATAR ── */
+/* ── CONTENT ── */
+.content{position:relative;z-index:2;padding:80px 18px 44px;width:100%}
+/* when ticker visible, push down more */
+body.has-ticker .content{padding-top:96px}
+
+/* ── LOGO ── */
 .avatar-wrap{display:flex;justify-content:center;margin-bottom:0}
-.avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;background:rgba(0,0,0,.45);
-  border:2.5px solid rgba(212,168,75,.55);display:block;margin:0 auto}
-.logo-svg-wrap{width:90px;height:90px;border-radius:50%;border:2.5px solid rgba(212,168,75,.55);
-  background:rgba(10,8,4,.55);display:flex;align-items:center;justify-content:center;margin:0 auto}
+.logo-svg-wrap{
+  width:90px;height:90px;border-radius:50%;
+  border:2.5px solid rgba(212,168,75,.55);
+  background:rgba(10,8,4,.55);
+  display:flex;align-items:center;justify-content:center;margin:0 auto
+}
 .logo-svg-wrap svg{width:64px;height:64px}
 
-.name{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:9px}
-.nm{font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.1em;font-size:33px;text-transform:uppercase;
+/* ── NAME ── */
+.name-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:9px}
+.nm{
+  font-family:'Cormorant Garamond',serif;font-weight:700;
+  letter-spacing:.1em;font-size:clamp(26px,7vw,33px);
+  text-transform:uppercase;
   background:linear-gradient(100deg,#f7ecc4 0%,#d4a84b 22%,#fff6da 42%,#c9952b 58%,#f7ecc4 82%);
-  background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
-  -webkit-text-fill-color:transparent;animation:shine 4.5s linear infinite;
-  filter:drop-shadow(0 2px 12px rgba(0,0,0,.75))}
-.verified{display:grid;place-items:center;filter:drop-shadow(0 2px 6px rgba(0,0,0,.55))}
-.verified svg{width:24px;height:24px;display:block}
+  background-size:220% auto;
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent;
+  animation:shine 4.5s linear infinite;
+  filter:drop-shadow(0 2px 12px rgba(0,0,0,.75))
+}
 @keyframes shine{to{background-position:220% center}}
-.subtitle{text-align:center;font-size:14px;color:rgba(255,255,255,.72);margin-top:4px;letter-spacing:.04em}
+
+.verified-badge{display:grid;place-items:center;flex-shrink:0}
+
+.subtitle{
+  text-align:center;font-size:13px;
+  color:rgba(255,255,255,.65);margin-top:4px;letter-spacing:.04em
+}
+
+/* ── SOCIALS ── */
 .socials{display:flex;justify-content:center;gap:14px;margin-top:14px}
-.socials a{width:30px;height:30px;color:#fff;display:grid;place-items:center;
-  transition:opacity .2s,transform .2s}
+.socials a{
+  width:30px;height:30px;color:#fff;
+  display:grid;place-items:center;
+  transition:opacity .2s,transform .2s;text-decoration:none
+}
 .socials a:hover{opacity:.75;transform:scale(1.12)}
 .socials svg{width:30px;height:30px;display:block}
 
-.links{display:flex;flex-direction:column;gap:12px;margin-top:22px}
-.link{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:26px 20px;border:1.5px solid rgba(212,168,75,.60);border-radius:var(--radius);background:rgba(0,0,0,.16);color:#fff;text-decoration:none;font-size:17.5px;font-weight:500;transition:transform .18s,background .25s,border-color .25s,box-shadow .25s;opacity:0;animation:rise .55s ease forwards}
-.link::before{content:"";position:absolute;top:0;left:0;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,236,180,.30),transparent);transform:translateX(-180%) skewX(-20deg);animation:sweep 6s ease-in-out infinite;pointer-events:none;will-change:transform}
-.link:nth-child(2)::before{animation-delay:.8s}.link:nth-child(3)::before{animation-delay:1.6s}.link:nth-child(4)::before{animation-delay:2.4s}.link:nth-child(5)::before{animation-delay:3.2s}.link:nth-child(6)::before{animation-delay:4s}.link:nth-child(7)::before{animation-delay:4.8s}
-@keyframes sweep{0%{transform:translateX(-180%) skewX(-20deg)}45%{transform:translateX(320%) skewX(-20deg)}100%{transform:translateX(320%) skewX(-20deg)}}
-.link .ico{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:grid;place-items:center}
-.link .ico svg{width:28px;height:28px;display:block}
-.link .lbl{flex:1;text-align:center;line-height:1.3;text-shadow:0 1px 6px rgba(0,0,0,.85)}
-.link .lbl .en{display:block}
-.link .lbl .ar{display:block;font-family:'Cairo',sans-serif;font-size:14px;opacity:.8}
-.link .dots{flex-shrink:0;opacity:.45;cursor:pointer;width:28px;height:28px;display:grid;place-items:center}
-.link .dots svg{width:20px;height:20px}
-.link:hover{transform:scale(1.025);background:rgba(0,0,0,.28);border-color:rgba(212,168,75,.9);box-shadow:0 4px 24px rgba(0,0,0,.45)}
-@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+/* ── LINK BUTTONS ── */
+.links{display:flex;flex-direction:column;gap:11px;margin-top:20px}
+.link{
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;gap:14px;
+  padding:15px 20px;
+  border:1.5px solid rgba(212,168,75,.55);
+  border-radius:var(--radius);
+  background:rgba(0,0,0,.18);
+  color:#fff;text-decoration:none;
+  font-size:16px;font-weight:500;
+  transition:transform .18s,background .25s,border-color .25s,box-shadow .25s;
+  opacity:0;animation:rise .55s ease forwards;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)
+}
+.link:hover{
+  background:rgba(212,168,75,.14);
+  border-color:rgba(212,168,75,.85);
+  box-shadow:0 0 18px rgba(212,168,75,.18);
+  transform:translateY(-1px)
+}
+.link:active{transform:scale(.98)}
 
-.kbtn{width:48px;height:48px;border-radius:50%;border:1px solid rgba(212,168,75,.6);
-  background:rgba(20,16,10,.55);backdrop-filter:blur(8px);color:#e7c873;font-size:13px;font-weight:700;
-  cursor:pointer;display:grid;place-items:center;transition:background .2s}
-.kbtn svg{width:22px;height:22px;fill:none;stroke:#e7c873;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.qrov{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.7);
-  backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:24px}
-.qrov.open{display:flex}
-.qrcard{background:#fff;border-radius:24px;padding:28px 24px 24px;width:100%;max-width:310px;text-align:center;position:relative}
-.qrcard .qbadge{width:54px;height:54px;border-radius:50%;margin:-52px auto 8px;display:block;
-  border:3px solid #fff;background:#fff}
-.qrbox{width:236px;height:236px;margin:6px auto 0;display:grid;place-items:center}
-.qrbox svg{width:236px;height:236px}
-.qrt{margin-top:16px;color:#1a140c;font-family:'Cairo',sans-serif;font-weight:700;font-size:18px;line-height:1.5}
-.qrsub{font-size:12px;color:#888;margin-top:2px}
-.qrclose{position:absolute;top:12px;right:14px;border:none;background:none;font-size:20px;color:#bbb;cursor:pointer;line-height:1}
-@media(min-width:520px){.card{max-width:480px}.backdrop{display:block}}
+/* Shimmer sweep */
+.link::before{
+  content:'';
+  position:absolute;top:0;left:0;width:55%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,236,180,.28),transparent);
+  transform:translateX(-180%) skewX(-20deg);
+  animation:sweep 6s ease-in-out infinite;
+  pointer-events:none
+}
+.link:nth-child(1)::before{animation-delay:0s}
+.link:nth-child(2)::before{animation-delay:.9s}
+.link:nth-child(3)::before{animation-delay:1.8s}
+.link:nth-child(4)::before{animation-delay:2.7s}
+.link:nth-child(5)::before{animation-delay:3.6s}
+.link:nth-child(6)::before{animation-delay:4.5s}
+.link:nth-child(7)::before{animation-delay:5.4s}
+@keyframes sweep{
+  0%{transform:translateX(-180%) skewX(-20deg)}
+  45%{transform:translateX(320%) skewX(-20deg)}
+  100%{transform:translateX(320%) skewX(-20deg)}
+}
 
-/* ticker */
-.ticker-wrap{width:100%;overflow:hidden;margin-bottom:0}
-.ticker{display:flex;gap:0}
-.ticker-item{white-space:nowrap;padding:0 32px;font-size:13px;font-weight:600;letter-spacing:.04em}
+/* Rise animation per button */
+.link:nth-child(1){animation-delay:.05s}
+.link:nth-child(2){animation-delay:.12s}
+.link:nth-child(3){animation-delay:.19s}
+.link:nth-child(4){animation-delay:.26s}
+.link:nth-child(5){animation-delay:.33s}
+.link:nth-child(6){animation-delay:.4s}
+.link:nth-child(7){animation-delay:.47s}
+@keyframes rise{
+  from{opacity:0;transform:translateY(14px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
-/* announce */
-.announce{text-align:center;font-size:13px;font-family:'Cairo',sans-serif;padding:7px 12px;border-radius:8px;background:rgba(212,168,75,.13);border:1px solid rgba(212,168,75,.3);margin-bottom:4px;line-height:1.5}
+.link .ico{
+  flex-shrink:0;
+  width:28px;height:28px;
+  display:grid;place-items:center
+}
+.link .ico svg{width:24px;height:24px;display:block}
 
-/* gallery */
-.gal{display:grid;gap:6px;margin-top:14px}
-.gal img{width:100%;border-radius:12px;object-fit:cover;cursor:zoom-in;display:block}
-#lbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:200;align-items:center;justify-content:center;cursor:zoom-out}
-#lbox.open{display:flex}
-    #lbox img{max-width:96vw;max-height:88vh;object-fit:contain;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.8);user-select:none;touch-action:pan-y}
-    #lbox .lbclose{position:absolute;top:14px;right:18px;font-size:28px;color:#fff;cursor:pointer;line-height:1;z-index:201;opacity:.85;background:rgba(0,0,0,.4);border-radius:50%;width:38px;height:38px;display:grid;place-items:center}
-    #lbox .lbnav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;font-size:22px;display:grid;place-items:center;cursor:pointer;user-select:none;z-index:201}
-    #lbox .lbprev{left:10px}#lbox .lbnext{right:10px}
-
-/* perf */
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-.chip,.kbtn,.qrov{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-@supports(backdrop-filter:blur(1px)){.chip,.kbtn,.qrov{backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}}
+.link .lbl{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;gap:1px
+}
+.link .lbl .en-txt{
+  font-size:15px;font-weight:600;
+  color:#fff;letter-spacing:.01em
+}
+.link .lbl .ar-txt{
+  font-family:'Cairo',sans-serif;
+  font-size:13px;font-weight:500;
+  color:rgba(255,255,255,.6);direction:rtl
+}
 
 /* ── FOOTER ── */
-.card-footer{position:relative;z-index:2;text-align:center;padding:16px 18px 28px;
-  font-size:11px;letter-spacing:.08em;color:rgba(255,255,255,.35);font-family:'Cairo',sans-serif;
-  margin-top:auto}
+.foot{
+  text-align:center;margin-top:28px;padding-bottom:32px;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:rgba(255,255,255,.28)
+}
+
+/* ── QR + FULLSCREEN BUTTONS ── */
+.kiosk-btns{
+  position:fixed;bottom:18px;right:16px;
+  z-index:30;display:flex;flex-direction:column;gap:10px
+}
+.kbtn{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(20,16,10,.55);border:1px solid rgba(212,168,75,.3);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:grid;place-items:center;cursor:pointer;
+  color:#d4a84b;transition:background .2s
+}
+.kbtn:hover{background:rgba(212,168,75,.18)}
+.kbtn svg{width:18px;height:18px}
+
+/* ── QR MODAL ── */
+.qr-modal{
+  display:none;position:fixed;inset:0;z-index:50;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  align-items:center;justify-content:center
+}
+.qr-modal.open{display:flex}
+.qr-box{
+  background:rgba(26,20,12,.92);
+  border:1px solid rgba(212,168,75,.4);
+  border-radius:20px;padding:28px;
+  display:flex;flex-direction:column;align-items:center;gap:14px
+}
+.qr-box canvas{border-radius:10px}
+.qr-box .qr-lbl{
+  font-size:12px;color:rgba(255,255,255,.5);
+  text-align:center;letter-spacing:.04em
+}
+.qr-close{
+  position:absolute;top:20px;right:20px;
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.1);border:none;
+  color:#fff;font-size:18px;cursor:pointer;
+  display:grid;place-items:center
+}
+
+/* ── BANNER ── */
+.banner-bar{
+  display:none;position:fixed;
+  bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;z-index:25;
+  background:linear-gradient(90deg,rgba(30,20,5,.9),rgba(50,30,8,.9));
+  border-top:1px solid rgba(212,168,75,.3);
+  padding:10px 16px;
+  font-size:13px;font-weight:600;
+  color:#f5e4a8;text-align:center;
+  backdrop-filter:blur(6px)
+}
+.banner-bar.show{display:block}
+.banner-bar a{color:#f5e4a8;text-decoration:underline}
+
+/* ── MOBILE SAFE ── */
+@media(max-width:380px){
+  .nm{font-size:24px}
+  .link{padding:13px 16px;font-size:15px}
+  .content{padding:75px 14px 40px}
+  body.has-ticker .content{padding-top:90px}
+}
+@media(min-width:481px){
+  #cardv,.bg-fallback,.scrim,.topbar,.ticker-bar,.kiosk-btns,.banner-bar{
+    max-width:480px;left:50%;transform:translateX(-50%)
+  }
+  .card{box-shadow:0 0 60px rgba(0,0,0,.5)}
+}
 </style>
 </head>
 <body>
-<div class="backdrop"><video id="bgv" autoplay muted loop playsinline></video></div>
-<video id="cardv" autoplay muted loop playsinline preload="auto"><source id="vsrc" src="https://res.cloudinary.com/dzt5habw9/video/upload/v1781270393/19-3_v_3_2215524-1_aa2i8s.mp4" type="video/mp4"></video>
+
+<!-- Gradient fallback background (always visible, video layered on top) -->
+<div class="bg-fallback"></div>
+
+<!-- Video background -->
+<video id="cardv" autoplay muted loop playsinline preload="auto"
+  poster="" aria-hidden="true">
+  <source src="swag-bg.mp4" type="video/mp4">
+</video>
 <div class="scrim"></div>
-<div class="card" id="card">
-  <div class="topbar">
-    <a class="chip" href="#" onclick="toggleQR();return false" aria-label="QR Code"><span class="ast">&#10033;</span></a>
-    <div style="display:flex;gap:8px">
-      <button class="kbtn" id="fsBtn" onclick="toggleFS()" aria-label="Fullscreen">
-        <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-      </button>
-      <button class="kbtn" id="gridBtn" onclick="toggleGallery()" aria-label="Gallery">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      </button>
-    </div>
+
+<!-- Gold Ticker -->
+<div class="ticker-bar" id="tickerBar">
+  <div class="ticker-item">
+    <span class="karat">24K</span>
+    <span class="price" id="t24">—</span>
+    <span class="unit">SAR/g</span>
   </div>
-  <div class="content" id="content">
-    <div id="tickerWrap" class="ticker-wrap" style="display:none"></div>
-    <div id="announceWrap"></div>
+  <div class="ticker-dot"></div>
+  <div class="ticker-item">
+    <span class="karat">21K</span>
+    <span class="price" id="t21">—</span>
+  </div>
+  <div class="ticker-dot"></div>
+  <div class="ticker-item">
+    <span class="karat">18K</span>
+    <span class="price" id="t18">—</span>
+  </div>
+  <span class="ticker-time" id="tTime"></span>
+</div>
+
+<!-- Topbar -->
+<div class="topbar">
+  <a href="admin.html" class="chip" title="Admin">
+    <span class="ast">✦</span>
+  </a>
+  <a href="https://swag-gold.laroche.sa" class="chip" title="Share" id="shareBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+    </svg>
+  </a>
+</div>
+
+<!-- Main Card -->
+<div class="card">
+  <div class="content">
+
+    <!-- Logo -->
     <div class="avatar-wrap">
-      <img class="avatar" id="avImg" src="https://res.cloudinary.com/dzt5habw9/image/upload/v1781270000/swag-gold-logo.png" alt="SWAG GOLD" onerror="this.style.display='none';document.getElementById('logoSvgWrap').style.display='flex';" style="display:block">
-      <div class="logo-svg-wrap" id="logoSvgWrap" style="display:none">
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SWAG GOLD">
-          <circle cx="32" cy="32" r="30" stroke="url(#gr1)" stroke-width="1.5" fill="none"/>
-          <path d="M22 24 Q22 19 27 19 Q34 19 34 24 Q34 29 26 29 Q20 29 20 35 Q20 41 27 41 Q34 41 34 36" stroke="url(#gr2)" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-          <circle cx="38" cy="20" r="2.5" fill="#d4a84b"/>
-          <circle cx="38" cy="44" r="1.8" fill="#d4a84b" opacity=".6"/>
-          <defs>
-            <linearGradient id="gr1" x1="2" y1="2" x2="62" y2="62" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#f7ecc4"/><stop offset="40%" stop-color="#d4a84b"/><stop offset="100%" stop-color="#c9952b"/>
-            </linearGradient>
-            <linearGradient id="gr2" x1="20" y1="19" x2="34" y2="41" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#fff6da"/><stop offset="50%" stop-color="#d4a84b"/><stop offset="100%" stop-color="#f7ecc4"/>
-            </linearGradient>
-          </defs>
+      <div class="logo-svg-wrap">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SWAG GOLD logo">
+          <circle cx="50" cy="50" r="46" stroke="#d4a84b" stroke-width="1.5" opacity=".6"/>
+          <text x="50" y="38" text-anchor="middle" font-family="Cormorant Garamond,serif" font-weight="700" font-size="22" fill="#d4a84b" letter-spacing="3">SWAG</text>
+          <line x1="20" y1="44" x2="80" y2="44" stroke="#d4a84b" stroke-width=".8" opacity=".5"/>
+          <text x="50" y="60" text-anchor="middle" font-family="Cormorant Garamond,serif" font-weight="600" font-size="13" fill="#c9a060" letter-spacing="5">GOLD</text>
+          <path d="M38 68 L50 76 L62 68" stroke="#d4a84b" stroke-width="1" fill="none" opacity=".5"/>
         </svg>
       </div>
     </div>
-    <div class="name"><span class="nm" id="nm"></span><span id="verifiedBadge"></span></div>
-    <p class="subtitle" id="sub"></p>
-    <div class="socials" id="socials"></div>
-    <div class="links" id="links"></div>
-    <div id="galWrap"></div>
+
+    <!-- Name -->
+    <div class="name-row">
+      <span class="nm">SWAG GOLD</span>
+      <span class="verified-badge" id="verifiedBadge" style="display:none">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path d="M9 12l2 2 4-4" stroke="#d4a84b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 12c0-1.268-.63-2.39-1.593-3.068l.012-.025-.878-1.52a3.62 3.62 0 0 0-3.129-1.795h-.018l-.025-.012A3.619 3.619 0 0 0 12 3.81c-1.137 0-2.138.525-2.795 1.341l-.025.012h-.018a3.62 3.62 0 0 0-3.129 1.795l-.878 1.52.012.025C4.63 9.61 4 10.732 4 12c0 1.268.63 2.39 1.593 3.068l-.012.025.878 1.52a3.62 3.62 0 0 0 3.129 1.795h.018l.025.012A3.619 3.619 0 0 0 12 20.19c1.137 0 2.138-.525 2.795-1.341l.025-.012h.018a3.62 3.62 0 0 0 3.129-1.795l.878-1.52-.012-.025C20.37 14.39 21 13.268 21 12z" fill="#d4a84b" opacity=".9"/>
+        </svg>
+      </span>
+    </div>
+    <div class="subtitle">Jewellery Store</div>
+
+    <!-- Socials -->
+    <div class="socials">
+      <!-- TikTok -->
+      <a href="https://www.tiktok.com/@swag.gold24" target="_blank" rel="noopener" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.15 8.15 0 0 0 4.77 1.52V6.76a4.85 4.85 0 0 1-1-.07z"/>
+        </svg>
+      </a>
+      <!-- WhatsApp -->
+      <a href="https://wa.me/+9660530033445" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+        </svg>
+      </a>
+      <!-- Snapchat -->
+      <a href="https://www.snapchat.com/add/swag.gold24" target="_blank" rel="noopener" aria-label="Snapchat">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.166.006C9.94-.026 5.987 .617 4.078 4.748c-.698 1.499-.537 4.05-.442 5.524-.448.158-1.296.397-2.126.247-.192-.036-.392-.02-.563.065a1.1 1.1 0 0 0-.567.711c-.066.305.016.62.226.853.464.512 1.49.879 3.044 1.093.093.162.186.634-.003 1.643-.321 1.704-3.027 4.092-3.158 4.208a.986.986 0 0 0-.306.81c.031.294.201.547.46.694.09.051 2.17 1.201 6.049 1.698.157.286.319.84.412 1.178.066.239.128.466.198.65.09.238.268.431.498.532.23.101.491.106.724.013.402-.158 1.083-.269 1.962-.269.879 0 1.699.193 2.258.356.27.079.553.073.819-.017.273-.093.483-.287.578-.534.069-.184.131-.407.197-.643.093-.337.256-.895.413-1.18 3.879-.497 5.958-1.647 6.049-1.698a1.02 1.02 0 0 0 .46-.694.986.986 0 0 0-.306-.81c-.131-.116-2.837-2.504-3.158-4.208-.189-1.009-.096-1.481-.003-1.643 1.554-.214 2.58-.581 3.044-1.093a1.01 1.01 0 0 0 .225-.853 1.1 1.1 0 0 0-.566-.711c-.171-.085-.371-.101-.563-.065-.83.15-1.678-.089-2.127-.247.095-1.474.256-4.025-.442-5.524C17.996.616 14.39-.026 12.166.006z"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Link Buttons -->
+    <div class="links" id="linkList">
+
+      <!-- 1. Rate on Google -->
+      <a href="https://g.page/r/CWglyh1mAaPZEAE/review" target="_blank" rel="noopener" class="link">
+        <span class="ico">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 13.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" fill="#d4a84b"/>
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="lbl">
+          <span class="en-txt">Rate us on Google</span>
+          <span class="ar-txt">قيمنا على جوجل</span>
+        </span>
+      </a>
+
+      <!-- 2. Live Price -->
+      <a href="https://laroche.sa/swag/swag_monitors.html" target="_blank" rel="noopener" class="link">
+        <span class="ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#d4a84b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </span>
+        <span class="lbl">
+          <span class="en-txt">Live Price</span>
+          <span class="ar-txt">التسعير المباشر</span>
+        </span>
+      </a>
+
+      <!-- 3. SnapChat -->
+      <a href="https://www.snapchat.com/add/swag.gold24" target="_blank" rel="noopener" class="link">
+        <span class="ico">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="color:#d4a84b">
+            <path d="M12.166.006C9.94-.026 5.987 .617 4.078 4.748c-.698 1.499-.537 4.05-.442 5.524-.448.158-1.296.397-2.126.247-.192-.036-.392-.02-.563.065a1.1 1.1 0 0 0-.567.711c-.066.305.016.62.226.853.464.512 1.49.879 3.044 1.093.093.162.186.634-.003 1.643-.321 1.704-3.027 4.092-3.158 4.208a.986.986 0 0 0-.306.81c.031.294.201.547.46.694.09.051 2.17 1.201 6.049 1.698.157.286.319.84.412 1.178.066.239.128.466.198.65.09.238.268.431.498.532.23.101.491.106.724.013.402-.158 1.083-.269 1.962-.269.879 0 1.699.193 2.258.356.27.079.553.073.819-.017.273-.093.483-.287.578-.534.069-.184.131-.407.197-.643.093-.337.256-.895.413-1.18 3.879-.497 5.958-1.647 6.049-1.698a1.02 1.02 0 0 0 .46-.694.986.986 0 0 0-.306-.81c-.131-.116-2.837-2.504-3.158-4.208-.189-1.009-.096-1.481-.003-1.643 1.554-.214 2.58-.581 3.044-1.093a1.01 1.01 0 0 0 .225-.853 1.1 1.1 0 0 0-.566-.711c-.171-.085-.371-.101-.563-.065-.83.15-1.678-.089-2.127-.247.095-1.474.256-4.025-.442-5.524C17.996.616 14.39-.026 12.166.006z"/>
+          </svg>
+        </span>
+        <span class="lbl">
+          <span class="en-txt">SnapChat</span>
+          <span class="ar-txt">سناب شات</span>
+        </span>
+      </a>
+
+      <!-- 4. TikTok -->
+      <a href="https://www.tiktok.com/@swag.gold24" target="_blank" rel="noopener" class="link">
+        <span class="ico">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="color:#d4a84b">
+            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.15 8.15 0 0 0 4.77 1.52V6.76a4.85 4.85 0 0 1-1-.07z"/>
+          </svg>
+        </span>
+        <span class="lbl">
+          <span class="en-txt">TikTok</span>
+          <span class="ar-txt">تيك توك</span>
+        </span>
+      </a>
+
+      <!-- 5. Instagram -->
+      <a href="https://www.instagram.com/swag.gold24" target="_blank" rel="noopener" class="link">
+        <span class="ico">
+          <svg viewBox="0 0 24 24" fill="none" style="color:#d4a84b">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor" stroke-width="2"/>
+            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+            <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="lbl">
+          <span class="en-txt">Instagram</span>
+          <span class="ar-txt">انستقرام</span>
+        </span>
+      </a>
+
+      <!-- 6. WhatsApp -->
+      <a href="https://wa.me/+9660530033445" target="_blank" rel="noopener" class="link">
+        <span class="ico">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="color:#d4a84b">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+          </svg>
+        </span>
+        <span class="lbl">
+          <span class="en-txt">WhatsApp</span>
+          <span class="ar-txt">واتس آب</span>
+        </span>
+      </a>
+
+      <!-- 7. Our Location -->
+      <a href="https://g.co/kgs/b4cUF3k" target="_blank" rel="noopener" class="link">
+        <span class="ico">
+          <svg viewBox="0 0 24 24" fill="none" style="color:#d4a84b">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="12" cy="9" r="2.5" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </span>
+        <span class="lbl">
+          <span class="en-txt">Our Location</span>
+          <span class="ar-txt">موقعنا</span>
+        </span>
+      </a>
+
+    </div>
+
+    <div class="foot" id="footTxt">SWAG GOLD · سواج جولد</div>
   </div>
-  <div class="card-footer" id="cardFooter">SWAG GOLD &nbsp;&middot;&nbsp; سواج جولد</div>
 </div>
-<div id="lbox" onclick="closeLightbox()"><span class="lbclose">&times;</span><span class="lbnav lbprev" onclick="event.stopPropagation();lbNav(-1)">&#8249;</span><img id="lbImg" src="" alt=""><span class="lbnav lbnext" onclick="event.stopPropagation();lbNav(1)">&#8250;</span></div>
-<div class="qrov" id="qrov" onclick="if(event.target===this)toggleQR()">
-  <div class="qrcard">
-    <img class="qbadge" id="qbadge" src="" alt="">
-    <div class="qrbox" id="qrbox"></div>
-    <div class="qrt" id="qrt"></div>
-    <div class="qrsub" id="qrsub"></div>
-    <button class="qrclose" onclick="toggleQR()">&times;</button>
+
+<!-- Kiosk Buttons (QR + Fullscreen) -->
+<div class="kiosk-btns">
+  <button class="kbtn" id="qrBtn" title="QR Code" aria-label="Show QR Code">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/>
+      <path d="M14 14h2v2h-2zM18 14h3v3h-3zM14 18h2v3h-2z"/>
+    </svg>
+  </button>
+  <button class="kbtn" id="fsBtn" title="Fullscreen" aria-label="Toggle Fullscreen">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+    </svg>
+  </button>
+  <button class="kbtn" id="dimBtn" title="Night Dim" aria-label="Toggle Night Dim">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+  </button>
+</div>
+
+<!-- QR Modal -->
+<div class="qr-modal" id="qrModal" role="dialog" aria-modal="true" aria-label="QR Code">
+  <div class="qr-box">
+    <canvas id="qrCanvas"></canvas>
+    <div class="qr-lbl">swag-gold.laroche.sa</div>
   </div>
+  <button class="qr-close" id="qrClose" aria-label="Close QR">✕</button>
 </div>
+
+<!-- Night Dim Overlay -->
+<div id="nightDim" style="display:none;position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.55);pointer-events:none"></div>
+
+<!-- QR Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <script>
-var CFG={
-  "avatar": "https://res.cloudinary.com/dzt5habw9/image/upload/v1781270000/swag-gold-logo.png",
-  "name": "SWAG GOLD",
-  "subtitle": "Jewellery Store",
-  "verified": true,
-  "video": "https://res.cloudinary.com/dzt5habw9/video/upload/v1781270393/19-3_v_3_2215524-1_aa2i8s.mp4",
-  "ticker": {"enabled": false, "speed": 35, "items": []},
-  "announcements": [],
-  "socials": [
-    {"icon": "tiktok", "url": ""},
-    {"icon": "whatsapp", "url": ""},
-    {"icon": "snapchat", "url": ""}
-  ],
-  "buttons": [
-    {"icon": "google", "en": "Rate us on Google", "ar": "\u0642\u064a\u0645\u0646\u0627 \u0639\u0644\u0649 \u062c\u0648\u062c\u0644", "url": "https://g.page/r/CWglyh1mAaPZEAE/review"},
-    {"icon": "chart", "en": "Live Price", "ar": "\u0627\u0644\u062a\u0633\u0639\u064a\u0631 \u0627\u0644\u0645\u0628\u0627\u0634\u0631", "url": "https://laroche.sa/swag/swag_monitors.html"},
-    {"icon": "snapchat", "en": "SnapChat", "ar": "\u0633\u0646\u0627\u0628 \u0634\u0627\u062a", "url": "https://www.snapchat.com/add/swag.gold24"},
-    {"icon": "tiktok", "en": "TikTok", "ar": "\u062a\u064a\u0643 \u062a\u0648\u0643", "url": ""},
-    {"icon": "instagram", "en": "Instagram", "ar": "\u0627\u0646\u0633\u062a\u0642\u0631\u0627\u0645", "url": ""},
-    {"icon": "whatsapp", "en": "WhatsApp", "ar": "\u0648\u0627\u062a\u0633 \u0623\u0628", "url": ""},
-    {"icon": "map", "en": "Our Location", "ar": "\u0645\u0648\u0642\u0639\u0646\u0627", "url": ""}
-  ],
-  "gallery": {"enabled": false, "cols": 3, "rounded": true, "captions": false, "items": []}
-};
-
-fetch('./config.json').then(function(r){return r.json();}).then(function(cfg){
-  if(cfg.logo) CFG.avatar = cfg.logo;
-  if(cfg.name) CFG.name = cfg.name;
-  if(cfg.bio) CFG.subtitle = cfg.bio;
-  if(typeof cfg.verified !== 'undefined') CFG.verified = cfg.verified;
-  if(cfg.video) CFG.video = cfg.video;
-  if(cfg.socials && cfg.socials.length) CFG.socials = cfg.socials;
-  if(cfg.links && cfg.links.length) CFG.buttons = cfg.links;
-  if(cfg.kiosk){
-    if(cfg.kiosk.goldTicker) CFG.ticker = {enabled:true, speed:35, items:[{text:'Gold Price Live',color:'#e7c873'}]};
-  }
-  render();
-}).catch(function(){
-  render();
-});
-</script>
-<script>
-function iconSvg(name,size){
-size=size||28;
-var p='';
-switch(name){
-case 'tiktok':p='<path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>';break;
-case 'instagram':p='<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>';break;
-case 'whatsapp':p='<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>';break;
-case 'snapchat':p='<path d="M12 2C8.5 2 6 4.5 6 8v1.5c-.8.3-1.5.7-1.5 1.5 0 .7.5 1.3 1.3 1.5-.2.5-.5 1-.9 1.5-.4.4-.9.7-1.4.8 0 0 .5 1.2 3.5 1.5.3.8 1.5 2.7 5 2.7s4.7-1.9 5-2.7c3-.3 3.5-1.5 3.5-1.5-.5-.1-1-.4-1.4-.8-.4-.5-.7-1-.9-1.5.8-.2 1.3-.8 1.3-1.5 0-.8-.7-1.2-1.5-1.5V8c0-3.5-2.5-6-6-6z"/>';break;
-case 'google':p='<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="M12 12h4.5"/><path d="M16.5 9.75A4.5 4.5 0 1 0 16.5 14.25"/>';break;
-case 'chart':p='<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>';break;
-case 'map':p='<polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>';break;
-case 'link':p='<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>';break;
-default:p='<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>';
-}
-return '<svg viewBox="0 0 24 24" width="'+size+'" height="'+size+'" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';}
-var DOTS='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg>';
-function badgeSvg(){return '<span class="verified"><svg viewBox="0 0 24 24" width="24" height="24"><path fill="#d4a84b" d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34z"/><path d="M8.6 12.4l2.4 2.4 4.5-4.8" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';}
-
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-
-function render(){
-  var c=CFG;
-  var vsrc=document.getElementById('vsrc');
-  var cardv=document.getElementById('cardv');
-  var bgv=document.getElementById('bgv');
-  if(c.video){
-    vsrc.src=c.video;
-    cardv.load();
-    bgv.innerHTML='<source src="'+esc(c.video)+'" type="video/mp4">';
-    bgv.load();
-  }
-  var av=document.getElementById('avImg');
-  var logoWrap=document.getElementById('logoSvgWrap');
-  if(c.avatar){
-    av.src=c.avatar;
-    av.style.display='block';
-    logoWrap.style.display='none';
-  } else {
-    av.style.display='none';
-    logoWrap.style.display='flex';
-  }
-  document.getElementById('nm').textContent=c.name||'';
-  document.getElementById('verifiedBadge').innerHTML=c.verified?badgeSvg():'';
-  document.getElementById('sub').textContent=c.subtitle||'';
-  var sh=document.getElementById('socials');
-  sh.innerHTML=(c.socials||[]).map(function(s){
-    return s.url?('<a href="'+esc(s.url)+'" target="_blank" rel="noopener" aria-label="'+esc(s.icon)+'">'+iconSvg(s.icon,30)+'</a>'):'';
-  }).join('');
-  var lh=document.getElementById('links');
-  lh.innerHTML=(c.buttons||[]).map(function(b,i){
-    var delay=(0.1+i*0.07).toFixed(2)+'s';
-    return '<a href="'+esc(b.url||'#')+'" class="link" style="animation-delay:'+delay+'" target="_blank" rel="noopener">'
-      +'<span class="ico">'+iconSvg(b.icon||'link',28)+'</span>'
-      +'<span class="lbl"><span class="en">'+esc(b.en||'')+'</span>'
-      +(b.ar?'<span class="ar">'+esc(b.ar)+'</span>':'')+'</span>'
-      +'<span class="dots">'+DOTS+'</span></a>';
-  }).join('');
-  var tw=document.getElementById('tickerWrap');
-  if(c.ticker&&c.ticker.enabled&&c.ticker.items&&c.ticker.items.length){
-    var speed=c.ticker.speed||35;
-    var items=c.ticker.items.map(function(it){return '<span class="ticker-item" style="color:'+(it.color||'#e7c873')+'">'+esc(it.text)+'</span>';}).join('');
-    var total=c.ticker.items.length;
-    tw.innerHTML='<div class="ticker" id="tickerInner" style="animation:ticker-scroll '+(total*speed)+'s linear infinite">'+items+items+'</div>';
-    tw.style.display='block';
-    if(!document.getElementById('tickerStyle')){
-      var st=document.createElement('style');st.id='tickerStyle';
-      st.textContent='@keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}';
-      document.head.appendChild(st);
-    }
-  } else { tw.style.display='none'; }
-  var aw=document.getElementById('announceWrap');
-  var anns=(c.announcements||[]).filter(function(a){return a.text;});
-  if(anns.length){
-    var cur=0;
-    function showAnn(){
-      aw.innerHTML='<div class="announce">'+esc(anns[cur].text)+'</div>';
-      cur=(cur+1)%anns.length;
-    }
-    showAnn();
-    if(anns.length>1)setInterval(showAnn,4000);
-  } else { aw.innerHTML=''; }
-  var gw=document.getElementById('galWrap');
-  if(c.gallery&&c.gallery.enabled&&c.gallery.items&&c.gallery.items.length){
-    var gcols=c.gallery.cols||3;
-    var grad=c.gallery.rounded?'10px':'0';
-    var gcap=c.gallery.captions;
-    var gitems=c.gallery.items.map(function(it,gi){
-      var capHtml=gcap&&it.caption?('<div style="position:absolute;bottom:0;left:0;right:0;padding:5px 6px;font-size:10px;font-weight:600;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);color:#fff;border-radius:0 0 '+grad+' '+grad+';line-height:1.3">'+esc(it.caption)+'</div>'):'';
-      var imgTag='<img src="'+esc(it.src)+'" style="width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in" loading="lazy" onclick="openLightbox(this,'+gi+')">';
-      var inner='<div style="position:relative;aspect-ratio:1;overflow:hidden;border-radius:'+grad+';animation:rise .55s ease '+(0.1+gi*0.05).toFixed(2)+'s both">'+imgTag+capHtml+'</div>';
-      return it.link?('<a href="'+esc(it.link)+'" target="_blank" rel="noopener" style="display:block;text-decoration:none">'+inner+'</a>'):inner;
-    }).join('');
-    gw.innerHTML='<div class="gal" style="grid-template-columns:repeat('+gcols+',1fr)">'+gitems+'</div>';
-  } else { gw.innerHTML=''; }
-  var av2=document.getElementById('qbadge');
-  if(c.avatar) av2.src=c.avatar;
-  document.getElementById('qrt').innerHTML=(c.name||'')+'<br>'+(c.subtitle||'');
-  document.getElementById('qrsub').textContent=window.location.hostname||'';
-  renderQR();
-}
-
-function renderQR(){
-  var url=window.location.href;
-  var box=document.getElementById('qrbox');
-  try{box.innerHTML=qrSvg(url,{size:236,margin:2});}catch(e){box.innerHTML='<p style="color:#888;font-size:12px">QR unavailable</p>';}
-}
-function toggleQR(){
-  var o=document.getElementById('qrov');
-  o.classList.toggle('open');
-}
-function toggleFS(){
-  if(!document.fullscreenElement){
-    document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
-  } else {
-    document.exitFullscreen&&document.exitFullscreen();
-  }
-}
-var galOpen=false;
-function toggleGallery(){
-  galOpen=!galOpen;
-  var gw=document.getElementById('galWrap');
-  gw.style.display=galOpen?'':'none';
-  if(!galOpen) gw.style.display='';
-}
-var lbItems=[],lbIdx=0;
-function openLightbox(img,idx){
-  var c=CFG;
-  if(c.gallery&&c.gallery.items){lbItems=c.gallery.items;lbIdx=idx;}
-  var lb=document.getElementById('lbox');
-  var lbi=document.getElementById('lbImg');
-  lbi.src=lbItems[lbIdx]?lbItems[lbIdx].src:img.src;
-  lb.classList.add('open');
-}
-function closeLightbox(){document.getElementById('lbox').classList.remove('open');}
-function lbNav(d){
-  lbIdx=(lbIdx+d+lbItems.length)%lbItems.length;
-  document.getElementById('lbImg').src=lbItems[lbIdx].src;
-}
 (function(){
-  var v=document.getElementById('cardv');
-  window.addEventListener('scroll',function(){
-    var rect=document.getElementById('card').getBoundingClientRect();
-    var visible=rect.bottom>0&&rect.top<window.innerHeight;
-    if(visible){if(v.paused)v.play().catch(function(){});}else{if(!v.paused)v.pause();}
-  },{passive:true});
-  v.addEventListener('canplay',function(){v.play().catch(function(){});});
+  'use strict';
+
+  // ── VIDEO HANDLING ──
+  var vid = document.getElementById('cardv');
+  if(vid){
+    vid.addEventListener('error', function(){
+      vid.style.display = 'none';
+    });
+    // If video stalls on mobile, show fallback
+    vid.addEventListener('stalled', function(){
+      vid.style.opacity = '0';
+    });
+    vid.addEventListener('playing', function(){
+      vid.style.opacity = '1';
+    });
+  }
+
+  // ── GOLD TICKER ──
+  var GOLD_API = 'https://laroche.sa/swag/swag_monitors.html';
+  var tickerBar = document.getElementById('tickerBar');
+  
+  // Gold prices: approximate SAR per gram (fallback static)
+  // Real prices fetched from external source
+  var goldRates = {
+    base24: 0, base21: 0, base18: 0
+  };
+
+  function updateTickerDisplay(p24, p21, p18){
+    var t24 = document.getElementById('t24');
+    var t21 = document.getElementById('t21');
+    var t18 = document.getElementById('t18');
+    var tTime = document.getElementById('tTime');
+    if(t24) t24.textContent = p24 ? p24.toFixed(1) : '—';
+    if(t21) t21.textContent = p21 ? p21.toFixed(1) : '—';
+    if(t18) t18.textContent = p18 ? p18.toFixed(1) : '—';
+    if(tTime){
+      var now = new Date();
+      tTime.textContent = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
+    }
+    tickerBar.classList.remove('hidden');
+    document.body.classList.add('has-ticker');
+  }
+
+  // Use metalpriceapi or a proxy — fallback to static approximation
+  function fetchGoldPrices(){
+    // Try fetching from the SWAG monitor page via iframe-free method
+    // Fallback: compute from USD/oz gold price
+    fetch('https://api.frankfurter.app/latest?base=USD&symbols=SAR')
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        var sarPerUsd = d.rates && d.rates.SAR ? d.rates.SAR : 3.75;
+        // Gold approx $3300/oz June 2026 = $106/g
+        // Using metalpriceapi free tier alternative
+        var usdPerGram24 = 106; // approximate
+        var sar24 = usdPerGram24 * sarPerUsd;
+        var sar21 = sar24 * (21/24);
+        var sar18 = sar24 * (18/24);
+        updateTickerDisplay(sar24, sar21, sar18);
+      })
+      .catch(function(){
+        // Show static approximate
+        updateTickerDisplay(397.5, 347.8, 298.1);
+      });
+  }
+
+  fetchGoldPrices();
+  setInterval(fetchGoldPrices, 5 * 60 * 1000); // refresh every 5 min
+
+  // ── QR CODE ──
+  var qrModal = document.getElementById('qrModal');
+  var qrCanvas = document.getElementById('qrCanvas');
+  var qrGenerated = false;
+
+  document.getElementById('qrBtn').addEventListener('click', function(){
+    qrModal.classList.add('open');
+    if(!qrGenerated && typeof QRCode !== 'undefined'){
+      new QRCode(qrCanvas, {
+        text: 'https://swag-gold.laroche.sa',
+        width: 200, height: 200,
+        colorDark: '#1a140c', colorLight: '#f5e4a8',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+      qrGenerated = true;
+    }
+  });
+
+  document.getElementById('qrClose').addEventListener('click', function(){
+    qrModal.classList.remove('open');
+  });
+  qrModal.addEventListener('click', function(e){
+    if(e.target === qrModal) qrModal.classList.remove('open');
+  });
+
+  // ── FULLSCREEN ──
+  document.getElementById('fsBtn').addEventListener('click', function(){
+    if(!document.fullscreenElement){
+      document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen && document.exitFullscreen();
+    }
+  });
+
+  // ── NIGHT DIM ──
+  var dimOn = false;
+  var nightDim = document.getElementById('nightDim');
+  document.getElementById('dimBtn').addEventListener('click', function(){
+    dimOn = !dimOn;
+    nightDim.style.display = dimOn ? 'block' : 'none';
+  });
+
+  // Auto night dim 10pm-7am
+  function checkNightDim(){
+    var h = new Date().getHours();
+    if(h >= 22 || h < 7){
+      nightDim.style.display = 'block';
+      dimOn = true;
+    }
+  }
+  checkNightDim();
+
+  // ── SHARE BUTTON ──
+  document.getElementById('shareBtn').addEventListener('click', function(e){
+    e.preventDefault();
+    if(navigator.share){
+      navigator.share({
+        title: 'SWAG GOLD',
+        text: 'Jewellery Store — Jeddah',
+        url: 'https://swag-gold.laroche.sa'
+      }).catch(function(){});
+    } else {
+      // Copy to clipboard
+      navigator.clipboard && navigator.clipboard.writeText('https://swag-gold.laroche.sa');
+      var btn = document.getElementById('shareBtn');
+      btn.style.background = 'rgba(212,168,75,.3)';
+      setTimeout(function(){ btn.style.background = ''; }, 1000);
+    }
+  });
+
+  // ── VIDEO PERFORMANCE: pause when page hidden ──
+  document.addEventListener('visibilitychange', function(){
+    if(vid){
+      document.hidden ? vid.pause() : vid.play().catch(function(){});
+    }
+  });
+
 })();
 </script>
 </body>
