@@ -71,7 +71,7 @@
     "btnRadius": 22,
     "iconSize": 28,
     "btnDark": 16,
-    "avatar": 127,
+    "avatar": 90,
     "nameSize": 33,
     "socialSize": 30,
     "scrim": 0,
@@ -93,7 +93,7 @@
   },
   "bgImage": "",
   "banner": {
-    "show": false,
+    "show": true,
     "text": "",
     "link": ""
   },
@@ -106,7 +106,7 @@
     "items": []
   },
   "banners": {
-    "enabled": false,
+    "enabled": true,
     "items": [
       {
         "text": "Eid SALE",
@@ -119,7 +119,7 @@
     ],
     "rotateInterval": 5
   },
-  "_savedAt": 1781263790088,
+  "_savedAt": 1781276420104,
   "layout": {
     "order": [
       "logo",
@@ -133,12 +133,12 @@
   },
   "pos": {
     "logo": {
-      "x": -5,
-      "y": -64
+      "x": -1,
+      "y": 4
     },
     "name": {
       "x": 4,
-      "y": -52
+      "y": -24
     },
     "bio": {
       "x": 5,
