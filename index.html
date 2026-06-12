@@ -33,7 +33,7 @@
   .card{width:100%;max-width:480px;min-height:100dvh;position:relative;
     display:flex;flex-direction:column;justify-content:center;animation:fade .6s ease both}
   @keyframes fade{from{opacity:0}to{opacity:1}}
-  .card .cardvid{position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);width:100%;max-width:480px;height:100vh;height:100dvh;object-fit:cover;z-index:-1;backface-visibility:hidden}
+  .card .cardvid{position:fixed;top:0;left:0;width:100vw;height:100vh;height:100dvh;object-fit:cover;z-index:-10;backface-visibility:hidden}
   .card .scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg, rgba(0,0,0,.28) 0%, rgba(0,0,0,.02) 16%, rgba(0,0,0,0) 45%, rgba(0,0,0,.04) 72%, rgba(0,0,0,.30) 100%)}
   .content{position:relative;z-index:2;padding:24px 18px 44px;width:100%}
 
@@ -96,7 +96,7 @@
   .qrt{margin-top:16px;color:#1a140c;font-family:'Cairo',sans-serif;font-weight:700;font-size:18px;line-height:1.5}
   .qrt span{display:block;font-family:'Jost',sans-serif;font-weight:500;font-size:13px;color:#8a7636;letter-spacing:.04em}
   .qrclose{position:absolute;top:12px;right:14px;border:none;background:none;font-size:20px;color:#bbb;cursor:pointer;line-height:1}
-  @media(min-width:520px){.card{max-width:480px}.backdrop{display:block}}
+  @media(min-width:520px){.card{max-width:480px}}
 
   /* admin-controllable variables */
   .nm{background-image:linear-gradient(100deg,#f7ecc4 0%,var(--gold-c,#d4a84b) 22%,#fff6da 42%,#c9952b 58%,#f7ecc4 82%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;font-size:var(--name-size,33px)}
@@ -2863,5 +2863,6 @@ window.addEventListener('scroll',onScroll,{passive:true});window.addEventListene
     setTimeout(function(){if(window.CFG)showWA(window.CFG);},1800);
   })();
   </script>
-  </body>
+  <div style="position:fixed;left:6px;bottom:4px;z-index:99;font:10px monospace;color:rgba(212,168,75,.55);pointer-events:none">v10</div>
+</body>
 </html>
