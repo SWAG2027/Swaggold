@@ -41,9 +41,24 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a14
 .chip svg{width:18px;height:18px}
 .chip .ast{font-size:21px;line-height:1;font-weight:700}
 
-.avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;background:#000;
+/* ── LOGO / AVATAR ── */
+.avatar-wrap{display:flex;justify-content:center;margin-bottom:0}
+.avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;background:rgba(0,0,0,.45);
   border:2.5px solid rgba(212,168,75,.55);display:block;margin:0 auto}
-.name{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:9px}.nm{font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.1em;font-size:33px;text-transform:uppercase;background:linear-gradient(100deg,#f7ecc4 0%,#d4a84b 22%,#fff6da 42%,#c9952b 58%,#f7ecc4 82%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:shine 4.5s linear infinite;filter:drop-shadow(0 2px 12px rgba(0,0,0,.75))}.verified{display:grid;place-items:center;filter:drop-shadow(0 2px 6px rgba(0,0,0,.55))}.verified svg{width:24px;height:24px;display:block}@keyframes shine{to{background-position:220% center}}
+/* SVG logo fallback shown when no avatar image */
+.logo-svg-wrap{width:90px;height:90px;border-radius:50%;border:2.5px solid rgba(212,168,75,.55);
+  background:rgba(10,8,4,.55);display:flex;align-items:center;justify-content:center;margin:0 auto}
+.logo-svg-wrap svg{width:64px;height:64px}
+
+.name{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:9px}
+.nm{font-family:'Cormorant Garamond',serif;font-weight:700;letter-spacing:.1em;font-size:33px;text-transform:uppercase;
+  background:linear-gradient(100deg,#f7ecc4 0%,#d4a84b 22%,#fff6da 42%,#c9952b 58%,#f7ecc4 82%);
+  background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-fill-color:transparent;animation:shine 4.5s linear infinite;
+  filter:drop-shadow(0 2px 12px rgba(0,0,0,.75))}
+.verified{display:grid;place-items:center;filter:drop-shadow(0 2px 6px rgba(0,0,0,.55))}
+.verified svg{width:24px;height:24px;display:block}
+@keyframes shine{to{background-position:220% center}}
 .subtitle{text-align:center;font-size:14px;color:rgba(255,255,255,.72);margin-top:4px;letter-spacing:.04em}
 .socials{display:flex;justify-content:center;gap:14px;margin-top:14px}
 .socials a{width:30px;height:30px;color:#fff;display:grid;place-items:center;
@@ -52,11 +67,13 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a14
 .socials svg{width:30px;height:30px;display:block}
 
 .links{display:flex;flex-direction:column;gap:12px;margin-top:22px}
-.link{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:26px 20px;border:1.5px solid rgba(212,168,75,.60);border-radius:var(--radius);background:rgba(0,0,0,.16);color:#fff;text-decoration:none;font-size:17.5px;font-weight:500;transition:transform .18s,background .25s,border-color .25s,box-shadow .25s;opacity:0;animation:rise .55s ease forwards}.link::before{content:"";position:absolute;top:0;left:0;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,236,180,.30),transparent);transform:translateX(-180%) skewX(-20deg);animation:sweep 6s ease-in-out infinite;pointer-events:none;will-change:transform}.link:nth-child(2)::before{animation-delay:.8s}.link:nth-child(3)::before{animation-delay:1.6s}.link:nth-child(4)::before{animation-delay:2.4s}.link:nth-child(5)::before{animation-delay:3.2s}.link:nth-child(6)::before{animation-delay:4s}.link:nth-child(7)::before{animation-delay:4.8s}@keyframes sweep{0%{transform:translateX(-180%) skewX(-20deg)}45%{transform:translateX(320%) skewX(-20deg)}100%{transform:translateX(320%) skewX(-20deg)}}
+.link{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:26px 20px;border:1.5px solid rgba(212,168,75,.60);border-radius:var(--radius);background:rgba(0,0,0,.16);color:#fff;text-decoration:none;font-size:17.5px;font-weight:500;transition:transform .18s,background .25s,border-color .25s,box-shadow .25s;opacity:0;animation:rise .55s ease forwards}
+.link::before{content:"";position:absolute;top:0;left:0;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,236,180,.30),transparent);transform:translateX(-180%) skewX(-20deg);animation:sweep 6s ease-in-out infinite;pointer-events:none;will-change:transform}
+.link:nth-child(2)::before{animation-delay:.8s}.link:nth-child(3)::before{animation-delay:1.6s}.link:nth-child(4)::before{animation-delay:2.4s}.link:nth-child(5)::before{animation-delay:3.2s}.link:nth-child(6)::before{animation-delay:4s}.link:nth-child(7)::before{animation-delay:4.8s}
+@keyframes sweep{0%{transform:translateX(-180%) skewX(-20deg)}45%{transform:translateX(320%) skewX(-20deg)}100%{transform:translateX(320%) skewX(-20deg)}}
 .link .ico{flex-shrink:0;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:grid;place-items:center}
 .link .ico svg{width:28px;height:28px;display:block}
-.link .lbl{flex:1;text-align:center;
-           line-height:1.3;text-shadow:0 1px 6px rgba(0,0,0,.85)}
+.link .lbl{flex:1;text-align:center;line-height:1.3;text-shadow:0 1px 6px rgba(0,0,0,.85)}
 .link .lbl .en{display:block}
 .link .lbl .ar{display:block;font-family:'Cairo',sans-serif;font-size:14px;opacity:.8}
 .link .dots{flex-shrink:0;opacity:.45;cursor:pointer;width:28px;height:28px;display:grid;place-items:center}
@@ -126,7 +143,33 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a14
   <div class="content" id="content">
     <div id="tickerWrap" class="ticker-wrap" style="display:none"></div>
     <div id="announceWrap"></div>
-    <img class="avatar" id="avImg" src="" alt="SWAG GOLD">
+    <div class="avatar-wrap">
+      <img class="avatar" id="avImg" src="" alt="SWAG GOLD" style="display:none">
+      <div class="logo-svg-wrap" id="logoSvgWrap">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SWAG GOLD">
+          <!-- Outer ring -->
+          <circle cx="32" cy="32" r="30" stroke="url(#gr1)" stroke-width="1.5" fill="none"/>
+          <!-- S letter stylized -->
+          <path d="M22 24 Q22 19 27 19 Q34 19 34 24 Q34 29 26 29 Q20 29 20 35 Q20 41 27 41 Q34 41 34 36" stroke="url(#gr2)" stroke-width="2.8" stroke-linecap="round" fill="none"/>
+          <!-- Gold accent dot top -->
+          <circle cx="38" cy="20" r="2.5" fill="#d4a84b"/>
+          <!-- Gold accent dot bottom -->
+          <circle cx="38" cy="44" r="1.8" fill="#d4a84b" opacity=".6"/>
+          <defs>
+            <linearGradient id="gr1" x1="2" y1="2" x2="62" y2="62" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#f7ecc4"/>
+              <stop offset="40%" stop-color="#d4a84b"/>
+              <stop offset="100%" stop-color="#c9952b"/>
+            </linearGradient>
+            <linearGradient id="gr2" x1="20" y1="19" x2="34" y2="41" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#fff6da"/>
+              <stop offset="50%" stop-color="#d4a84b"/>
+              <stop offset="100%" stop-color="#f7ecc4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
     <div class="name"><span class="nm" id="nm"></span><span id="verifiedBadge"></span></div>
     <p class="subtitle" id="sub"></p>
     <div class="socials" id="socials"></div>
@@ -203,9 +246,17 @@ function render(){
     bgv.innerHTML='<source src="'+esc(c.video)+'" type="video/mp4">';
     bgv.load();
   }
-  // avatar
+  // avatar / logo
   var av=document.getElementById('avImg');
-  if(c.avatar){av.src=c.avatar;av.style.display='block';}else{av.style.display='none';}
+  var logoWrap=document.getElementById('logoSvgWrap');
+  if(c.avatar){
+    av.src=c.avatar;
+    av.style.display='block';
+    logoWrap.style.display='none';
+  } else {
+    av.style.display='none';
+    logoWrap.style.display='flex';
+  }
   // name
   document.getElementById('nm').textContent=c.name||'';
   document.getElementById('verifiedBadge').innerHTML=c.verified?badgeSvg():'';
@@ -258,8 +309,8 @@ function render(){
     var grad=c.gallery.rounded?'10px':'0';
     var gcap=c.gallery.captions;
     var gitems=c.gallery.items.map(function(it,gi){
-      var capHtml=gcap&&it.caption?('<div style="position:absolute;bottom:0;left:0;right:0;padding:5px 6px;font-size:10px;font-weight:600;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);color:#fff;border-radius:0 0 '+grad+' '+grad+';line-height:1.3">'+esc(it.caption)+'</div>'):''
-      var imgTag='<img src="'+esc(it.src)+'" style="width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in" loading="lazy" onclick="openLightbox(this,'+gi+')">'
+      var capHtml=gcap&&it.caption?('<div style="position:absolute;bottom:0;left:0;right:0;padding:5px 6px;font-size:10px;font-weight:600;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent);color:#fff;border-radius:0 0 '+grad+' '+grad+';line-height:1.3">'+esc(it.caption)+'</div>'):'';
+      var imgTag='<img src="'+esc(it.src)+'" style="width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in" loading="lazy" onclick="openLightbox(this,'+gi+')">';
       var inner='<div style="position:relative;aspect-ratio:1;overflow:hidden;border-radius:'+grad+';animation:rise .55s ease '+(0.1+gi*0.05).toFixed(2)+'s both">'+imgTag+capHtml+'</div>';
       return it.link?('<a href="'+esc(it.link)+'" target="_blank" rel="noopener" style="display:block;text-decoration:none">'+inner+'</a>'):inner;
     }).join('');
