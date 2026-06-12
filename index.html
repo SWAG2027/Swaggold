@@ -18,18 +18,33 @@
 html,body{height:auto;min-height:100%}
 html{scroll-behavior:smooth}
 body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a140c;
-  display:flex;justify-content:center;align-items:stretch;
+  display:flex;justify-content:center;align-items:flex-start;
   overflow-x:hidden;-webkit-overflow-scrolling:touch}
+
+/* ── FULL-PAGE VIDEO BACKGROUND ── */
+/* Fixed video covers entire viewport always */
+#cardv{position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);
+  width:100%;max-width:480px;height:100dvh;object-fit:cover;
+  z-index:0;backface-visibility:hidden;will-change:transform}
+/* Dark overlay on top of video, also fixed */
+.scrim{position:fixed;inset:0;z-index:1;pointer-events:none;
+  max-width:480px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,.02) 16%,rgba(0,0,0,0) 45%,rgba(0,0,0,.04) 72%,rgba(0,0,0,.30) 100%)}
+/* Extra bg fill so scrolled area below video matches video bottom color */
+body::after{content:'';position:fixed;bottom:0;left:0;right:0;height:60vh;
+  background:linear-gradient(to bottom,transparent,#1a0f07 60%,#120b04 100%);
+  z-index:0;pointer-events:none}
+
 .backdrop{display:none;position:fixed;inset:0;z-index:-2;overflow:hidden;background:#1a140c}
 .backdrop video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1.25);
   min-width:100%;min-height:100%;object-fit:cover;filter:blur(34px) brightness(.5) saturate(1.1)}
 .backdrop::after{content:"";position:absolute;inset:0;background:rgba(20,15,8,.35)}
 
 .card{width:100%;max-width:480px;min-height:100dvh;position:relative;
-  display:flex;flex-direction:column;justify-content:flex-start;animation:fade .6s ease both}
+  display:flex;flex-direction:column;justify-content:flex-start;
+  animation:fade .6s ease both;z-index:2}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-.card .cardvid{position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);width:100%;max-width:480px;height:100%;min-height:100dvh;object-fit:cover;z-index:-1;backface-visibility:hidden}
-.card .scrim{position:fixed;inset:0;z-index:1;pointer-events:none;max-width:480px;left:50%;transform:translateX(-50%);background:linear-gradient(180deg, rgba(0,0,0,.28) 0%, rgba(0,0,0,.02) 16%, rgba(0,0,0,0) 45%, rgba(0,0,0,.04) 72%, rgba(0,0,0,.30) 100%)}
+
 .content{position:relative;z-index:2;padding:24px 18px 44px;width:100%}
 
 .topbar{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;pointer-events:none}
@@ -45,7 +60,6 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a14
 .avatar-wrap{display:flex;justify-content:center;margin-bottom:0}
 .avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;background:rgba(0,0,0,.45);
   border:2.5px solid rgba(212,168,75,.55);display:block;margin:0 auto}
-/* SVG logo fallback shown when no avatar image */
 .logo-svg-wrap{width:90px;height:90px;border-radius:50%;border:2.5px solid rgba(212,168,75,.55);
   background:rgba(10,8,4,.55);display:flex;align-items:center;justify-content:center;margin:0 auto}
 .logo-svg-wrap svg{width:64px;height:64px}
@@ -120,8 +134,6 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a14
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .chip,.kbtn,.qrov{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 @supports(backdrop-filter:blur(1px)){.chip,.kbtn,.qrov{backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}}
-/* gpu */
-.card,.cardvid{will-change:transform}
 
 /* ── FOOTER inside card so no black gap below ── */
 .card-footer{position:relative;z-index:2;text-align:center;padding:16px 18px 28px;
@@ -131,9 +143,9 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a14
 </head>
 <body>
 <div class="backdrop"><video id="bgv" autoplay muted loop playsinline></video></div>
+<video id="cardv" autoplay muted loop playsinline preload="auto"><source id="vsrc" src="https://res.cloudinary.com/dzt5habw9/video/upload/v1781270393/19-3_v_3_2215524-1_aa2i8s.mp4" type="video/mp4"></video>
+<div class="scrim"></div>
 <div class="card" id="card">
-  <video class="cardvid" id="cardv" autoplay muted loop playsinline preload="auto"><source id="vsrc" src="https://res.cloudinary.com/dzt5habw9/video/upload/v1781270393/19-3_v_3_2215524-1_aa2i8s.mp4" type="video/mp4"></video>
-  <div class="scrim"></div>
   <div class="topbar">
     <a class="chip" href="#" onclick="toggleQR();return false" aria-label="QR Code"><span class="ast">&#10033;</span></a>
     <div style="display:flex;gap:8px">
@@ -152,24 +164,16 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a14
       <img class="avatar" id="avImg" src="https://res.cloudinary.com/dzt5habw9/image/upload/v1781270000/swag-gold-logo.png" alt="SWAG GOLD" onerror="this.style.display='none';document.getElementById('logoSvgWrap').style.display='flex';" style="display:block">
       <div class="logo-svg-wrap" id="logoSvgWrap" style="display:none">
         <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SWAG GOLD">
-          <!-- Outer ring -->
           <circle cx="32" cy="32" r="30" stroke="url(#gr1)" stroke-width="1.5" fill="none"/>
-          <!-- S letter stylized -->
           <path d="M22 24 Q22 19 27 19 Q34 19 34 24 Q34 29 26 29 Q20 29 20 35 Q20 41 27 41 Q34 41 34 36" stroke="url(#gr2)" stroke-width="2.8" stroke-linecap="round" fill="none"/>
-          <!-- Gold accent dot top -->
           <circle cx="38" cy="20" r="2.5" fill="#d4a84b"/>
-          <!-- Gold accent dot bottom -->
           <circle cx="38" cy="44" r="1.8" fill="#d4a84b" opacity=".6"/>
           <defs>
             <linearGradient id="gr1" x1="2" y1="2" x2="62" y2="62" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#f7ecc4"/>
-              <stop offset="40%" stop-color="#d4a84b"/>
-              <stop offset="100%" stop-color="#c9952b"/>
+              <stop offset="0%" stop-color="#f7ecc4"/><stop offset="40%" stop-color="#d4a84b"/><stop offset="100%" stop-color="#c9952b"/>
             </linearGradient>
             <linearGradient id="gr2" x1="20" y1="19" x2="34" y2="41" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#fff6da"/>
-              <stop offset="50%" stop-color="#d4a84b"/>
-              <stop offset="100%" stop-color="#f7ecc4"/>
+              <stop offset="0%" stop-color="#fff6da"/><stop offset="50%" stop-color="#d4a84b"/><stop offset="100%" stop-color="#f7ecc4"/>
             </linearGradient>
           </defs>
         </svg>
@@ -194,7 +198,6 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a14
   </div>
 </div>
 <script>
-// Load logo from config.json and inject into CFG
 var CFG={
   "avatar": "https://res.cloudinary.com/dzt5habw9/image/upload/v1781270000/swag-gold-logo.png",
   "name": "SWAG GOLD",
@@ -220,7 +223,6 @@ var CFG={
   "gallery": {"enabled": false, "cols": 3, "rounded": true, "captions": false, "items": []}
 };
 
-// Fetch logo + all settings from config.json and merge into CFG
 fetch('./config.json').then(function(r){return r.json();}).then(function(cfg){
   if(cfg.logo) CFG.avatar = cfg.logo;
   if(cfg.name) CFG.name = cfg.name;
@@ -260,7 +262,6 @@ function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').repl
 
 function render(){
   var c=CFG;
-  // video
   var vsrc=document.getElementById('vsrc');
   var cardv=document.getElementById('cardv');
   var bgv=document.getElementById('bgv');
@@ -270,7 +271,6 @@ function render(){
     bgv.innerHTML='<source src="'+esc(c.video)+'" type="video/mp4">';
     bgv.load();
   }
-  // avatar / logo
   var av=document.getElementById('avImg');
   var logoWrap=document.getElementById('logoSvgWrap');
   if(c.avatar){
@@ -281,16 +281,13 @@ function render(){
     av.style.display='none';
     logoWrap.style.display='flex';
   }
-  // name
   document.getElementById('nm').textContent=c.name||'';
   document.getElementById('verifiedBadge').innerHTML=c.verified?badgeSvg():'';
   document.getElementById('sub').textContent=c.subtitle||'';
-  // socials
   var sh=document.getElementById('socials');
   sh.innerHTML=(c.socials||[]).map(function(s){
     return s.url?('<a href="'+esc(s.url)+'" target="_blank" rel="noopener" aria-label="'+esc(s.icon)+'">'+iconSvg(s.icon,30)+'</a>'):'';
   }).join('');
-  // links
   var lh=document.getElementById('links');
   lh.innerHTML=(c.buttons||[]).map(function(b,i){
     var delay=(0.1+i*0.07).toFixed(2)+'s';
@@ -300,7 +297,6 @@ function render(){
       +(b.ar?'<span class="ar">'+esc(b.ar)+'</span>':'')+'</span>'
       +'<span class="dots">'+DOTS+'</span></a>';
   }).join('');
-  // ticker
   var tw=document.getElementById('tickerWrap');
   if(c.ticker&&c.ticker.enabled&&c.ticker.items&&c.ticker.items.length){
     var speed=c.ticker.speed||35;
@@ -314,7 +310,6 @@ function render(){
       document.head.appendChild(st);
     }
   } else { tw.style.display='none'; }
-  // announcements
   var aw=document.getElementById('announceWrap');
   var anns=(c.announcements||[]).filter(function(a){return a.text;});
   if(anns.length){
@@ -326,7 +321,6 @@ function render(){
     showAnn();
     if(anns.length>1)setInterval(showAnn,4000);
   } else { aw.innerHTML=''; }
-  // gallery
   var gw=document.getElementById('galWrap');
   if(c.gallery&&c.gallery.enabled&&c.gallery.items&&c.gallery.items.length){
     var gcols=c.gallery.cols||3;
@@ -340,7 +334,6 @@ function render(){
     }).join('');
     gw.innerHTML='<div class="gal" style="grid-template-columns:repeat('+gcols+',1fr)">'+gitems+'</div>';
   } else { gw.innerHTML=''; }
-  // qr
   var av2=document.getElementById('qbadge');
   if(c.avatar) av2.src=c.avatar;
   document.getElementById('qrt').innerHTML=(c.name||'')+'<br>'+(c.subtitle||'');
@@ -348,7 +341,6 @@ function render(){
   renderQR();
 }
 
-// QR
 function renderQR(){
   var url=window.location.href;
   var box=document.getElementById('qrbox');
@@ -358,8 +350,6 @@ function toggleQR(){
   var o=document.getElementById('qrov');
   o.classList.toggle('open');
 }
-
-// Fullscreen
 function toggleFS(){
   if(!document.fullscreenElement){
     document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();
@@ -367,8 +357,6 @@ function toggleFS(){
     document.exitFullscreen&&document.exitFullscreen();
   }
 }
-
-// Gallery toggle
 var galOpen=false;
 function toggleGallery(){
   galOpen=!galOpen;
@@ -376,8 +364,6 @@ function toggleGallery(){
   gw.style.display=galOpen?'':'none';
   if(!galOpen) gw.style.display='';
 }
-
-// Lightbox
 var lbItems=[],lbIdx=0;
 function openLightbox(img,idx){
   var c=CFG;
@@ -392,23 +378,13 @@ function lbNav(d){
   lbIdx=(lbIdx+d+lbItems.length)%lbItems.length;
   document.getElementById('lbImg').src=lbItems[lbIdx].src;
 }
-
-// Video scroll pause
 (function(){
   var v=document.getElementById('cardv');
-  var ticking=false;
-  function onScroll(){
-    if(!ticking){
-      requestAnimationFrame(function(){
-        var rect=document.getElementById('card').getBoundingClientRect();
-        var visible=rect.bottom>0&&rect.top<window.innerHeight;
-        if(visible){if(v.paused)v.play().catch(function(){});}else{if(!v.paused)v.pause();}
-        ticking=false;
-      });
-      ticking=true;
-    }
-  }
-  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('scroll',function(){
+    var rect=document.getElementById('card').getBoundingClientRect();
+    var visible=rect.bottom>0&&rect.top<window.innerHeight;
+    if(visible){if(v.paused)v.play().catch(function(){});}else{if(!v.paused)v.pause();}
+  },{passive:true});
   v.addEventListener('canplay',function(){v.play().catch(function(){});});
 })();
 </script>
