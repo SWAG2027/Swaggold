@@ -188,6 +188,7 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a14
   </div>
 </div>
 <script>
+// Load logo from config.json and inject into CFG
 var CFG={
   "avatar": "",
   "name": "SWAG GOLD",
@@ -212,6 +213,23 @@ var CFG={
   ],
   "gallery": {"enabled": false, "cols": 3, "rounded": true, "captions": false, "items": []}
 };
+
+// Fetch logo + all settings from config.json and merge into CFG
+fetch('./config.json').then(function(r){return r.json();}).then(function(cfg){
+  if(cfg.logo) CFG.avatar = cfg.logo;
+  if(cfg.name) CFG.name = cfg.name;
+  if(cfg.bio) CFG.subtitle = cfg.bio;
+  if(typeof cfg.verified !== 'undefined') CFG.verified = cfg.verified;
+  if(cfg.video) CFG.video = cfg.video;
+  if(cfg.socials && cfg.socials.length) CFG.socials = cfg.socials;
+  if(cfg.links && cfg.links.length) CFG.buttons = cfg.links;
+  if(cfg.kiosk){
+    if(cfg.kiosk.goldTicker) CFG.ticker = {enabled:true, speed:35, items:[{text:'Gold Price Live',color:'#e7c873'}]};
+  }
+  render();
+}).catch(function(){
+  render();
+});
 </script>
 <script>
 function iconSvg(name,size){
@@ -387,8 +405,6 @@ function lbNav(d){
   window.addEventListener('scroll',onScroll,{passive:true});
   v.addEventListener('canplay',function(){v.play().catch(function(){});});
 })();
-
-render();
 </script>
 </body>
 </html>
