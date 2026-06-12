@@ -144,8 +144,8 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a14
     <div id="tickerWrap" class="ticker-wrap" style="display:none"></div>
     <div id="announceWrap"></div>
     <div class="avatar-wrap">
-      <img class="avatar" id="avImg" src="" alt="SWAG GOLD" style="display:none">
-      <div class="logo-svg-wrap" id="logoSvgWrap">
+      <img class="avatar" id="avImg" src="https://res.cloudinary.com/dzt5habw9/image/upload/v1781270000/swag-gold-logo.png" alt="SWAG GOLD" onerror="this.style.display='none';document.getElementById('logoSvgWrap').style.display='flex';" style="display:block">
+      <div class="logo-svg-wrap" id="logoSvgWrap" style="display:none">
         <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SWAG GOLD">
           <!-- Outer ring -->
           <circle cx="32" cy="32" r="30" stroke="url(#gr1)" stroke-width="1.5" fill="none"/>
@@ -190,7 +190,7 @@ body{font-family:'Jost',sans-serif;color:#fff;min-height:100dvh;background:#1a14
 <script>
 // Load logo from config.json and inject into CFG
 var CFG={
-  "avatar": "",
+  "avatar": "https://res.cloudinary.com/dzt5habw9/image/upload/v1781270000/swag-gold-logo.png",
   "name": "SWAG GOLD",
   "subtitle": "Jewellery Store",
   "verified": true,
