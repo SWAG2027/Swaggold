@@ -2,7 +2,7 @@
   "title": "SWAG GOLD",
   "subtitle": "Jewellery Store",
   "footer": "SWAG GOLD · سواج جولد",
-  "logoUrl": "",
+  "logoUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='96' fill='%232a1a08' stroke='%23d4a84b' stroke-width='4'/%3E%3Ccircle cx='100' cy='100' r='82' fill='none' stroke='%23d4a84b' stroke-width='1' opacity='0.4'/%3E%3Cpath d='M100 30 L170 100 L100 170 L30 100 Z' fill='none' stroke='%23d4a84b' stroke-width='1.5' opacity='0.35'/%3E%3Ctext x='100' y='88' text-anchor='middle' dominant-baseline='middle' font-family='Cormorant Garamond, Georgia, serif' font-size='32' font-weight='700' fill='%23f7ecc4' letter-spacing='4'%3ESWAG%3C/text%3E%3Cline x1='55' y1='102' x2='145' y2='102' stroke='%23d4a84b' stroke-width='1' opacity='0.6'/%3E%3Ctext x='100' y='120' text-anchor='middle' dominant-baseline='middle' font-family='Cormorant Garamond, Georgia, serif' font-size='22' font-weight='600' fill='%23d4a84b' letter-spacing='8'%3EGOLD%3C/text%3E%3C/svg%3E",
   "banner": {
     "text": "",
     "show": false
