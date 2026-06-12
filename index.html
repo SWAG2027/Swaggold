@@ -18,13 +18,13 @@
 <style>
 :root{--gold:#d4a84b;--gold2:#f7ecc4;--gold3:#c9952b;--dark:#2a1a08;--radius:44px}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:auto;min-height:100%}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;height:100%}
 body{
   font-family:'Jost',sans-serif;color:#fff;
   min-height:100dvh;background:#2a1a08;
   display:flex;justify-content:center;align-items:flex-start;
-  overflow-x:hidden;-webkit-overflow-scrolling:touch
+  overflow-x:hidden;overflow-y:auto;
+  -webkit-overflow-scrolling:touch
 }
 
 /* ── BG ── */
@@ -45,7 +45,7 @@ body{
 }
 #cardv.loaded{opacity:1}
 
-/* scrim — NO backdrop-filter (causes scroll jank) */
+/* scrim */
 .scrim{
   position:fixed;inset:0;z-index:2;pointer-events:none;
   max-width:480px;left:50%;transform:translateX(-50%);
@@ -56,9 +56,11 @@ body{
     rgba(0,0,0,.28) 100%)
 }
 
+/* ── CARD — flex-start so content scrolls naturally ── */
 .card{
-  width:100%;max-width:480px;min-height:100dvh;
-  display:flex;flex-direction:column;
+  width:100%;max-width:480px;
+  min-height:100dvh;
+  display:flex;flex-direction:column;justify-content:flex-start;
   animation:fade .5s ease both;z-index:3;position:relative
 }
 @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -103,28 +105,54 @@ body{
 .chip svg{width:18px;height:18px}
 .chip .ast{font-size:20px;line-height:1;font-weight:700}
 
-/* ── CONTENT ── */
+/* ── CONTENT — proper padding so content is centered with room to scroll ── */
 .content{
   position:relative;z-index:2;
-  padding:78px 18px 100px;width:100%
+  padding:90px 18px 80px;
+  width:100%;
+  min-height:100dvh;
+  display:flex;flex-direction:column;justify-content:center
 }
-body.has-ticker .content{padding-top:100px}
+body.has-ticker .content{padding-top:112px}
 body.has-ticker .topbar{top:34px}
 
-/* ── LOGO ── */
-.avatar-wrap{display:flex;justify-content:center}
-.logo-svg-wrap{
-  width:88px;height:88px;border-radius:50%;
-  border:2px solid rgba(212,168,75,.55);
-  background:rgba(42,26,8,.9);
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 18px rgba(212,168,75,.18)
+/* ── LOGO GOLD SHIMMER RING ── */
+.avatar-wrap{display:flex;justify-content:center;margin-bottom:4px}
+
+/* Animated gold ring container */
+.logo-ring{
+  position:relative;
+  width:100px;height:100px;
+  border-radius:50%;
+  padding:3px;
+  background:linear-gradient(135deg,#c9952b 0%,#f7ecc4 25%,#d4a84b 50%,#fff6da 75%,#c9952b 100%);
+  background-size:300% 300%;
+  animation:ringShimmer 3s linear infinite;
+  box-shadow:
+    0 0 20px rgba(212,168,75,.5),
+    0 0 40px rgba(212,168,75,.2),
+    0 8px 30px rgba(0,0,0,.5);
+  flex-shrink:0
 }
+@keyframes ringShimmer{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* SVG fallback inside ring */
+.logo-svg-wrap{
+  width:94px;height:94px;border-radius:50%;
+  background:rgba(42,26,8,.95);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden
+}
+
+/* Real logo image inside ring */
 .logo-img{
-  width:88px;height:88px;border-radius:50%;
-  border:2px solid rgba(212,168,75,.55);
+  width:94px;height:94px;border-radius:50%;
   object-fit:cover;display:block;
-  box-shadow:0 0 18px rgba(212,168,75,.18)
+  background:#1a1008
 }
 
 /* ── NAME ── */
@@ -141,7 +169,6 @@ body.has-ticker .topbar{top:34px}
   -webkit-background-clip:text;background-clip:text;
   color:transparent;-webkit-text-fill-color:transparent;
   animation:shine 5s linear infinite;
-  /* GPU layer for name animation only */
   will-change:background-position
 }
 @keyframes shine{to{background-position:220% center}}
@@ -187,17 +214,15 @@ body.has-ticker .topbar{top:34px}
 }
 .banner.show{display:block}
 
-/* ── LINKS — GPU-accelerated, no backdrop-filter ── */
+/* ── LINKS ── */
 .links{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 
 .link-btn{
   display:flex;align-items:center;gap:14px;
   padding:13px 16px;border-radius:var(--radius);
-  /* Solid semi-transparent bg — NO backdrop-filter */
   background:rgba(42,26,8,.65);
   border:1px solid rgba(212,168,75,.2);
   text-decoration:none;color:#fff;
-  /* Only transform for hover — GPU composited, no layout */
   transition:background .2s,border-color .2s,transform .15s;
   -webkit-tap-highlight-color:transparent;
   cursor:pointer
@@ -339,19 +364,21 @@ body.has-ticker .topbar{top:34px}
 <div class="card">
   <div class="content" id="mainContent">
 
+    <!-- LOGO with gold shimmer ring -->
     <div class="avatar-wrap">
-      <!-- Logo: tries config logoUrl first, falls back to SWAG GOLD SVG -->
-      <div id="logoWrap" class="logo-svg-wrap">
-        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SWAG GOLD">
-          <circle cx="28" cy="28" r="26" stroke="#d4a84b" stroke-width="1.2" opacity=".45"/>
-          <text x="50%" y="34%" dominant-baseline="middle" text-anchor="middle"
-            font-family="Cormorant Garamond,serif" font-size="10" font-weight="700"
-            fill="#f7ecc4" letter-spacing="2">SWAG</text>
-          <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle"
-            font-family="Cormorant Garamond,serif" font-size="8" font-weight="600"
-            fill="#d4a84b" letter-spacing="3">GOLD</text>
-          <path d="M13 28 L28 17 L43 28 L28 39 Z" stroke="#d4a84b" stroke-width=".8" fill="none" opacity=".3"/>
-        </svg>
+      <div class="logo-ring" id="logoRing">
+        <div class="logo-svg-wrap" id="logoWrap">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="SWAG GOLD">
+            <circle cx="28" cy="28" r="26" stroke="#d4a84b" stroke-width="1.2" opacity=".45"/>
+            <text x="50%" y="34%" dominant-baseline="middle" text-anchor="middle"
+              font-family="Cormorant Garamond,serif" font-size="10" font-weight="700"
+              fill="#f7ecc4" letter-spacing="2">SWAG</text>
+            <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle"
+              font-family="Cormorant Garamond,serif" font-size="8" font-weight="600"
+              fill="#d4a84b" letter-spacing="3">GOLD</text>
+            <path d="M13 28 L28 17 L43 28 L28 39 Z" stroke="#d4a84b" stroke-width=".8" fill="none" opacity=".3"/>
+          </svg>
+        </div>
       </div>
     </div>
 
@@ -449,19 +476,18 @@ function renderConfig(cfg){
   document.getElementById('siteFooter').textContent=cfg.footer||'SWAG GOLD · سواج جولد';
   document.title=(cfg.title||'SWAG GOLD')+' Official';
 
-  // ─ Logo: use image if provided, else keep SVG default
+  // Logo: image inside the gold ring if provided
   if(cfg.logoUrl&&cfg.logoUrl.trim()){
-    const wrap=document.getElementById('logoWrap');
+    const ring=document.getElementById('logoRing');
     const img=document.createElement('img');
     img.src=cfg.logoUrl;
     img.alt=(cfg.title||'SWAG GOLD')+' logo';
     img.className='logo-img';
-    img.width=88;img.height=88;
-    img.loading='eager'; // logo loads immediately
-    img.onerror=()=>{}; // silently keep SVG if image fails
-    wrap.className=''; // remove svg-wrap styling
-    wrap.innerHTML=''; // clear SVG
-    wrap.appendChild(img);
+    img.width=94;img.height=94;
+    img.loading='eager';
+    img.onerror=()=>{};
+    ring.innerHTML=''; // clear inner SVG wrap
+    ring.appendChild(img);
   }
 
   // Banner
@@ -501,7 +527,7 @@ function renderConfig(cfg){
   });
 }
 
-// ─ GOLD PRICE ─
+// GOLD PRICE
 async function fetchGoldPrice(){
   try{
     const r=await fetch('https://api.gold-api.com/price/XAU');
@@ -521,7 +547,7 @@ async function fetchGoldPrice(){
   }
 }
 
-// ─ SHARE ─
+// SHARE
 document.getElementById('shareBtn').onclick=()=>document.getElementById('shareOverlay').classList.add('open');
 document.getElementById('shareClose').onclick=()=>document.getElementById('shareOverlay').classList.remove('open');
 document.getElementById('shareOverlay').onclick=e=>{if(e.target===document.getElementById('shareOverlay'))document.getElementById('shareOverlay').classList.remove('open');};
@@ -536,12 +562,12 @@ function shareVia(t){
   }else if(t==='native'&&navigator.share)navigator.share({title:'SWAG GOLD',url:u});
 }
 
-// ─ SCROLL TOP ─
+// SCROLL TOP
 const stBtn=document.getElementById('scrollTop');
 window.addEventListener('scroll',()=>stBtn.classList.toggle('show',window.scrollY>280),{passive:true});
 stBtn.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 
-// ─ INIT ─
+// INIT
 (async()=>{
   const cfg=await loadConfig();
   renderConfig(cfg);
