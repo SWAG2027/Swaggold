@@ -915,7 +915,7 @@ function applyUiVars(cfg, root){
     function lbDragE(){LB={};}
     buildSide();loadGH();
     cfg=loadDraft()||clone(DEFAULT_CONFIG);ensure();
-    fetch('config.json?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(c){if(c){if(!loadDraft()){cfg=c;}else{if(c.video)cfg.video=c.video;if(c.logo)cfg.logo=c.logo;}}ensure();fillForm();renderSocials();renderLinks();previewRender();}).catch(function(){fillForm();renderSocials();renderLinks();previewRender();});
+    fetch('config.json?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(c){if(c){cfg=c;}ensure();fillForm();renderSocials();renderLinks();previewRender();}).catch(function(){fillForm();renderSocials();renderLinks();previewRender();});
     fillForm();renderSocials();renderLinks();renderLayoutBlocks();previewRender();
   
 
