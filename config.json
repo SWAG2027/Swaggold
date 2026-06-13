@@ -3,7 +3,7 @@
   "name": "swag gold",
   "bio": "Jewellery Store",
   "verified": false,
-  "video": "swag-bg.mp4",
+  "video": "https://res.cloudinary.com/dzt5habw9/video/upload/19-3_v_3_2215524-1_aa2i8s.mp4",
   "gold": "#d4a84b",
   "blur": 34,
   "socials": [
@@ -110,25 +110,8 @@
     "items": [],
     "rotateInterval": 5
   },
-  "_savedAt": 1781350319858,
-  "pos": {
-    "name": {
-      "x": 1,
-      "y": 51
-    },
-    "logo": {
-      "x": -6,
-      "y": -116
-    },
-    "bio": {
-      "x": -3,
-      "y": -31
-    },
-    "socials": {
-      "x": -2,
-      "y": -14
-    }
-  },
+  "_savedAt": 1781350764604,
+  "pos": {},
   "layout": {
     "order": [
       "name",
