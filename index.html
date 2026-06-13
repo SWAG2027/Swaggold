@@ -2644,24 +2644,33 @@ function applyUiVars(cfg, root){
 
     function fitCard(){var c=document.querySelector('.content'); if(c) c.style.transform='none';}
     var _hls=null;
-    function _loadMp4(cv,src){ try{cv.removeAttribute('src');}catch(e){} var s=document.getElementById('vsrc'); if(s)s.src=src; try{cv.load&&cv.load();}catch(e){} var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); }
-    function _attachHls(cv,src){ try{if(_hls){_hls.destroy();_hls=null;}}catch(e){} _hls=new Hls({maxBufferLength:12,capLevelToPlayerSize:true,startLevel:-1});
-      _hls.loadSource(src); _hls.attachMedia(cv);
-      _hls.on(Hls.Events.MANIFEST_PARSED,function(){ var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); });
-      _hls.on(Hls.Events.ERROR,function(ev,d){ if(d&&d.fatal){ try{_hls.destroy();}catch(e){} _hls=null; _loadMp4(cv,'swag-bg.mp4'); } }); }
-    function loadVideoSource(cv,src){ if(!cv)return; src=src||'swag-bg.mp4';
+    function _loadMp4(cv,src){ if(!cv||!src)return; try{cv.removeAttribute('src');}catch(e){} var sv=document.getElementById('vsrc'); if(sv)sv.src=src; try{cv.load&&cv.load();}catch(e){} var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); }
+    // MP4 turant chalao; HLS background me load karo, ready hote hi smooth pe switch (Cloudinary first-request processing handle)
+    function _upgradeToHls(cv,hlsSrc){ if(!(window.Hls&&window.Hls.isSupported()))return;
+      try{if(_hls){_hls.destroy();_hls=null;}}catch(e){}
+      var h=new Hls({maxBufferLength:12,capLevelToPlayerSize:true,startLevel:-1}); var attached=false;
+      h.on(Hls.Events.MANIFEST_PARSED,function(){ if(!attached){ attached=true; try{var sv=document.getElementById('vsrc'); if(sv)sv.removeAttribute('src');}catch(e){} h.attachMedia(cv); var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); } });
+      h.on(Hls.Events.ERROR,function(ev,d){ if(d&&d.fatal){ try{h.destroy();}catch(e){} if(_hls===h)_hls=null; } }); // HLS fail/abhi-processing -> MP4 chalta rahega
+      _hls=h; try{h.loadSource(hlsSrc);}catch(e){} }
+    function loadVideoSource(cv,src,mp4){ if(!cv)return; src=src||'swag-bg.mp4'; mp4=mp4||'swag-bg.mp4';
       try{if(_hls){_hls.destroy();_hls=null;}}catch(e){}
       var isHls=/\.m3u8(\?|$)/i.test(src);
       if(!isHls){ _loadMp4(cv,src); return; }
-      var sv=document.getElementById('vsrc'); if(sv)sv.removeAttribute('src');
-      if(cv.canPlayType('application/vnd.apple.mpegurl')){ cv.src=src; try{cv.load&&cv.load();}catch(e){} var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); return; }
-      var tries=0; (function waitHls(){ if(window.Hls&&window.Hls.isSupported()){ _attachHls(cv,src); return; } if(++tries>25){ _loadMp4(cv,'swag-bg.mp4'); return; } setTimeout(waitHls,200); })();
+      // Safari/iOS: native HLS seedha; error pe MP4
+      if(cv.canPlayType('application/vnd.apple.mpegurl')){
+        try{var sv=document.getElementById('vsrc'); if(sv)sv.removeAttribute('src');}catch(e){}
+        cv.src=src; try{cv.load&&cv.load();}catch(e){} var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){});
+        cv.addEventListener('error',function(){ _loadMp4(cv,mp4); },{once:true}); return;
+      }
+      // Android/Chrome: MP4 turant + HLS upgrade
+      _loadMp4(cv,mp4);
+      var tries=0; (function waitHls(){ if(window.Hls&&window.Hls.isSupported()){ _upgradeToHls(cv,src); return; } if(++tries>30)return; setTimeout(waitHls,200); })();
     }
     function render(cfg){
       applyUiVars(cfg); applyScrim(cfg); applyKiosk(cfg); applySeo(cfg); applyBg(cfg);
       var bd=document.querySelector('.backdrop video'); if(bd) bd.style.filter='blur('+(cfg.blur!=null?cfg.blur:34)+'px) brightness(.5) saturate(1.1)';
       var src=cfg.video||'swag-bg.mp4';
-      var cv=document.getElementById('cardv'); loadVideoSource(cv,src);
+      var cv=document.getElementById('cardv'); loadVideoSource(cv,src,cfg.videoMp4||'swag-bg.mp4');
       var bg=document.getElementById('bgv'); var narrow=!(window.matchMedia&&window.matchMedia('(min-width:520px)').matches);
       if(bg){ try{bg.pause();}catch(e){} if(bg.getAttribute('src')){bg.removeAttribute('src'); try{bg.load();}catch(e){}}
         if(!narrow && !/\.m3u8(\?|$)/i.test(src)){ bg.src=src; var pb=bg.play&&bg.play(); if(pb&&pb.catch)pb.catch(function(){}); } }
