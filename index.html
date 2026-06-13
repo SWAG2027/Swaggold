@@ -2644,14 +2644,19 @@ function applyUiVars(cfg, root){
 
     function fitCard(){var c=document.querySelector('.content'); if(c) c.style.transform='none';}
 // HLS VIDEO INIT
-function initHLSVideo(videoEl, hlsUrl, fallbackMp4) {
-  if (!videoEl) return;
+var _hlsBg = null, _hlsCard = null;
+function initHLSVideo(videoEl, hlsUrl, fallbackMp4, instanceRef) {
+  if (!videoEl) return null;
+  // destroy previous instance if exists
+  if (instanceRef && instanceRef.hls) { try { instanceRef.hls.destroy(); } catch(e){} instanceRef.hls = null; }
   videoEl.removeAttribute('src');
   Array.from(videoEl.querySelectorAll('source')).forEach(function(s){ s.remove(); });
+  videoEl.style.display = '';
   if (videoEl.canPlayType('application/vnd.apple.mpegurl')) {
     videoEl.src = hlsUrl;
     videoEl.load();
     videoEl.play().catch(function(){});
+    return null;
   } else if (typeof Hls !== 'undefined' && Hls.isSupported()) {
     var hls = new Hls({ maxBufferLength: 8, maxMaxBufferLength: 16, enableWorker: true });
     hls.loadSource(hlsUrl);
@@ -2666,22 +2671,27 @@ function initHLSVideo(videoEl, hlsUrl, fallbackMp4) {
         videoEl.play().catch(function(){});
       }
     });
+    return hls;
   } else {
     videoEl.src = fallbackMp4;
     videoEl.load();
     videoEl.play().catch(function(){});
+    return null;
   }
 }
 var HLS_URL = 'https://res.cloudinary.com/dzt5habw9/video/upload/sp_auto/q_auto,f_auto/19-3_v_3_2215524-1_aa2i8s.m3u8';
 var MP4_URL  = 'https://res.cloudinary.com/dzt5habw9/video/upload/q_auto,f_auto/19-3_v_3_2215524-1_aa2i8s.mp4';
+var _hlsBgRef = {hls:null}, _hlsCardRef = {hls:null};
 // END HLS VIDEO INIT
     function render(cfg){
       applyUiVars(cfg); applyScrim(cfg); applyKiosk(cfg); applySeo(cfg); applyBg(cfg);
       var bd=document.querySelector('.backdrop video'); if(bd) bd.style.filter='blur('+(cfg.blur!=null?cfg.blur:34)+'px) brightness(.5) saturate(1.1)';
       var bgVid   = document.querySelector('.backdrop video');
       var cardVid = document.getElementById('cardv');
-      initHLSVideo(bgVid,   HLS_URL, MP4_URL);
-      initHLSVideo(cardVid, HLS_URL, MP4_URL);
+      if(bgVid) bgVid.style.display='';
+      if(cardVid) cardVid.style.display='';
+      _hlsBgRef.hls   = initHLSVideo(bgVid,   HLS_URL, MP4_URL, _hlsBgRef);
+      _hlsCardRef.hls = initHLSVideo(cardVid, HLS_URL, MP4_URL, _hlsCardRef);
       document.getElementById('content').innerHTML=buildContent(cfg);
       setTimeout(fitCard,60); setTimeout(fitCard,400);
       startBannerPro(cfg);
