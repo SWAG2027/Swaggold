@@ -143,7 +143,7 @@
 <body>
   <div class="backdrop"><video id="bgv" autoplay muted loop playsinline></video></div>
   <main class="card">
-    <video class="cardvid" id="cardv" autoplay muted loop playsinline preload="auto"><source id="vsrc" src="video" type="video/mp4"></video>
+    <video class="cardvid" id="cardv" autoplay muted loop playsinline preload="auto"><source id="vsrc" src="swag-bg.mp4" type="video/mp4"></video>
     <div class="scrim"></div><div class="content" id="content"></div>
   </main>
   <div class="kiosk">
@@ -2682,9 +2682,6 @@ var MP4_URL  = 'https://res.cloudinary.com/dzt5habw9/video/upload/q_auto,f_auto/
       var cardVid = document.getElementById('cardv');
       initHLSVideo(bgVid,   HLS_URL, MP4_URL);
       initHLSVideo(cardVid, HLS_URL, MP4_URL);
-      var cv=document.getElementById('cardv'); if(cv){cv.load&&cv.load(); var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){});}
-      var bg=document.getElementById('bgv'); var narrow=!(window.matchMedia&&window.matchMedia('(min-width:520px)').matches);
-      if(bg){ if(narrow){ try{bg.pause();}catch(e){} if(bg.getAttribute('src')){bg.removeAttribute('src'); try{bg.load();}catch(e){}} } else { if(bg.getAttribute('src')!==src){bg.src=src;} var pb=bg.play&&bg.play(); if(pb&&pb.catch)pb.catch(function(){});} }
       document.getElementById('content').innerHTML=buildContent(cfg);
       setTimeout(fitCard,60); setTimeout(fitCard,400);
       startBannerPro(cfg);
