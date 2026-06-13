@@ -29,7 +29,7 @@
   .card{width:100%;max-width:480px;min-height:100dvh;position:relative;
     display:flex;flex-direction:column;justify-content:center;animation:fade .6s ease both}
   @keyframes fade{from{opacity:0}to{opacity:1}}
-  .card .cardvid{position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);width:100%;max-width:480px;height:100dvh;object-fit:cover;z-index:-1;backface-visibility:hidden}
+  .card .cardvid{position:fixed;top:0;bottom:0;left:0;right:0;margin:0 auto;width:100%;max-width:480px;height:100%;object-fit:cover;z-index:-1}
   .card .scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg, rgba(0,0,0,.26) 0%, rgba(0,0,0,.02) 16%, rgba(0,0,0,0) 45%, rgba(0,0,0,0) 80%, rgba(0,0,0,.06) 100%)}
   .content{position:relative;z-index:2;padding:24px 18px 44px;width:100%}
 
@@ -126,8 +126,7 @@
   .link .ico{filter:none!important}
   .name .nm{text-shadow:none!important}
 }
-.card,.cardvid{will-change:transform}
-
+.card,
     /* === GALLERY LIGHTBOX === */
     #lbox{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.92);align-items:center;justify-content:center;padding:0}
     #lbox.open{display:flex}
