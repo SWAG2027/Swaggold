@@ -2643,7 +2643,12 @@ function applyUiVars(cfg, root){
     } else { if(cv)cv.style.display=''; if(bg)bg.style.display=''; card.style.backgroundImage=''; back.style.backgroundImage=''; back.style.filter=''; } }
 
     function fitCard(){var c=document.querySelector('.content'); if(c) c.style.transform='none';}
-    function fitVideo(){ try{ var cv=document.getElementById('cardv'); var h=(window.innerHeight||document.documentElement.clientHeight); if(cv&&h){ cv.style.height=h+'px'; } }catch(e){} }
+    function fitVideo(){ try{ var cv=document.getElementById('cardv'); if(!cv)return;
+      var h=window.innerHeight||0;
+      if(window.visualViewport&&window.visualViewport.height) h=Math.max(h,window.visualViewport.height);
+      if(document.documentElement&&document.documentElement.clientHeight) h=Math.max(h,document.documentElement.clientHeight);
+      if(h){ cv.style.height=h+'px'; cv.style.minHeight=h+'px'; }
+    }catch(e){} }
     window.addEventListener('resize',fitVideo);
     window.addEventListener('orientationchange',function(){ setTimeout(fitVideo,250); });
     window.addEventListener('load',fitVideo);
