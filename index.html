@@ -12,18 +12,15 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="SWAG GOLD">
+<!-- Preconnect only to what we use -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Cairo:wght@500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Only 2 fonts, fewer weights = faster -->
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--radius:22px;--gold:#d4a84b;--gold2:#e7c873;--dark:#1a140c}
 *{box-sizing:border-box;margin:0;padding:0}
-
-html{
-  height:100%;
-  -webkit-text-size-adjust:100%;
-}
-
+html{height:100%;-webkit-text-size-adjust:100%}
 body{
   font-family:'Jost',sans-serif;
   color:#fff;
@@ -38,9 +35,7 @@ body{
   overscroll-behavior-y:none;
 }
 
-/* ═══════════════════════════════════════
-   DESKTOP blurred backdrop
-═══════════════════════════════════════ */
+/* Desktop blurred backdrop — hidden on mobile */
 .backdrop{
   display:none;
   position:fixed;inset:0;z-index:-2;
@@ -57,53 +52,57 @@ body{
   content:"";position:absolute;inset:0;
   background:rgba(20,15,8,.35)
 }
+/* Only show backdrop on desktop */
 @media(min-width:520px){.backdrop{display:block}}
 
-/* ═══════════════════════════════════════
-   CARD
-═══════════════════════════════════════ */
+/* CARD */
 .card{
   width:100%;max-width:480px;
   min-height:100dvh;
   position:relative;
   display:flex;flex-direction:column;
   justify-content:flex-start;
-  animation:fade .6s ease both
+  animation:fade .5s ease both
 }
 @keyframes fade{from{opacity:0}to{opacity:1}}
 
-/* ═══════════════════════════════════════
-   VIDEO — ALL SCREENS
-   KEY: position:fixed + translate3d = GPU layer, no scroll jank
-   Card content scrolls on top; video stays fixed behind.
-═══════════════════════════════════════ */
+/* VIDEO — desktop only via CSS, GPU composited */
 .cardvid{
   position:fixed;
-  left:50%;
-  top:0;
-  /* translate3d forces GPU compositing layer */
+  left:50%;top:0;
   transform:translate3d(-50%,0,0);
-  width:100vw;
-  max-width:480px;
+  width:100vw;max-width:480px;
   height:100dvh;
   object-fit:cover;
   z-index:-1;
-  /* GPU-only properties — never triggers layout or paint */
   will-change:transform;
   backface-visibility:hidden;
   -webkit-backface-visibility:hidden;
+  /* Hidden on mobile by default */
+  display:none;
 }
+/* Show video only on desktop */
+@media(min-width:520px){.cardvid{display:block}}
 
-/* hide the old mobile static image — video handles everything now */
-.card-bg-img{display:none!important}
+/* Mobile: static gradient background — instant, zero network cost */
+@media(max-width:519px){
+  .card{
+    background:linear-gradient(
+      160deg,
+      #2a1f12 0%,
+      #1a140c 30%,
+      #0e0b07 60%,
+      #1a140c 100%
+    );
+  }
+}
 
 .scrim{
   position:fixed;
   left:50%;
   transform:translateX(-50%);
   top:0;
-  width:100%;
-  max-width:480px;
+  width:100%;max-width:480px;
   height:100dvh;
   z-index:0;
   pointer-events:none;
@@ -116,6 +115,8 @@ body{
     rgba(0,0,0,.32) 100%
   );
 }
+/* No scrim needed on mobile — static bg */
+@media(max-width:519px){.scrim{display:none}}
 
 .content{
   position:relative;
@@ -124,13 +125,8 @@ body{
   width:100%;
 }
 
-/* ── TOP BAR ── */
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:6px
-}
+/* TOP BAR */
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .chip{
   width:42px;height:42px;
   border-radius:50%;
@@ -148,7 +144,7 @@ body{
 .chip svg{width:18px;height:18px}
 .chip .ast{font-size:21px;line-height:1;font-weight:700}
 
-/* ── PRICE TICKER ── */
+/* PRICE TICKER */
 .ticker{
   background:rgba(0,0,0,.45);
   border:1px solid rgba(212,168,75,.4);
@@ -157,11 +153,9 @@ body{
   display:flex;
   align-items:center;
   gap:10px;
-  font-size:11.5px;
-  font-weight:600;
+  font-size:11.5px;font-weight:600;
   letter-spacing:.03em;
-  overflow:hidden;
-  min-height:34px
+  overflow:hidden;min-height:34px
 }
 .ticker-icon{font-size:14px}
 .ticker-items{display:flex;gap:18px;align-items:center;flex-wrap:nowrap}
@@ -171,12 +165,8 @@ body{
 .ti-unit{color:rgba(255,255,255,.5);font-size:10px}
 .ti-time{color:rgba(255,255,255,.4);font-size:10px;margin-left:4px}
 
-/* ── PROFILE ── */
-.profile{
-  display:flex;flex-direction:column;
-  align-items:center;text-align:center;
-  margin-top:8px
-}
+/* PROFILE */
+.profile{display:flex;flex-direction:column;align-items:center;text-align:center;margin-top:8px}
 .avatar{
   width:90px;height:90px;
   border-radius:50%;
@@ -185,11 +175,7 @@ body{
   box-shadow:0 10px 30px rgba(0,0,0,.6);
   display:block;
 }
-.name{
-  display:flex;align-items:center;
-  justify-content:center;gap:8px;
-  margin-top:9px
-}
+.name{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:9px}
 .nm{
   font-family:'Cormorant Garamond',serif;
   font-weight:700;
@@ -198,33 +184,20 @@ body{
   text-transform:uppercase;
   background:linear-gradient(100deg,#f7ecc4 0%,#d4a84b 22%,#fff6da 42%,#c9952b 58%,#f7ecc4 82%);
   background-size:220% auto;
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  -webkit-text-fill-color:transparent;
+  -webkit-background-clip:text;background-clip:text;
+  color:transparent;-webkit-text-fill-color:transparent;
   animation:shine 4.5s linear infinite;
   filter:drop-shadow(0 2px 12px rgba(0,0,0,.75))
 }
 @keyframes shine{to{background-position:220% center}}
 .verified{display:grid;place-items:center;filter:drop-shadow(0 2px 6px rgba(0,0,0,.55))}
 .verified svg{width:24px;height:24px;display:block}
-.bio{
-  margin-top:2px;
-  font-size:14px;
-  font-weight:600;
-  letter-spacing:.02em;
-  color:#fff;
-  text-shadow:0 2px 12px rgba(0,0,0,.85)
-}
+.bio{margin-top:2px;font-size:14px;font-weight:600;letter-spacing:.02em;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.85)}
 
-/* ── SOCIALS ── */
-.socials{
-  display:flex;justify-content:center;
-  gap:16px;margin:11px 0 0
-}
+/* SOCIALS */
+.socials{display:flex;justify-content:center;gap:16px;margin:11px 0 0}
 .socials a{
-  width:30px;height:30px;
-  color:#fff;
+  width:30px;height:30px;color:#fff;
   display:grid;place-items:center;
   transition:transform .2s;
   filter:drop-shadow(0 3px 8px rgba(0,0,0,.55));
@@ -234,19 +207,16 @@ body{
 .socials a:hover{transform:translateY(-3px) scale(1.1)}
 .socials svg{width:30px;height:30px;display:block}
 
-/* ── BANNER ── */
+/* BANNER */
 .banner{
   margin:8px 0 2px;
   padding:9px 34px 9px 14px;
   border-radius:12px;
   background:linear-gradient(90deg,rgba(212,168,75,.26),rgba(212,168,75,.10));
   border:1px solid rgba(212,168,75,.55);
-  color:#fbeec2;
-  font-size:13.5px;
-  text-align:center;
-  font-weight:600;
-  letter-spacing:.01em;
-  position:relative
+  color:#fbeec2;font-size:13.5px;
+  text-align:center;font-weight:600;
+  letter-spacing:.01em;position:relative
 }
 .banner a{color:#fff;text-decoration:underline}
 .banner-close{
@@ -254,47 +224,26 @@ body{
   transform:translateY(-50%);
   background:none;border:none;
   color:rgba(255,255,255,.5);
-  font-size:16px;cursor:pointer;
-  line-height:1;padding:2px
+  font-size:16px;cursor:pointer;line-height:1;padding:2px
 }
 
-/* ═══════════════════════════════════════
-   LINK BUTTONS
-═══════════════════════════════════════ */
-.links{
-  margin-top:14px;
-  display:grid;
-  grid-template-columns:repeat(var(--cols,1),minmax(0,1fr));
-  gap:var(--gap,10px);
-}
+/* LINK BUTTONS */
+.links{margin-top:14px;display:grid;grid-template-columns:repeat(var(--cols,1),minmax(0,1fr));gap:var(--gap,10px)}
 .link{
-  position:relative;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  gap:12px;
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;gap:12px;
   padding:14px 16px;
   border:1.5px solid rgba(212,168,75,.60);
   border-radius:var(--radius);
   background:rgba(0,0,0,.16);
-  color:#fff;
-  text-decoration:none;
-  font-size:15px;
-  font-weight:500;
+  color:#fff;text-decoration:none;
+  font-size:15px;font-weight:500;
   min-height:58px;
   -webkit-tap-highlight-color:transparent;
   touch-action:manipulation;
+  opacity:0;animation:rise .5s ease forwards;
 }
-
-/* Entrance animation */
-.link{
-  opacity:0;
-  animation:rise .5s ease forwards;
-}
-@keyframes rise{
-  from{opacity:0;transform:translateY(14px)}
-  to{opacity:1;transform:none}
-}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .link:nth-child(1){animation-delay:.04s}
 .link:nth-child(2){animation-delay:.10s}
 .link:nth-child(3){animation-delay:.16s}
@@ -303,11 +252,10 @@ body{
 .link:nth-child(6){animation-delay:.34s}
 .link:nth-child(7){animation-delay:.40s}
 
-/* Gold shimmer — DESKTOP ONLY */
+/* Gold shimmer — DESKTOP ONLY, skip on mobile to save CPU */
 @media(hover:hover){
   .link::before{
-    content:"";
-    position:absolute;top:0;left:0;
+    content:"";position:absolute;top:0;left:0;
     width:55%;height:100%;
     background:linear-gradient(100deg,transparent,rgba(255,236,180,.28),transparent);
     transform:translateX(-180%) skewX(-20deg);
@@ -333,216 +281,95 @@ body{
     transition:transform .18s,background .25s,border-color .25s,box-shadow .25s;
   }
 }
-
-/* Mobile active state */
 @media(hover:none){
-  .link:active{
-    background:rgba(212,168,75,.25);
-    border-color:rgba(212,168,75,.9);
-    transform:scale(0.97);
-  }
+  .link:active{background:rgba(212,168,75,.25);border-color:rgba(212,168,75,.9);transform:scale(0.97)}
 }
 
-.link.featured{
-  box-shadow:0 0 0 1.5px var(--gold),0 8px 28px rgba(212,168,75,.38);
-  background:linear-gradient(180deg,rgba(212,168,75,.20),rgba(0,0,0,.16))
-}
-
-.link .ico{
-  flex:0 0 28px;
-  display:grid;place-items:center;
-  color:#fff;
-  filter:drop-shadow(0 1px 3px rgba(0,0,0,.7))
-}
+.link.featured{box-shadow:0 0 0 1.5px var(--gold),0 8px 28px rgba(212,168,75,.38);background:linear-gradient(180deg,rgba(212,168,75,.20),rgba(0,0,0,.16))}
+.link .ico{flex:0 0 28px;display:grid;place-items:center;color:#fff;filter:drop-shadow(0 1px 3px rgba(0,0,0,.7))}
 .link .ico svg{width:28px;height:28px;display:block}
-.link .label{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  line-height:1.3;
-  text-shadow:0 1px 6px rgba(0,0,0,.85);
-  text-align:center
-}
+.link .label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;line-height:1.3;text-shadow:0 1px 6px rgba(0,0,0,.85);text-align:center}
 .link .dash{opacity:.6}
 .link .ar{font-family:'Cairo',sans-serif;font-weight:600}
-.link .dots{
-  flex:0 0 20px;
-  color:#fff;
-  opacity:.45;
-  display:grid;place-items:center
-}
+.link .dots{flex:0 0 20px;color:#fff;opacity:.45;display:grid;place-items:center}
 .link .dots svg{width:18px;height:18px}
 
-/* ── FOOTER ── */
-.footer{
-  margin-top:14px;
-  text-align:center;
-  font-size:10px;
-  letter-spacing:.22em;
-  opacity:.7;
-  text-transform:uppercase;
-  text-shadow:0 1px 7px rgba(0,0,0,.85)
-}
+/* FOOTER */
+.footer{margin-top:14px;text-align:center;font-size:10px;letter-spacing:.22em;opacity:.7;text-transform:uppercase;text-shadow:0 1px 7px rgba(0,0,0,.85)}
 
-/* ── KIOSK CONTROLS ── */
-.kiosk{
-  position:fixed;bottom:16px;right:16px;
-  display:flex;gap:10px;z-index:50
-}
+/* KIOSK CONTROLS */
+.kiosk{position:fixed;bottom:16px;right:16px;display:flex;gap:10px;z-index:50}
 .kbtn{
-  width:48px;height:48px;
-  border-radius:50%;
+  width:48px;height:48px;border-radius:50%;
   border:1px solid rgba(212,168,75,.6);
   background:rgba(20,16,10,.72);
-  color:#e7c873;
-  font-size:13px;font-weight:700;
-  cursor:pointer;
-  display:grid;place-items:center;
-  transition:transform .2s;
-  letter-spacing:.04em;
-  -webkit-tap-highlight-color:transparent;
-  touch-action:manipulation;
+  color:#e7c873;font-size:13px;font-weight:700;
+  cursor:pointer;display:grid;place-items:center;
+  transition:transform .2s;letter-spacing:.04em;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
 }
 .kbtn:hover{transform:scale(1.08)}
-.kbtn svg{
-  width:22px;height:22px;
-  fill:none;stroke:#e7c873;
-  stroke-width:2;
-  stroke-linecap:round;stroke-linejoin:round
-}
+.kbtn svg{width:22px;height:22px;fill:none;stroke:#e7c873;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* ── QR OVERLAY ── */
-.qrov{
-  display:none;
-  position:fixed;inset:0;z-index:100;
-  background:rgba(0,0,0,.80);
-  align-items:center;justify-content:center;
-  padding:24px
-}
+/* QR OVERLAY */
+.qrov{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.80);align-items:center;justify-content:center;padding:24px}
 .qrov.open{display:flex}
-.qrcard{
-  background:#fff;
-  border-radius:26px;
-  padding:28px 26px 22px;
-  position:relative;
-  text-align:center;
-  box-shadow:0 24px 70px rgba(0,0,0,.55);
-  max-width:340px;width:100%;
-  animation:rise .4s ease
-}
-.qrcard .qbadge{
-  width:54px;height:54px;
-  border-radius:50%;
-  margin:-52px auto 8px;
-  display:block;
-  box-shadow:0 6px 18px rgba(0,0,0,.3);
-  border:3px solid #fff
-}
+.qrcard{background:#fff;border-radius:26px;padding:28px 26px 22px;position:relative;text-align:center;box-shadow:0 24px 70px rgba(0,0,0,.55);max-width:340px;width:100%;animation:rise .4s ease}
+.qrcard .qbadge{width:54px;height:54px;border-radius:50%;margin:-52px auto 8px;display:block;box-shadow:0 6px 18px rgba(0,0,0,.3);border:3px solid #fff}
 .qrbox{width:236px;height:236px;margin:6px auto 0;display:grid;place-items:center}
 .qrbox svg{width:236px;height:236px}
-.qrt{
-  margin-top:16px;
-  color:#1a140c;
-  font-family:'Cairo',sans-serif;
-  font-weight:700;
-  font-size:18px;
-  line-height:1.5
-}
-.qrt span{
-  display:block;
-  font-family:'Jost',sans-serif;
-  font-weight:500;
-  font-size:13px;
-  color:#8a7636;
-  letter-spacing:.04em
-}
-.qrclose{
-  position:absolute;top:12px;right:14px;
-  border:none;background:none;
-  font-size:20px;color:#bbb;
-  cursor:pointer;line-height:1
-}
+.qrt{margin-top:16px;color:#1a140c;font-family:'Cairo',sans-serif;font-weight:700;font-size:18px;line-height:1.5}
+.qrt span{display:block;font-family:'Jost',sans-serif;font-weight:500;font-size:13px;color:#8a7636;letter-spacing:.04em}
+.qrclose{position:absolute;top:12px;right:14px;border:none;background:none;font-size:20px;color:#bbb;cursor:pointer;line-height:1}
 
-/* ── LIGHTBOX ── */
-#lbox{
-  display:none;
-  position:fixed;inset:0;z-index:200;
-  background:rgba(0,0,0,.92);
-  align-items:center;justify-content:center;
-  padding:0
-}
+/* LIGHTBOX */
+#lbox{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.92);align-items:center;justify-content:center;padding:0}
 #lbox.open{display:flex}
-#lbox img{
-  max-width:96vw;max-height:88vh;
-  object-fit:contain;
-  border-radius:12px;
-  box-shadow:0 8px 40px rgba(0,0,0,.8);
-  user-select:none
-}
-#lbox .lbclose{
-  position:absolute;top:14px;right:18px;
-  font-size:28px;color:#fff;
-  cursor:pointer;line-height:1;z-index:201;
-  opacity:.85;
-  background:rgba(0,0,0,.4);
-  border-radius:50%;
-  width:38px;height:38px;
-  display:grid;place-items:center
-}
-#lbox .lbnav{
-  position:absolute;top:50%;
-  transform:translateY(-50%);
-  width:42px;height:42px;
-  border-radius:50%;
-  background:rgba(0,0,0,.5);
-  color:#fff;font-size:22px;
-  display:grid;place-items:center;
-  cursor:pointer;z-index:201;
-  border:none
-}
+#lbox img{max-width:96vw;max-height:88vh;object-fit:contain;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,.8);user-select:none}
+#lbox .lbclose{position:absolute;top:14px;right:18px;font-size:28px;color:#fff;cursor:pointer;line-height:1;z-index:201;opacity:.85;background:rgba(0,0,0,.4);border-radius:50%;width:38px;height:38px;display:grid;place-items:center}
+#lbox .lbnav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(0,0,0,.5);color:#fff;font-size:22px;display:grid;place-items:center;cursor:pointer;z-index:201;border:none}
 #lbox .lbnav.prev{left:10px}
 #lbox .lbnav.next{right:10px}
-#lbox .lbcount{
-  position:absolute;bottom:14px;left:50%;
-  transform:translateX(-50%);
-  color:rgba(255,255,255,.7);
-  font-size:12px;letter-spacing:.1em
-}
+#lbox .lbcount{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.7);font-size:12px;letter-spacing:.1em}
 
-/* ── REDUCED MOTION ── */
+/* REDUCED MOTION */
 @media(prefers-reduced-motion:reduce){
   .link::before{animation:none}
   .nm{animation:none}
   .link{animation:none;opacity:1}
 }
 
-/* ── SMALL PHONE ── */
-@media(max-width:380px){
-  .nm{font-size:28px}
-  .link{font-size:14px;padding:12px 14px}
-}
+/* SMALL PHONE */
+@media(max-width:380px){.nm{font-size:28px}.link{font-size:14px;padding:12px 14px}}
+
+/* Cairo font lazy load — only for Arabic labels */
+.ar{font-family:'Cairo',sans-serif}
 </style>
+<!-- Cairo loaded separately, non-blocking — only used for Arabic text -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700&display=swap"></noscript>
 </head>
 <body>
 
-<!-- Desktop only blurred bg -->
+<!-- Desktop only blurred bg — not rendered on mobile -->
 <div class="backdrop">
-  <video id="bgv" autoplay muted loop playsinline></video>
+  <video id="bgv" autoplay muted loop playsinline preload="none"></video>
 </div>
 
 <main class="card">
-  <!-- Video: fixed behind card, GPU composited — smooth on ALL devices -->
+  <!-- Video: desktop only via CSS display:none on mobile -->
   <video class="cardvid" id="cardv" autoplay muted loop playsinline
-         preload="auto" disablepictureinpicture x-webkit-airplay="deny">
+         preload="none" disablepictureinpicture x-webkit-airplay="deny">
     <source id="vsrc" src="" type="video/mp4">
   </video>
 
   <div class="scrim"></div>
 
   <div class="content" id="content">
-    <!-- rendered by JS -->
+    <!-- Loading state — shows instantly, zero network wait -->
+    <div style="padding:40px 0;text-align:center;opacity:.5;font-size:14px;letter-spacing:.08em">
+      ✳ SWAG GOLD
+    </div>
   </div>
 </main>
 
@@ -559,7 +386,7 @@ body{
 <!-- QR Overlay -->
 <div id="qrov" class="qrov" onclick="closeQR()">
   <div class="qrcard" onclick="event.stopPropagation()">
-    <img class="qbadge" id="qrbadge" src="" alt="SWAG GOLD">
+    <img class="qbadge" id="qrbadge" src="" alt="SWAG GOLD" width="54" height="54" loading="lazy">
     <div id="qrbox" class="qrbox"></div>
     <p class="qrt">امسح لحفظ روابطنا<span>Scan to save our links</span></p>
     <button class="qrclose" onclick="closeQR()">&#10005;</button>
@@ -576,43 +403,62 @@ body{
 </div>
 
 <script>
-const ICONS = {
-  google: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 12h5a5 5 0 1 1-1.5-3.5"/></svg>`,
-  chart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
-  snapchat: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.206 1c-.93 0-3.93.257-5.4 3.516-.44.978-.334 2.648-.28 3.68l-.002.003c-.01.048-.05.07-.1.07-.25 0-.637-.067-.873-.067-.334 0-1.244.088-1.244.814 0 .597.58.965 1.147 1.123.116.032.234.058.35.081.46.094.952.214.952.641 0 .093-.033.19-.093.29-.587 1.008-1.717 1.717-2.883 2.015-.363.093-.55.237-.55.453 0 .51.87.867 1.604 1.023.147.032.256.162.266.313.023.32.146.447.466.509.31.06.635.104.86.137.294.044.456.134.456.325 0 .24-.218.44-.533.69-.49.39-1.16.924-1.16 1.828 0 .858.718 1.41 1.864 1.41.544 0 1.12-.133 1.667-.391 1.29-.614 2.37-1.498 3.506-1.498 1.134 0 2.216.884 3.505 1.498.548.258 1.124.391 1.668.391 1.146 0 1.864-.552 1.864-1.41 0-.904-.67-1.437-1.16-1.828-.315-.25-.533-.45-.533-.69 0-.19.162-.281.456-.325.225-.033.55-.077.86-.137.32-.062.443-.189.466-.51.01-.15.12-.28.266-.312.734-.156 1.604-.513 1.604-1.023 0-.216-.187-.36-.55-.453-1.166-.298-2.296-1.007-2.883-2.015-.06-.1-.093-.197-.093-.29 0-.427.492-.547.952-.641.116-.023.234-.05.35-.081.567-.158 1.147-.526 1.147-1.123 0-.726-.91-.814-1.244-.814-.236 0-.623.067-.873.067-.05 0-.09-.022-.1-.07l-.002-.003c.054-1.032.16-2.702-.28-3.68C16.136 1.257 13.136 1 12.206 1z"/></svg>`,
-  tiktok: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>`,
-  instagram: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>`,
-  whatsapp: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>`,
-  location: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
-  share: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
-  menu: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>`
+// ── INLINE DEFAULT CONFIG — renders INSTANTLY, zero network wait ──
+const DEFAULT_CFG = {
+  title:'SWAG GOLD',
+  subtitle:'Jewellery Store',
+  footer:'SWAG GOLD · سواج جولد',
+  logoUrl:'https://res.cloudinary.com/dzt5habw9/image/upload/w_90,h_90,c_fill,q_auto,f_auto/swag_logo',
+  video:'https://res.cloudinary.com/dzt5habw9/video/upload/q_auto,f_auto/19-3_v_3_2215524-1_aa2i8s.mp4',
+  socials:[
+    {icon:'tiktok',url:'https://www.tiktok.com/@swag.gold24'},
+    {icon:'whatsapp',url:'https://wa.me/+9660530033445'},
+    {icon:'snapchat',url:'https://www.snapchat.com/add/swag.gold24'}
+  ],
+  links:[
+    {icon:'google',label:'Rate us on Google',labelAr:'قيمنا على جوجل',url:'https://g.page/r/CWglyh1mAaPZEAE/review'},
+    {icon:'chart',label:'Live Price',labelAr:'التسعير المباشر',url:'https://laroche.sa/swag/swag_monitors.html'},
+    {icon:'snapchat',label:'SnapChat',labelAr:'سناب شات',url:'https://www.snapchat.com/add/swag.gold24'},
+    {icon:'tiktok',label:'TikTok',labelAr:'تيك توك',url:'https://www.tiktok.com/@swag.gold24'},
+    {icon:'instagram',label:'Instagram',labelAr:'انستقرام',url:'https://www.instagram.com/swag.gold24'},
+    {icon:'whatsapp',label:'WhatsApp',labelAr:'واتس آب',url:'https://wa.me/+9660530033445'},
+    {icon:'location',label:'Our Location',labelAr:'موقعنا',url:'https://g.co/kgs/b4cUF3k'}
+  ]
 };
 
-// ── GOLD PRICE ──
+const ICONS = {
+  google:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 12h5a5 5 0 1 1-1.5-3.5"/></svg>`,
+  chart:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+  snapchat:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.206 1c-.93 0-3.93.257-5.4 3.516-.44.978-.334 2.648-.28 3.68l-.002.003c-.01.048-.05.07-.1.07-.25 0-.637-.067-.873-.067-.334 0-1.244.088-1.244.814 0 .597.58.965 1.147 1.123.116.032.234.058.35.081.46.094.952.214.952.641 0 .093-.033.19-.093.29-.587 1.008-1.717 1.717-2.883 2.015-.363.093-.55.237-.55.453 0 .51.87.867 1.604 1.023.147.032.256.162.266.313.023.32.146.447.466.509.31.06.635.104.86.137.294.044.456.134.456.325 0 .24-.218.44-.533.69-.49.39-1.16.924-1.16 1.828 0 .858.718 1.41 1.864 1.41.544 0 1.12-.133 1.667-.391 1.29-.614 2.37-1.498 3.506-1.498 1.134 0 2.216.884 3.505 1.498.548.258 1.124.391 1.668.391 1.146 0 1.864-.552 1.864-1.41 0-.904-.67-1.437-1.16-1.828-.315-.25-.533-.45-.533-.69 0-.19.162-.281.456-.325.225-.033.55-.077.86-.137.32-.062.443-.189.466-.51.01-.15.12-.28.266-.312.734-.156 1.604-.513 1.604-1.023 0-.216-.187-.36-.55-.453-1.166-.298-2.296-1.007-2.883-2.015-.06-.1-.093-.197-.093-.29 0-.427.492-.547.952-.641.116-.023.234-.05.35-.081.567-.158 1.147-.526 1.147-1.123 0-.726-.91-.814-1.244-.814-.236 0-.623.067-.873.067-.05 0-.09-.022-.1-.07l-.002-.003c.054-1.032.16-2.702-.28-3.68C16.136 1.257 13.136 1 12.206 1z"/></svg>`,
+  tiktok:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>`,
+  instagram:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>`,
+  whatsapp:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>`,
+  location:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  share:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
+  menu:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1" fill="currentColor"/><circle cx="12" cy="12" r="1" fill="currentColor"/><circle cx="12" cy="19" r="1" fill="currentColor"/></svg>`
+};
+
+// ── GOLD PRICE — fetch AFTER render (non-blocking) ──
 let priceData = {};
-async function fetchGoldPrice() {
-  try {
-    const r = await fetch('https://data-asg.goldprice.org/dbXRates/SAR');
-    const d = await r.json();
-    const usd = d.price || 0;
-    const sar = usd * (d.xrates?.SAR || 3.75);
-    const g = sar / 31.1035;
-    priceData = {
-      k24: (g * 1).toFixed(1),
-      k21: (g * 0.875).toFixed(1),
-      k18: (g * 0.75).toFixed(1),
-      time: new Date().toLocaleTimeString('en-SA',{hour:'2-digit',minute:'2-digit'})
-    };
-  } catch(e) {}
-  renderTicker();
+function fetchGoldPrice() {
+  fetch('https://data-asg.goldprice.org/dbXRates/SAR')
+    .then(r=>r.json())
+    .then(d=>{
+      const usd=d.price||0, sar=usd*(d.xrates?.SAR||3.75), g=sar/31.1035;
+      priceData={
+        k24:(g*1).toFixed(1),k21:(g*0.875).toFixed(1),k18:(g*0.75).toFixed(1),
+        time:new Date().toLocaleTimeString('en-SA',{hour:'2-digit',minute:'2-digit'})
+      };
+      renderTicker();
+    }).catch(()=>{});
 }
 
 function renderTicker() {
-  const el = document.getElementById('ticker');
-  if (!el) return;
-  const t = priceData;
-  if (!t.k24) { el.innerHTML = `<span class="ticker-icon">🥇</span><span style="opacity:.6;font-size:11px">Loading prices…</span>`; return; }
-  el.innerHTML = `
+  const el=document.getElementById('ticker');
+  if(!el) return;
+  const t=priceData;
+  if(!t.k24){el.innerHTML=`<span class="ticker-icon">🥇</span><span style="opacity:.6;font-size:11px">Loading prices…</span>`;return;}
+  el.innerHTML=`
     <span class="ticker-icon">🥇</span>
     <div class="ticker-items">
       <div class="ti"><span class="ti-label">24K</span><span class="ti-val">${t.k24}</span><span class="ti-unit">SAR/g</span></div>
@@ -622,44 +468,41 @@ function renderTicker() {
     </div>`;
 }
 
+// ── CHECK: is mobile? ──
+const IS_MOBILE = window.innerWidth < 520 || !window.matchMedia('(hover:hover)').matches;
+
 // ── MAIN RENDER ──
 function render(cfg) {
-  const c = document.getElementById('content');
-  if (!c) return;
+  const c=document.getElementById('content');
+  if(!c) return;
 
-  // VIDEO — all screens, smooth GPU layer
-  const cardv = document.getElementById('cardv');
-  const vsrc  = document.getElementById('vsrc');
-  const bgv   = document.getElementById('bgv');
-
-  if (cfg.video) {
-    if (vsrc && vsrc.src !== cfg.video) {
-      vsrc.src = cfg.video;
-      if (cardv) { cardv.load(); cardv.play().catch(()=>{}); }
-    }
-    // Desktop blurred backdrop
-    if (bgv && !bgv.src) {
-      bgv.src = cfg.video;
-      bgv.load();
-      bgv.play().catch(()=>{});
+  // Video — only load on desktop
+  if(cfg.video && !IS_MOBILE) {
+    const vsrc=document.getElementById('vsrc');
+    const cardv=document.getElementById('cardv');
+    const bgv=document.getElementById('bgv');
+    if(vsrc && !vsrc.src){
+      vsrc.src=cfg.video;
+      cardv&&(cardv.load(),cardv.play().catch(()=>{}));
+      bgv&&(bgv.src=cfg.video,bgv.load(),bgv.play().catch(()=>{}));
     }
   }
 
   // Banner
-  let bannerHTML = '';
-  if (cfg.banner?.show && cfg.banner?.text) {
-    bannerHTML = `<div class="banner" id="bnr">${cfg.banner.text}<button class="banner-close" onclick="document.getElementById('bnr').remove()">&#10005;</button></div>`;
+  let bannerHTML='';
+  if(cfg.banner?.show&&cfg.banner?.text){
+    bannerHTML=`<div class="banner" id="bnr">${cfg.banner.text}<button class="banner-close" onclick="document.getElementById('bnr').remove()">&#10005;</button></div>`;
   }
 
   // Social icons
-  const socialsHTML = (cfg.socials || []).map(s =>
+  const socialsHTML=(cfg.socials||[]).map(s=>
     `<a href="${s.url}" target="_blank" rel="noopener" aria-label="${s.icon}">${ICONS[s.icon]||''}</a>`
   ).join('');
 
   // Link buttons
-  const linksHTML = (cfg.links || []).filter(l => !l.hidden).map(l => {
-    const featured = l.featured ? ' featured' : '';
-    const arLabel = l.labelAr ? `<span class="dash">-</span><span class="ar">${l.labelAr}</span>` : '';
+  const linksHTML=(cfg.links||[]).filter(l=>!l.hidden).map(l=>{
+    const featured=l.featured?' featured':'';
+    const arLabel=l.labelAr?`<span class="dash">-</span><span class="ar">${l.labelAr}</span>`:'';
     return `<a href="${l.url}" target="_blank" rel="noopener" class="link${featured}">
       <span class="ico">${ICONS[l.icon]||''}</span>
       <span class="label"><span>${l.label}</span>${arLabel}</span>
@@ -667,20 +510,18 @@ function render(cfg) {
     </a>`;
   }).join('');
 
-  const logoHTML = cfg.logoUrl
-    ? `<img class="avatar" src="${cfg.logoUrl}" alt="${cfg.title}" width="90" height="90" loading="eager">`
-    : `<div class="avatar" style="display:grid;place-items:center;font-size:28px">💛</div>`;
+  const logoHTML=cfg.logoUrl
+    ?`<img class="avatar" src="${cfg.logoUrl}" alt="${cfg.title}" width="90" height="90" loading="eager" decoding="async">`
+    :`<div class="avatar" style="display:grid;place-items:center;font-size:28px">💛</div>`;
 
-  c.innerHTML = `
+  c.innerHTML=`
     <div class="topbar">
       <button class="chip" onclick="window.location.reload()" aria-label="Refresh">
         <span class="ast">✳</span>
       </button>
       <button class="chip" onclick="doShare()" aria-label="Share">${ICONS.share}</button>
     </div>
-
     <div id="ticker" class="ticker"><span class="ticker-icon">🥇</span><span style="opacity:.6;font-size:11px">Loading prices…</span></div>
-
     <div class="profile">
       ${logoHTML}
       <div class="name">
@@ -695,95 +536,78 @@ function render(cfg) {
       <div class="bio">${cfg.subtitle||'Jewellery Store'}</div>
       <div class="socials">${socialsHTML}</div>
     </div>
-
     ${bannerHTML}
-
     <div class="links">${linksHTML}</div>
+    <div class="footer">${cfg.footer||'SWAG GOLD · سواج جولد'}</div>`;
 
-    <div class="footer">${cfg.footer||'SWAG GOLD · سواج جولد'}</div>
-  `;
+  const qrbadge=document.getElementById('qrbadge');
+  if(qrbadge&&cfg.logoUrl) qrbadge.src=cfg.logoUrl;
 
-  const qrbadge = document.getElementById('qrbadge');
-  if (qrbadge && cfg.logoUrl) qrbadge.src = cfg.logoUrl;
-
-  fetchGoldPrice();
+  // Gold price — fetch AFTER render, non-blocking
+  requestIdleCallback ? requestIdleCallback(fetchGoldPrice) : setTimeout(fetchGoldPrice, 300);
   setInterval(fetchGoldPrice, 5*60*1000);
 }
 
-// ── LOAD CONFIG ──
-fetch('./config.json?v=' + Date.now())
-  .then(r => r.json())
-  .then(cfg => render(cfg))
-  .catch(() => {
-    render({
-      title:'SWAG GOLD',subtitle:'Jewellery Store',
-      footer:'SWAG GOLD · سواج جولد',
-      video:'https://res.cloudinary.com/dzt5habw9/video/upload/q_auto,f_auto/19-3_v_3_2215524-1_aa2i8s.mp4',
-      socials:[
-        {icon:'tiktok',url:'https://www.tiktok.com/@swag.gold24'},
-        {icon:'whatsapp',url:'https://wa.me/+9660530033445'},
-        {icon:'snapchat',url:'https://www.snapchat.com/add/swag.gold24'}
-      ],
-      links:[
-        {icon:'google',label:'Rate us on Google',labelAr:'قيمنا على جوجل',url:'https://g.page/r/CWglyh1mAaPZEAE/review'},
-        {icon:'chart',label:'Live Price',labelAr:'التسعير المباشر',url:'https://laroche.sa/swag/swag_monitors.html'},
-        {icon:'snapchat',label:'SnapChat',labelAr:'سناب شات',url:'https://www.snapchat.com/add/swag.gold24'},
-        {icon:'tiktok',label:'TikTok',labelAr:'تيك توك',url:'https://www.tiktok.com/@swag.gold24'},
-        {icon:'instagram',label:'Instagram',labelAr:'انستقرام',url:'https://www.instagram.com/swag.gold24'},
-        {icon:'whatsapp',label:'WhatsApp',labelAr:'واتس آب',url:'https://wa.me/+9660530033445'},
-        {icon:'location',label:'Our Location',labelAr:'موقعنا',url:'https://g.co/kgs/b4cUF3k'}
-      ]
-    });
-  });
+// ── INSTANT RENDER with default config ──
+render(DEFAULT_CFG);
+
+// ── Then fetch config.json in background and re-render if different ──
+fetch('./config.json')
+  .then(r=>r.json())
+  .then(cfg=>{
+    // Only re-render if config has different content
+    if(JSON.stringify(cfg)!==JSON.stringify(DEFAULT_CFG)) render(cfg);
+  })
+  .catch(()=>{}); // Silently ignore — default config already shown
 
 // ── SHARE ──
-function doShare() {
-  if (navigator.share) {
-    navigator.share({title:'SWAG GOLD',url:location.href}).catch(()=>{});
-  } else {
-    navigator.clipboard?.writeText(location.href).then(()=>alert('Link copied!'));
-  }
+function doShare(){
+  if(navigator.share){navigator.share({title:'SWAG GOLD',url:location.href}).catch(()=>{});}
+  else{navigator.clipboard?.writeText(location.href).then(()=>alert('Link copied!'));}
 }
 
-// ── QR CODE ──
-function showQR() {
-  const ov = document.getElementById('qrov');
+// ── QR CODE — load library lazily only when needed ──
+let qrLibLoaded=false;
+function showQR(){
+  const ov=document.getElementById('qrov');
   ov.classList.add('open');
-  const box = document.getElementById('qrbox');
-  if (box.innerHTML) return;
-  try {
-    const qr = qrcode(0,'M');
-    qr.addData(location.href);
-    qr.make();
-    box.innerHTML = qr.createSvgTag({cellSize:4,margin:4});
-  } catch(e){}
+  const box=document.getElementById('qrbox');
+  if(box.innerHTML) return;
+
+  function makeQR(){
+    try{
+      const qr=qrcode(0,'M');
+      qr.addData(location.href);qr.make();
+      box.innerHTML=qr.createSvgTag({cellSize:4,margin:4});
+    }catch(e){box.innerHTML='<p style="color:#999;font-size:12px">QR unavailable</p>';}
+  }
+
+  if(qrLibLoaded){makeQR();return;}
+  // Load QR lib only when first needed
+  const s=document.createElement('script');
+  s.src='https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js';
+  s.onload=()=>{qrLibLoaded=true;makeQR();};
+  document.head.appendChild(s);
 }
-function closeQR(){ document.getElementById('qrov').classList.remove('open'); }
+function closeQR(){document.getElementById('qrov').classList.remove('open');}
 
 // ── FULLSCREEN ──
-function toggleFs() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen().catch(()=>{});
-  } else {
-    document.exitFullscreen().catch(()=>{});
-  }
+function toggleFs(){
+  if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{});}
+  else{document.exitFullscreen().catch(()=>{});}
 }
 
 // ── LIGHTBOX ──
-let lbImgs=[], lbIdx=0;
-function openLB(imgs,idx){ lbImgs=imgs; lbIdx=idx; document.getElementById('lbox').classList.add('open'); lbShow(); }
-function lbShow(){ document.getElementById('lbimg').src=lbImgs[lbIdx]; document.getElementById('lbcount').textContent=(lbIdx+1)+' / '+lbImgs.length; }
-function lbNav(d){ lbIdx=(lbIdx+d+lbImgs.length)%lbImgs.length; lbShow(); }
-function closeLB(){ document.getElementById('lbox').classList.remove('open'); }
+let lbImgs=[],lbIdx=0;
+function openLB(imgs,idx){lbImgs=imgs;lbIdx=idx;document.getElementById('lbox').classList.add('open');lbShow();}
+function lbShow(){document.getElementById('lbimg').src=lbImgs[lbIdx];document.getElementById('lbcount').textContent=(lbIdx+1)+' / '+lbImgs.length;}
+function lbNav(d){lbIdx=(lbIdx+d+lbImgs.length)%lbImgs.length;lbShow();}
+function closeLB(){document.getElementById('lbox').classList.remove('open');}
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){closeQR();closeLB();}
   if(e.key==='ArrowLeft')lbNav(-1);
   if(e.key==='ArrowRight')lbNav(1);
 });
-</script>
-
-<script>
-var qrcode=function(){var b=function(a,c){var f=0xEC,h=0x11,g=a,n=QRErrorCorrectionLevel[c],p=null,q=0,r=null,s=[],t={};var u=function(a,b){q=g*4+17;p=function(a){var b=new Array(a);for(var c=0;c<a;c++){b[c]=new Array(a);for(var d=0;d<a;d++){b[c][d]=null}}return b}(q);v(0,0);v(q-7,0);v(0,q-7);w();x();y(a,b);if(g>=7){z(a)}if(r==null){r=A(g,n,s)}B(r,b)};var v=function(a,b){for(var c=-1;c<=7;c++){if(a+c<=-1||q<=a+c)continue;for(var d=-1;d<=7;d++){if(b+d<=-1||q<=b+d)continue;if((0<=c&&c<=6&&(d==0||d==6))||(0<=d&&d<=6&&(c==0||c==6))||(2<=c&&c<=4&&2<=d&&d<=4)){p[a+c][b+d]=true}else{p[a+c][b+d]=false}}}};var C=function(){var a=0,b=0;for(var c=q-1;c>0;c-=2){if(c==6)c--;for(var d=0;d<q;d++){for(var e=0;e<2;e++){if(p[d][c-e]==null){var f=false;if(a<s.length){f=((s[Math.floor(a/8)]>>>(7-a%8))&1)==1}D(b,d,c-e,f);a++}}}b++}};var D=function(a,b,c,d){p[b][c]=d^E(a,b,c)};var E=function(a,b,c){switch(a){case 0:return(b+c)%2==0;case 1:return b%2==0;case 2:return c%3==0;case 3:return(b+c)%3==0;case 4:return(Math.floor(b/2)+Math.floor(c/3))%2==0;case 5:return(b*c)%2+(b*c)%3==0;case 6:return((b*c)%2+(b*c)%3)%2==0;case 7:return((b+c)%2+(b*c)%3)%2==0}throw new Error('bad maskPattern:'+a)};var w=function(){for(var a=0;a<8;a++){if(a+8>=q-8&&a<=q-8)continue;for(var b=0;b<8;b++){p[6][a]=a%2==0;p[a][6]=a%2==0}}};var x=function(){var a=[1,1,1,1,0,1,0,0,1,0,0,0,0];for(var b=0;b<5;b++){if(g-1>=b+4){var c=QRRSBlock.getRSBlocks(g,n);var d=a[b];for(var e=0;e<a.length;e++){D(d,q-11+b,8,((a[e]>>4)&1)==1);D(d,8,q-11+b,((a[e]>>4)&1)==1);for(var f=0;f<8;f++){var h=((a[e]>>(7-f))&1)==1;p[q-11+b][8+f+6]=h;p[8+f+6][q-11+b]=h}}}}};var y=function(a,b){var c=-8;for(var d=q-1;d>=8;d-=2){if(d==6)d--;for(var e=0;e<q;e++){for(var f=0;f<2;f++){if(p[e][d-f]==null){var g=false;if(c<s.length){g=((s[Math.floor(c/8)]>>>(7-c%8))&1)==1}p[e][d-f]=g^E(b,e,d-f);c++}}}};for(var d=8;d<q-8;d+=2){for(var e=q-1;e>=8;e-=2){if(e==6)e--;for(var f=0;f<2;f++){if(p[d-f][e]==null){var g=false;if(c<s.length){g=((s[Math.floor(c/8)]>>>(7-c%8))&1)==1}p[d-f][e]=g^E(b,d-f,e);c++}}}}};var A=function(a,b,c){var d=QRRSBlock.getRSBlocks(a,b);var e=new QRBitBuffer();for(var f=0;f<d.length;f++){var g=d[f];var h=new QRBitBuffer();h.put(4,4);h.put(c.length,QRUtil.getLengthInBits(4,a));for(var i=0;i<c.length;i++){h.put(c[i].charCodeAt(0),8)}var j=g.dataCount;for(var i=h.sizeInBits;i<j*8;i+=8){if(i+8<=j*8){h.put(f,8)}else{h.put(0,j*8-i)}}var k=QRUtil.getErrorCorrectPolynomial(g.totalCount-j);var l=new QRPolynomial(h.buffer,k.getLength()-1);var m=l.mod(k);for(var n=0;n<g.totalCount;n++){var o;if(n<j){o=h.buffer[n]}else{o=m.get(n-j)}c.push(o)}e.put(0,g.totalCount-j)}return c};var B=function(a,b){q=g*4+17;p=function(a){var b=new Array(a);for(var c=0;c<a;c++){b[c]=new Array(a);for(var d=0;d<a;d++){b[c][d]=null}}return b}(q);v(0,0);v(q-7,0);v(0,q-7);w();x();y(a,b)};return{addData:function(a){s=[];for(var b=0;b<a.length;b++){s.push(a.charCodeAt(b))}},make:function(){u(0,0)},createSvgTag:function(a){var b=a.cellSize||2,c=a.margin!=null?a.margin:b*4,d=q*b+c*2,e='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+d+' '+d+'"><rect width="'+d+'" height="'+d+'" fill="white"/><g fill="black">';for(var f=0;f<q;f++){for(var g=0;g<q;g++){if(p[f][g]){e+='<rect x="'+(g*b+c)+'" y="'+(f*b+c)+'" width="'+b+'" height="'+b+'"/>';}}}e+='</g></svg>';return e}}};var QRErrorCorrectionLevel={L:1,M:0,Q:3,H:2};var QRUtil={getErrorCorrectPolynomial:function(a){var b=new QRPolynomial([1],0);for(var c=0;c<a;c++){b=b.multiply(new QRPolynomial([1,QRMath.gexp(c)],0))}return b},getLengthInBits:function(a,b){if(1<=b&&b<10){switch(a){case 1:return 10;case 2:return 9;case 4:return 8;case 8:return 8;default:throw new Error('mode:'+a)}}else if(b<27){switch(a){case 1:return 12;case 2:return 11;case 4:return 16;case 8:return 10;default:throw new Error('mode:'+a)}}else if(b<41){switch(a){case 1:return 14;case 2:return 13;case 4:return 16;case 8:return 12;default:throw new Error('mode:'+a)}}else{throw new Error('type:'+b)}},getMask:function(a,b,c){switch(a){case 0:return(b+c)%2==0;case 1:return b%2==0;case 2:return c%3==0;case 3:return(b+c)%3==0;case 4:return(Math.floor(b/2)+Math.floor(c/3))%2==0;case 5:return(b*c)%2+(b*c)%3==0;case 6:return((b*c)%2+(b*c)%3)%2==0;case 7:return((b+c)%2+(b*c)%3)%2==0}throw new Error('bad maskPattern:'+a)},getPatternPosition:function(a){return[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]][a-1]||[]},getMaxDataCount:function(a,b){var c=[[41,25,17,10],[77,47,32,20],[127,77,53,32],[187,114,78,48],[255,154,106,65],[322,195,134,82],[370,224,154,95],[461,279,192,118],[552,335,230,141],[652,395,271,167],[772,468,321,198],[883,535,367,226],[1022,619,425,262],[1101,667,458,282],[1250,758,520,320],[1408,854,586,361],[1548,938,644,397],[1725,1046,718,442],[1903,1153,792,488],[2061,1249,858,528],[2232,1352,929,572],[2409,1460,1003,618],[2620,1588,1091,672],[2812,1704,1171,721],[3057,1853,1273,784],[3283,1990,1367,842],[3517,2132,1465,902],[3669,2223,1528,940],[3909,2369,1628,1002],[4158,2520,1732,1066],[4417,2677,1840,1132],[4686,2840,1952,1201],[4965,3009,2068,1273],[5253,3183,2188,1347],[5529,3351,2303,1417],[5836,3537,2431,1496],[6153,3729,2563,1577],[6479,3927,2699,1661],[6743,4087,2809,1729],[7089,4296,2953,1817]][a-1]||[];return c[b]||0}};var QRMath={gexp:function(a){return a<0?1/QRMath.gexp(-a):a>=256?QRMath.gexp(a-255):QRMath.EXP_TABLE[a]},glog:function(a){if(a<1)throw new Error('glog('+a+')');return QRMath.LOG_TABLE[a]},EXP_TABLE:function(){var a=new Array(256);for(var b=0;b<8;b++){a[b]=1<<b}for(var b=8;b<256;b++){a[b]=a[b-4]^a[b-5]^a[b-6]^a[b-8]}return a}(),LOG_TABLE:function(){var a=new Array(256);for(var b=0;b<255;b++){a[QRMath.EXP_TABLE[b]]=b}return a}()};function QRPolynomial(a,b){if(a.length==undefined)throw new Error(a.length+'/'+b);var c=0;while(c<a.length&&a[c]==0){c++}this.num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++){this.num[d]=a[d+c]}}QRPolynomial.prototype={getLength:function(){return this.num.length},get:function(a){return this.num[a]||0},multiply:function(a){var b=new Array(this.getLength()+a.getLength()-1);for(var c=0;c<this.getLength();c++){for(var d=0;d<a.getLength();d++){b[c+d]^=QRMath.gexp(QRMath.glog(this.get(c))+QRMath.glog(a.get(d)))}}return new QRPolynomial(b,0)},mod:function(a){if(this.getLength()-a.getLength()<0){return this}var b=QRMath.glog(this.get(0))-QRMath.glog(a.get(0));var c=new Array(this.getLength());for(var d=0;d<this.getLength();d++){c[d]=this.get(d)}for(var d=0;d<a.getLength();d++){c[d]^=QRMath.gexp(QRMath.glog(a.get(d))+b)}return new QRPolynomial(c,0).mod(a)}};function QRRSBlock(a,b){this.totalCount=a;this.dataCount=b}QRRSBlock.RS_BLOCK_TABLE=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]];QRRSBlock.getRSBlocks=function(a,b){var c=QRRSBlock.getRsBlockTable(a,b);if(c==undefined){throw new Error('bad rs block @ typeNumber:'+a+'/errorCorrectionLevel:'+b)}var d=c.length/3;var e=[];for(var f=0;f<d;f++){var g=c[f*3+0];var h=c[f*3+1];var i=c[f*3+2];for(var j=0;j<g;j++){e.push(new QRRSBlock(h,i))}}return e};QRRSBlock.getRsBlockTable=function(a,b){switch(b){case QRErrorCorrectionLevel.L:return QRRSBlock.RS_BLOCK_TABLE[(a-1)*4+0];case QRErrorCorrectionLevel.M:return QRRSBlock.RS_BLOCK_TABLE[(a-1)*4+1];case QRErrorCorrectionLevel.Q:return QRRSBlock.RS_BLOCK_TABLE[(a-1)*4+2];case QRErrorCorrectionLevel.H:return QRRSBlock.RS_BLOCK_TABLE[(a-1)*4+3];default:return undefined}};function QRBitBuffer(){this.buffer=[];this.length=0}QRBitBuffer.prototype={get:function(a){var b=Math.floor(a/8);return((this.buffer[b]>>>(7-a%8))&1)==1},put:function(a,b){for(var c=0;c<b;c++){this.putBit(((a>>>(b-c-1))&1)==1)}},sizeInBits:function(){return this.length},putBit:function(a){var b=Math.floor(this.length/8);if(this.buffer.length<=b){this.buffer.push(0)}if(a){this.buffer[b]|=(0x80>>>(this.length%8))}this.length++}};return b}();
 </script>
 
 </body>
