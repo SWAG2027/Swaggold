@@ -762,7 +762,7 @@ function applyUiVars(cfg, root){
     function gv(id){return document.getElementById(id);}
     function readForm(){ensure();var u=cfg.ui;
       cfg.logo=gv('logo').value||cfg.logo;cfg.name=gv('name').value;cfg.bio=gv('bio').value;cfg.footer=gv('footer').value;
-      cfg.verified=gv('verified').checked;cfg.gold=gv('gold').value;cfg.video=gv('video').value||'swag-bg.mp4';cfg.bgImage=gv('bgImage').value||'';
+      cfg.verified=gv('verified').checked;cfg.gold=gv('gold').value;cfg.video=gv('video').value||cfg.video||'swag-bg.mp4';cfg.bgImage=gv('bgImage').value||'';
       cfg.blur=parseInt(gv('blur').value,10);
       u.align=gv('align').value;u.fontSize=parseFloat(gv('fontSize').value);u.btnPad=parseInt(gv('btnPad').value,10);
       u.btnRadius=parseInt(gv('btnRadius').value,10);u.iconSize=parseInt(gv('iconSize').value,10);u.btnDark=parseInt(gv('btnDark').value,10);
@@ -915,7 +915,7 @@ function applyUiVars(cfg, root){
     function lbDragE(){LB={};}
     buildSide();loadGH();
     cfg=loadDraft()||clone(DEFAULT_CONFIG);ensure();
-    fetch('config.json?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(c){if(c&&!loadDraft()){cfg=c;}ensure();fillForm();renderSocials();renderLinks();previewRender();}).catch(function(){fillForm();renderSocials();renderLinks();previewRender();});
+    fetch('config.json?_='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(c){if(c){if(!loadDraft()){cfg=c;}else{if(c.video)cfg.video=c.video;if(c.logo)cfg.logo=c.logo;}}ensure();fillForm();renderSocials();renderLinks();previewRender();}).catch(function(){fillForm();renderSocials();renderLinks();previewRender();});
     fillForm();renderSocials();renderLinks();renderLayoutBlocks();previewRender();
   
 
