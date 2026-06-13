@@ -3,22 +3,66 @@
   "name": "SWAG GOLD",
   "bio": "Jewellery Store",
   "verified": false,
-  "video": "",
+  "video": "https://res.cloudinary.com/dzt5habw9/video/upload/sp_auto/19-3_v_3_2215524-1_aa2i8s.m3u8",
   "gold": "#d4a84b",
   "blur": 34,
   "socials": [
-    {"icon": "tiktok", "url": "https://www.tiktok.com/@swag.gold24"},
-    {"icon": "whatsapp", "url": "https://wa.me/+9660530033445"},
-    {"icon": "snapchat", "url": "https://www.snapchat.com/add/swag.gold24"}
+    {
+      "icon": "tiktok",
+      "url": "https://www.tiktok.com/@swag.gold24"
+    },
+    {
+      "icon": "whatsapp",
+      "url": "https://wa.me/+9660530033445"
+    },
+    {
+      "icon": "snapchat",
+      "url": "https://www.snapchat.com/add/swag.gold24"
+    }
   ],
   "links": [
-    {"icon": "google", "en": "Rate us on Google", "ar": "قيمنا على جوجل", "url": "https://g.page/r/CWglyh1mAaPZEAE/review"},
-    {"icon": "chart", "en": "Live Price", "ar": "التسعير المباشر", "url": "https://laroche.sa/swag/swag_monitors.html"},
-    {"icon": "snapchat", "en": "SnapChat", "ar": "سناب شات", "url": "https://www.snapchat.com/add/swag.gold24"},
-    {"icon": "tiktok", "en": "TikTok", "ar": "تيك توك", "url": "https://www.tiktok.com/@swag.gold24"},
-    {"icon": "instagram", "en": "Instagram", "ar": "انستقرام", "url": "https://www.instagram.com/swag.gold24"},
-    {"icon": "whatsapp", "en": "WhatsApp", "ar": "واتس آب", "url": "https://wa.me/+9660530033445"},
-    {"icon": "map", "en": "Our Location", "ar": "موقعنا", "url": "https://g.co/kgs/b4cUF3k"}
+    {
+      "icon": "google",
+      "en": "Rate us on Google",
+      "ar": "قيمنا على جوجل",
+      "url": "https://g.page/r/CWglyh1mAaPZEAE/review"
+    },
+    {
+      "icon": "chart",
+      "en": "Live Price",
+      "ar": "التسعير المباشر",
+      "url": "https://laroche.sa/swag/swag_monitors.html"
+    },
+    {
+      "icon": "snapchat",
+      "en": "SnapChat",
+      "ar": "سناب شات",
+      "url": "https://www.snapchat.com/add/swag.gold24"
+    },
+    {
+      "icon": "tiktok",
+      "en": "TikTok",
+      "ar": "تيك توك",
+      "url": "https://www.tiktok.com/@swag.gold24"
+    },
+    {
+      "icon": "instagram",
+      "en": "Instagram",
+      "ar": "انستقرام",
+      "url": "https://www.instagram.com/swag.gold24"
+    },
+    {
+      "icon": "whatsapp",
+      "en": "WhatsApp",
+      "ar": "واتس آب",
+      "url": "https://wa.me/+9660530033445"
+    },
+    {
+      "icon": "map",
+      "en": "Our Location",
+      "ar": "موقعنا",
+      "url": "https://g.co/kgs/b4cUF3k"
+    }
   ],
   "ui": {
     "align": "center",
@@ -35,13 +79,20 @@
     "gap": 10
   },
   "footer": "",
-  "kiosk": {"qr": true, "fs": true},
+  "kiosk": {
+    "qr": true,
+    "fs": true
+  },
   "seo": {
     "title": "SWAG GOLD Official: TikTok, Instagram",
     "desc": "Jewellery Store"
   },
   "bgImage": "",
-  "banner": {"show": false, "text": "", "link": ""},
+  "banner": {
+    "show": false,
+    "text": "",
+    "link": ""
+  },
   "gallery": {
     "show": true,
     "cols": 3,
