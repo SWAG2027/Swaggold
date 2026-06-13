@@ -2643,12 +2643,16 @@ function applyUiVars(cfg, root){
     } else { if(cv)cv.style.display=''; if(bg)bg.style.display=''; card.style.backgroundImage=''; back.style.backgroundImage=''; back.style.filter=''; } }
 
     function fitCard(){var c=document.querySelector('.content'); if(c) c.style.transform='none';}
+    function fitVideo(){ try{ var cv=document.getElementById('cardv'); var h=(window.innerHeight||document.documentElement.clientHeight); if(cv&&h){ cv.style.height=h+'px'; } }catch(e){} }
+    window.addEventListener('resize',fitVideo);
+    window.addEventListener('orientationchange',function(){ setTimeout(fitVideo,250); });
+    window.addEventListener('load',fitVideo);
     var _hls=null;
     function _loadMp4(cv,src){ if(!cv||!src)return; try{cv.removeAttribute('src');}catch(e){} var sv=document.getElementById('vsrc'); if(sv)sv.src=src; try{cv.load&&cv.load();}catch(e){} var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); }
     // MP4 turant chalao; HLS background me load karo, ready hote hi smooth pe switch (Cloudinary first-request processing handle)
     function _upgradeToHls(cv,hlsSrc){ if(!(window.Hls&&window.Hls.isSupported()))return;
       try{if(_hls){_hls.destroy();_hls=null;}}catch(e){}
-      var h=new Hls({maxBufferLength:12,capLevelToPlayerSize:true,startLevel:-1}); var attached=false;
+      var h=new Hls({maxBufferLength:12,capLevelToPlayerSize:false,startLevel:-1}); var attached=false;
       h.on(Hls.Events.MANIFEST_PARSED,function(){ if(!attached){ attached=true; try{var sv=document.getElementById('vsrc'); if(sv)sv.removeAttribute('src');}catch(e){} h.attachMedia(cv); var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); } });
       h.on(Hls.Events.ERROR,function(ev,d){ if(d&&d.fatal){ try{h.destroy();}catch(e){} if(_hls===h)_hls=null; } }); // HLS fail/abhi-processing -> MP4 chalta rahega
       _hls=h; try{h.loadSource(hlsSrc);}catch(e){} }
@@ -2670,7 +2674,7 @@ function applyUiVars(cfg, root){
       applyUiVars(cfg); applyScrim(cfg); applyKiosk(cfg); applySeo(cfg); applyBg(cfg);
       var bd=document.querySelector('.backdrop video'); if(bd) bd.style.filter='blur('+(cfg.blur!=null?cfg.blur:34)+'px) brightness(.5) saturate(1.1)';
       var src=cfg.video||'swag-bg.mp4';
-      var cv=document.getElementById('cardv'); loadVideoSource(cv,src,cfg.videoMp4||'swag-bg.mp4');
+      var cv=document.getElementById('cardv'); loadVideoSource(cv,src,cfg.videoMp4||'swag-bg.mp4'); fitVideo(); setTimeout(fitVideo,150); setTimeout(fitVideo,500);
       var bg=document.getElementById('bgv'); var narrow=!(window.matchMedia&&window.matchMedia('(min-width:520px)').matches);
       if(bg){ try{bg.pause();}catch(e){} if(bg.getAttribute('src')){bg.removeAttribute('src'); try{bg.load();}catch(e){}}
         if(!narrow && !/\.m3u8(\?|$)/i.test(src)){ bg.src=src; var pb=bg.play&&bg.play(); if(pb&&pb.catch)pb.catch(function(){}); } }
