@@ -29,7 +29,7 @@
   .card{width:100%;max-width:480px;min-height:100dvh;position:relative;
     display:flex;flex-direction:column;justify-content:center;animation:fade .6s ease both}
   @keyframes fade{from{opacity:0}to{opacity:1}}
-  .card .cardvid{position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%) translateZ(0);width:100%;max-width:480px;object-fit:cover;z-index:-1;backface-visibility:hidden}
+  .card .cardvid{position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);width:100%;max-width:480px;height:100vh;object-fit:cover;z-index:-1;backface-visibility:hidden}
   .card .scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg, rgba(0,0,0,.26) 0%, rgba(0,0,0,.02) 16%, rgba(0,0,0,0) 45%, rgba(0,0,0,0) 82%, rgba(0,0,0,.05) 100%)}
   .content{position:relative;z-index:2;padding:24px 18px 44px;width:100%}
 
@@ -2706,9 +2706,7 @@ function applyUiVars(cfg, root){
     setTimeout(fitCard,600);setTimeout(fitCard,1300);
   </script>
 <script>
-/* smoothness: pause video while scrolling, resume after scroll stops (mobile GPU saver) */
-(function(){var v=document.getElementById('cardv');if(!v)return;var t;function onScroll(){if(!v.paused){try{v.pause();}catch(e){}v.dataset.wp='1';}clearTimeout(t);t=setTimeout(function(){if(v.dataset.wp){var p=v.play&&v.play();if(p&&p.catch)p.catch(function(){});v.dataset.wp='';}},180);}
-window.addEventListener('scroll',onScroll,{passive:true});window.addEventListener('touchmove',onScroll,{passive:true});}());
+/* scroll-pause removed: video plays continuously, smoothness via light video + GPU layer */
 </script>
 <script>
 /* ══ FEATURE 1: AUTO-REFRESH ══
