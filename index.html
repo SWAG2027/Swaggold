@@ -2643,46 +2643,38 @@ function applyUiVars(cfg, root){
     } else { if(cv)cv.style.display=''; if(bg)bg.style.display=''; card.style.backgroundImage=''; back.style.backgroundImage=''; back.style.filter=''; } }
 
     function fitCard(){var c=document.querySelector('.content'); if(c) c.style.transform='none';}
-    // ── HLS Video Initializer ──────────────────────────────
-    function initHLSVideo(videoEl, hlsUrl, fallbackMp4) {
-      if (!videoEl) return;
-      videoEl.removeAttribute('src');
-      Array.from(videoEl.querySelectorAll('source')).forEach(function(s){ s.remove(); });
-      if (videoEl.canPlayType('application/vnd.apple.mpegurl')) {
-        // Safari: native HLS
-        videoEl.src = hlsUrl;
-        videoEl.load();
-        videoEl.play().catch(function(){});
-      } else if (typeof Hls !== 'undefined' && Hls.isSupported()) {
-        // Chrome, Firefox, Android
-        var hls = new Hls({
-          maxBufferLength: 8,
-          maxMaxBufferLength: 16,
-          enableWorker: true
-        });
-        hls.loadSource(hlsUrl);
-        hls.attachMedia(videoEl);
-        hls.on(Hls.Events.MANIFEST_PARSED, function() {
-          videoEl.play().catch(function(){});
-        });
-        hls.on(Hls.Events.ERROR, function(event, data) {
-          if (data.fatal) {
-            videoEl.src = fallbackMp4;
-            videoEl.load();
-            videoEl.play().catch(function(){});
-          }
-        });
-      } else {
-        // Last resort MP4 fallback
+// HLS VIDEO INIT
+function initHLSVideo(videoEl, hlsUrl, fallbackMp4) {
+  if (!videoEl) return;
+  videoEl.removeAttribute('src');
+  Array.from(videoEl.querySelectorAll('source')).forEach(function(s){ s.remove(); });
+  if (videoEl.canPlayType('application/vnd.apple.mpegurl')) {
+    videoEl.src = hlsUrl;
+    videoEl.load();
+    videoEl.play().catch(function(){});
+  } else if (typeof Hls !== 'undefined' && Hls.isSupported()) {
+    var hls = new Hls({ maxBufferLength: 8, maxMaxBufferLength: 16, enableWorker: true });
+    hls.loadSource(hlsUrl);
+    hls.attachMedia(videoEl);
+    hls.on(Hls.Events.MANIFEST_PARSED, function() {
+      videoEl.play().catch(function(){});
+    });
+    hls.on(Hls.Events.ERROR, function(event, data) {
+      if (data.fatal) {
         videoEl.src = fallbackMp4;
         videoEl.load();
         videoEl.play().catch(function(){});
       }
-    }
-    // ── End HLS Initializer ────────────────────────────────
-    var HLS_URL = 'https://res.cloudinary.com/dzt5habw9/video/upload/sp_auto/q_auto,f_auto/19-3_v_3_2215524-1_aa2i8s.m3u8';
-    var MP4_URL = 'https://res.cloudinary.com/dzt5habw9/video/upload/q_auto,f_auto/19-3_v_3_2215524-1_aa2i8s.mp4';
-
+    });
+  } else {
+    videoEl.src = fallbackMp4;
+    videoEl.load();
+    videoEl.play().catch(function(){});
+  }
+}
+var HLS_URL = 'https://res.cloudinary.com/dzt5habw9/video/upload/sp_auto/q_auto,f_auto/19-3_v_3_2215524-1_aa2i8s.m3u8';
+var MP4_URL  = 'https://res.cloudinary.com/dzt5habw9/video/upload/q_auto,f_auto/19-3_v_3_2215524-1_aa2i8s.mp4';
+// END HLS VIDEO INIT
     function render(cfg){
       applyUiVars(cfg); applyScrim(cfg); applyKiosk(cfg); applySeo(cfg); applyBg(cfg);
       var bd=document.querySelector('.backdrop video'); if(bd) bd.style.filter='blur('+(cfg.blur!=null?cfg.blur:34)+'px) brightness(.5) saturate(1.1)';
