@@ -2640,7 +2640,7 @@ function applyUiVars(cfg, root){
     if(img){ if(cv)cv.style.display='none'; if(bg)bg.style.display='none';
       card.style.backgroundImage='url("'+img+'")';card.style.backgroundSize='cover';card.style.backgroundPosition='center';
       back.style.backgroundImage='url("'+img+'")';back.style.backgroundSize='cover';back.style.backgroundPosition='center';back.style.filter='blur('+bl+'px) brightness(.55) saturate(1.1)';
-    } else { if(cv)cv.style.display=''; if(bg)bg.style.display=''; card.style.backgroundImage=''; back.style.backgroundImage=''; back.style.filter=''; } }
+    } else { if(cv)cv.style.display=''; if(bg)bg.style.display=''; card.style.backgroundImage=''; back.style.backgroundImage=''; back.style.filter='blur('+bl+'px) brightness(.5) saturate(1.1)'; } }
 
     function fitCard(){var c=document.querySelector('.content'); if(c) c.style.transform='none';}
 // HLS VIDEO INIT
@@ -2690,8 +2690,11 @@ var _hlsBgRef = {hls:null}, _hlsCardRef = {hls:null};
       var cardVid = document.getElementById('cardv');
       if(bgVid) bgVid.style.display='';
       if(cardVid) cardVid.style.display='';
-      _hlsBgRef.hls   = initHLSVideo(bgVid,   HLS_URL, MP4_URL, _hlsBgRef);
-      _hlsCardRef.hls = initHLSVideo(cardVid, HLS_URL, MP4_URL, _hlsCardRef);
+      if(!window._hlsInited){
+        window._hlsInited = true;
+        _hlsBgRef.hls   = initHLSVideo(bgVid,   HLS_URL, MP4_URL, _hlsBgRef);
+        _hlsCardRef.hls = initHLSVideo(cardVid, HLS_URL, MP4_URL, _hlsCardRef);
+      }
       document.getElementById('content').innerHTML=buildContent(cfg);
       setTimeout(fitCard,60); setTimeout(fitCard,400);
       startBannerPro(cfg);
