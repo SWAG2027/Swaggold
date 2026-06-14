@@ -2669,7 +2669,7 @@ function applyUiVars(cfg, root){
       var fired=false; function fb(){ if(fired)return; fired=true; _loadMp4(cv,mp4); }
       var tries=0; (function waitHls(){
         if(window.Hls&&window.Hls.isSupported()){
-          var h=new Hls({maxBufferLength:12,capLevelToPlayerSize:false,startLevel:-1}); _hls=h; var ok=false;
+          var h=new Hls({maxBufferLength:10,maxMaxBufferLength:24,capLevelToPlayerSize:true,capLevelOnFPSDrop:true,startLevel:-1}); _hls=h; var ok=false;
           try{var sv=document.getElementById('vsrc'); if(sv)sv.removeAttribute('src');}catch(e){}
           h.on(Hls.Events.MANIFEST_PARSED,function(){ ok=true; var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); });
           h.on(Hls.Events.ERROR,function(ev,d){ if(d&&d.fatal){ try{h.destroy();}catch(e){} if(_hls===h)_hls=null; fb(); } });
@@ -2682,24 +2682,6 @@ function applyUiVars(cfg, root){
     (function(){ var cv=document.getElementById('cardv'); if(cv){ cv.style.opacity='0';
       cv.addEventListener('playing',function(){ cv.style.opacity='1'; });
       cv.addEventListener('error',function(){ cv.style.opacity='0'; }); } })();
-    // PREMIUM SCROLL: scroll ke waqt video pause+hide (static image dikhe = smooth scroll); ruko to wapas chale
-    (function(){
-      var cv=document.getElementById('cardv');
-      var sc=document.querySelector('.scroller');
-      if(!cv||!sc) return;
-      var idleT=null, isScrolling=false;
-      function pauseForScroll(){
-        if(!isScrolling){ isScrolling=true; cv.style.opacity='0'; try{cv.pause();}catch(e){} }
-        clearTimeout(idleT);
-        idleT=setTimeout(function(){
-          isScrolling=false;
-          var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){});
-          cv.style.opacity='1';
-        }, 160);
-      }
-      sc.addEventListener('scroll', pauseForScroll, {passive:true});
-      sc.addEventListener('touchmove', pauseForScroll, {passive:true});
-    })();
     function render(cfg){
       applyUiVars(cfg); applyScrim(cfg); applyKiosk(cfg); applySeo(cfg); applyBg(cfg);
       var bd=document.querySelector('.backdrop video'); if(bd) bd.style.filter='blur('+(cfg.blur!=null?cfg.blur:34)+'px) brightness(.5) saturate(1.1)';
