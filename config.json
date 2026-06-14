@@ -66,26 +66,22 @@
   ],
   "ui": {
     "align": "center",
-    "fontSize": 13,
-    "btnPad": 18,
+    "fontSize": 17.5,
+    "btnPad": 26,
     "btnRadius": 22,
-    "iconSize": 16,
-    "btnDark": 0,
-    "avatar": 74,
+    "iconSize": 28,
+    "btnDark": 16,
+    "avatar": 90,
     "nameSize": 33,
-    "socialSize": 20,
+    "socialSize": 30,
     "scrim": 0,
     "cols": 1,
-    "gap": 4
+    "gap": 10
   },
   "footer": "",
   "kiosk": {
     "qr": true,
-    "fs": true,
-    "goldTicker": true,
-    "autoRefresh": true,
-    "nightDim": false,
-    "goldManual": 0
+    "fs": true
   },
   "seo": {
     "title": "SWAG GOLD Official: TikTok, Instagram",
@@ -119,39 +115,6 @@
     ],
     "rotateInterval": 5
   },
-  "_savedAt": 1781439127831,
-  "videoMp4": "https://res.cloudinary.com/dzt5habw9/video/upload/q_auto,w_720/19-3_v_3_2215524-1_aa2i8s.mp4",
-  "layout": {
-    "order": [
-      "logo",
-      "name",
-      "bio",
-      "socials",
-      "links",
-      "gallery",
-      "footer"
-    ]
-  },
-  "pos": {
-    "logo": {
-      "x": -8,
-      "y": -62
-    },
-    "name": {
-      "x": -2,
-      "y": -61
-    },
-    "bio": {
-      "x": -2,
-      "y": -59
-    },
-    "socials": {
-      "x": -1,
-      "y": -61
-    },
-    "links": {
-      "x": 3,
-      "y": -69
-    }
-  }
+  "_savedAt": 1781162406693,
+  "videoMp4": "https://res.cloudinary.com/dzt5habw9/video/upload/q_auto,w_480/19-3_v_3_2215524-1_aa2i8s.mp4"
 }
