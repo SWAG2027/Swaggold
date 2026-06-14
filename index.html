@@ -22,7 +22,8 @@
     display:flex;justify-content:center;align-items:flex-start;
     padding:0;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
     overflow-x:hidden;-webkit-overflow-scrolling:touch}
-  .backdrop{display:none;position:fixed;inset:0;z-index:-2;overflow:hidden;background:#1a140c}
+  .backdrop{display:block;position:fixed;inset:0;z-index:-2;overflow:hidden;background:#1a140c url('swag-bg.jpg?v=2') center center/cover no-repeat}
+    .backdrop video{display:none}
   .backdrop video{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1.25);
     min-width:100%;min-height:100%;object-fit:cover;filter:blur(34px) brightness(.5) saturate(1.1)}
   .backdrop::after{content:"";position:absolute;inset:0;background:rgba(20,15,8,.35)}
@@ -30,7 +31,7 @@
   .card{width:100%;max-width:480px;min-height:100dvh;position:relative;
     display:flex;flex-direction:column;justify-content:center;animation:fade .6s ease both}
   @keyframes fade{from{opacity:0}to{opacity:1}}
-  .card .cardvid{position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);width:100%;max-width:480px;height:100vh;height:100lvh;object-fit:cover;z-index:-1;backface-visibility:hidden}
+  .card .cardvid{position:fixed;top:0;left:50%;transform:translateX(-50%) translateZ(0);width:100%;max-width:480px;height:100vh;height:100lvh;object-fit:cover;z-index:-1;backface-visibility:hidden;opacity:0;transition:opacity .5s ease}
   .card .scrim{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg, rgba(0,0,0,.26) 0%, rgba(0,0,0,.02) 16%, rgba(0,0,0,0) 45%, rgba(0,0,0,0) 82%, rgba(0,0,0,.05) 100%)}
   .content{position:relative;z-index:2;padding:24px 18px 44px;width:100%}
 
@@ -143,7 +144,7 @@
 <body>
   <div class="backdrop"><video id="bgv" autoplay muted loop playsinline></video></div>
   <main class="card">
-    <video class="cardvid" id="cardv" autoplay muted loop playsinline preload="auto"><source id="vsrc" src="swag-bg.mp4" type="video/mp4"></video>
+    <video class="cardvid" id="cardv" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture preload="auto" poster="swag-bg.jpg?v=2" style="opacity:0"><source id="vsrc" src="swag-bg.mp4" type="video/mp4"></video>
     <div class="scrim"></div><div class="content" id="content"></div>
   </main>
   <div class="kiosk">
@@ -2653,15 +2654,10 @@ function applyUiVars(cfg, root){
     window.addEventListener('orientationchange',function(){ setTimeout(fitVideo,250); });
     window.addEventListener('load',fitVideo);
     var _hls=null;
-    function _loadMp4(cv,src){ if(!cv||!src)return; try{cv.removeAttribute('src');}catch(e){} var sv=document.getElementById('vsrc'); if(sv)sv.src=src; try{cv.load&&cv.load();}catch(e){} var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); }
-    // MP4 turant chalao; HLS background me load karo, ready hote hi smooth pe switch (Cloudinary first-request processing handle)
-    function _upgradeToHls(cv,hlsSrc){ if(!(window.Hls&&window.Hls.isSupported()))return;
-      try{if(_hls){_hls.destroy();_hls=null;}}catch(e){}
-      var h=new Hls({maxBufferLength:12,capLevelToPlayerSize:false,startLevel:-1}); var attached=false;
-      h.on(Hls.Events.MANIFEST_PARSED,function(){ if(!attached){ attached=true; try{var sv=document.getElementById('vsrc'); if(sv)sv.removeAttribute('src');}catch(e){} h.attachMedia(cv); var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); } });
-      h.on(Hls.Events.ERROR,function(ev,d){ if(d&&d.fatal){ try{h.destroy();}catch(e){} if(_hls===h)_hls=null; } }); // HLS fail/abhi-processing -> MP4 chalta rahega
-      _hls=h; try{h.loadSource(hlsSrc);}catch(e){} }
+    function _loadMp4(cv,src){ if(!cv||!src)return; try{if(_hls){_hls.destroy();_hls=null;}}catch(e){} try{cv.removeAttribute('src');}catch(e){} var sv=document.getElementById('vsrc'); if(sv)sv.src=src; try{cv.load&&cv.load();}catch(e){} var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); }
+    // HLS-FIRST: seedha HLS chalao (no MP4->HLS switch glitch). HLS ready na ho to clean MP4 fallback.
     function loadVideoSource(cv,src,mp4){ if(!cv)return; src=src||'swag-bg.mp4'; mp4=mp4||'swag-bg.mp4';
+      try{cv.disableRemotePlayback=true;}catch(e){} try{cv.controls=false;}catch(e){}
       try{if(_hls){_hls.destroy();_hls=null;}}catch(e){}
       var isHls=/\.m3u8(\?|$)/i.test(src);
       if(!isHls){ _loadMp4(cv,src); return; }
@@ -2671,10 +2667,23 @@ function applyUiVars(cfg, root){
         cv.src=src; try{cv.load&&cv.load();}catch(e){} var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){});
         cv.addEventListener('error',function(){ _loadMp4(cv,mp4); },{once:true}); return;
       }
-      // Android/Chrome: MP4 turant + HLS upgrade
-      _loadMp4(cv,mp4);
-      var tries=0; (function waitHls(){ if(window.Hls&&window.Hls.isSupported()){ _upgradeToHls(cv,src); return; } if(++tries>30)return; setTimeout(waitHls,200); })();
+      // Android/Chrome: hls.js se seedha HLS; 5s me ready na ho ya error -> clean MP4
+      var fired=false; function fb(){ if(fired)return; fired=true; _loadMp4(cv,mp4); }
+      var tries=0; (function waitHls(){
+        if(window.Hls&&window.Hls.isSupported()){
+          var h=new Hls({maxBufferLength:12,capLevelToPlayerSize:false,startLevel:-1}); _hls=h; var ok=false;
+          try{var sv=document.getElementById('vsrc'); if(sv)sv.removeAttribute('src');}catch(e){}
+          h.on(Hls.Events.MANIFEST_PARSED,function(){ ok=true; var p=cv.play&&cv.play(); if(p&&p.catch)p.catch(function(){}); });
+          h.on(Hls.Events.ERROR,function(ev,d){ if(d&&d.fatal){ try{h.destroy();}catch(e){} if(_hls===h)_hls=null; fb(); } });
+          try{h.loadSource(src); h.attachMedia(cv);}catch(e){ fb(); }
+          setTimeout(function(){ if(!ok) fb(); },5000); return;
+        }
+        if(++tries>20){ fb(); return; } setTimeout(waitHls,200);
+      })();
     }
+    (function(){ var cv=document.getElementById('cardv'); if(cv){ cv.style.opacity='0';
+      cv.addEventListener('playing',function(){ cv.style.opacity='1'; });
+      cv.addEventListener('error',function(){ cv.style.opacity='0'; }); } })();
     function render(cfg){
       applyUiVars(cfg); applyScrim(cfg); applyKiosk(cfg); applySeo(cfg); applyBg(cfg);
       var bd=document.querySelector('.backdrop video'); if(bd) bd.style.filter='blur('+(cfg.blur!=null?cfg.blur:34)+'px) brightness(.5) saturate(1.1)';
