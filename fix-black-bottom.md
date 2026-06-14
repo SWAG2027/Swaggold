@@ -20,4 +20,5 @@ body::after{content:'';position:fixed;bottom:0;left:0;right:0;height:20vh;
 ```
 
 ### 2. Reduce .scrim bottom opacity
-Change `.30` to `.10` at bottom of scrim gradient.
+Change `.30` to `.10` at bottom of scrim gradient. these are tow main components are big things for the allowed if it si difficult
+
