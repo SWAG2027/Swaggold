@@ -2641,11 +2641,13 @@ function applyUiVars(cfg, root){
     if(img){ if(cv)cv.style.display='none'; if(bg)bg.style.display='none';
       card.style.backgroundImage='url("'+img+'")';card.style.backgroundSize='cover';card.style.backgroundPosition='center';
       back.style.backgroundImage='url("'+img+'")';back.style.backgroundSize='cover';back.style.backgroundPosition='center';back.style.filter='blur('+bl+'px) brightness(.55) saturate(1.1)';
-    } else { if(cv)cv.style.display=''; if(bg)bg.style.display=''; card.style.backgroundImage=''; back.style.backgroundImage=''; back.style.filter=''; } }
+    } else { if(cv)cv.style.display=''; if(bg)bg.style.display=''; card.style.backgroundImage=''; back.style.backgroundImage="url('swag-bg.jpg?v=2')"; back.style.backgroundSize='cover'; back.style.backgroundPosition='center'; back.style.backgroundRepeat='no-repeat'; back.style.filter=''; } }
 
     function fitCard(){var c=document.querySelector('.content'); if(c) c.style.transform='none';}
     function fitVideo(){ try{ var cv=document.getElementById('cardv'); if(!cv)return;
-      var h=window.innerHeight||0;
+      var back=document.querySelector('.backdrop'); var h=0;
+      if(back&&back.clientHeight) h=back.clientHeight;
+      h=Math.max(h, window.innerHeight||0);
       if(window.visualViewport&&window.visualViewport.height) h=Math.max(h,window.visualViewport.height);
       if(document.documentElement&&document.documentElement.clientHeight) h=Math.max(h,document.documentElement.clientHeight);
       if(h){ cv.style.height=h+'px'; cv.style.minHeight=h+'px'; }
